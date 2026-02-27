@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BuyMe Seller Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#F5F5DC", /* Cream */
+                        "cream-hover": "#FFFDD0",
+                        "background-dark": "#121212",
+                        "card-dark": "#1E1E1E",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #121212;
+        }
+        .black-cream-gradient {
+            background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
+        }
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #121212; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #F5F5DC; }
+    </style>
+</head>
+<body class="font-display text-slate-100">
+
+<header class="sticky top-0 z-50 bg-black text-white px-4 lg:px-10 py-3 shadow-2xl border-b border-white/10">
+    <div class="max-w-[1440px] mx-auto flex items-center justify-between gap-4">
+        <div class="flex items-center gap-8">
+            <div class="flex items-center gap-2">
+                <div style="color: #F5F5DC;">
+                </div>
+                <h2 class="text-xl font-extrabold tracking-tight hidden md:block">BuyMe <span class="text-primary/90 font-medium text-lg">Seller</span></h2>
+            </div>
+            <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-400">
+                <a class="text-primary border-b-2 border-primary pb-1" href="#">Dashboard</a>
+                <a class="hover:text-primary transition-colors pb-1" href="#">Orders</a>
+                <a class="hover:text-primary transition-colors pb-1" href="#">Inventory</a>
+                <a class="hover:text-primary transition-colors pb-1" href="#">Analytics</a>
+            </nav>
+        </div>
+
+        <div class="flex-1 max-w-md mx-4 hidden sm:block">
+            <div class="relative group">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary">search</span>
+                <input class="w-full bg-white/5 border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-primary focus:border-primary transition-all text-white" placeholder="Search orders, products..." type="text"/>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3 lg:gap-5">
+            <button class="relative p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 transition-colors">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-black"></span>
+            </button>
+            <div class="h-8 w-px bg-white/10 mx-1"></div>
+            
+            <div class="flex items-center gap-3">
+                <div class="text-right hidden md:block">
+                    <p class="text-xs font-bold text-white">Alex Johnson</p>
+                    <p class="text-[10px] text-primary/60">Pro Merchant</p>
+                </div>
+                <div class="w-10 h-10 rounded-full border-2 border-primary/50 overflow-hidden shadow-md hover:scale-105 transition-transform cursor-pointer bg-card-dark">
+                    <img alt="Seller profile" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="max-w-[1440px] mx-auto p-4 lg:p-8 black-cream-gradient min-h-screen">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-3xl font-black text-white tracking-tight">Store Overview</h1>
+            <p class="text-slate-400 mt-1">Welcome back, Alex. Your store is performing 12% better than last week.</p>
+        </div>
+        <div class="flex gap-3">
+            <button class="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-sm font-semibold hover:bg-white/10 transition-all text-white">
+                <span class="material-symbols-outlined text-lg">calendar_today</span>
+                Last 30 Days
+            </button>
+            <button class="flex items-center gap-2 px-6 py-2 rounded-xl text-sm font-bold transition-all shadow-md bg-primary hover:bg-cream-hover text-black">
+                <span class="material-symbols-outlined text-lg">download</span>
+                Export Data
+            </button>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-card-dark p-6 rounded-xl border border-white/5 shadow-xl hover:border-primary/30 transition-all group">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-3 bg-primary/10 text-primary rounded-xl group-hover:bg-primary group-hover:text-black transition-colors">
+                    <span class="material-symbols-outlined">payments</span>
+                </div>
+                <span class="text-xs font-bold text-black bg-primary px-2 py-1 rounded-full">+14.2%</span>
+            </div>
+            <p class="text-sm font-medium text-slate-400">Total Revenue</p>
+            <h3 class="text-2xl font-extrabold text-white mt-1">$54,230.15</h3>
+        </div>
+        <div class="bg-card-dark p-6 rounded-xl border border-white/5 shadow-xl hover:border-primary/30 transition-all group">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-3 bg-primary/10 text-primary rounded-xl group-hover:bg-primary group-hover:text-black transition-colors">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                </div>
+                <span class="text-xs font-bold text-black bg-primary px-2 py-1 rounded-full">+5.1%</span>
+            </div>
+            <p class="text-sm font-medium text-slate-400">Active Orders</p>
+            <h3 class="text-2xl font-extrabold text-white mt-1">1,482</h3>
+        </div>
+        <div class="bg-card-dark p-6 rounded-xl border border-white/5 shadow-xl hover:border-primary/30 transition-all group">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-3 bg-primary/10 text-primary rounded-xl group-hover:bg-primary group-hover:text-black transition-colors">
+                    <span class="material-symbols-outlined">trending_up</span>
+                </div>
+                <span class="text-xs font-bold text-rose-400 bg-rose-950/30 px-2 py-1 rounded-full">-2.4%</span>
+            </div>
+            <p class="text-sm font-medium text-slate-400">Conversion Rate</p>
+            <h3 class="text-2xl font-extrabold text-white mt-1">3.42%</h3>
+        </div>
+        <div class="bg-card-dark p-6 rounded-xl border border-white/5 shadow-xl hover:border-primary/30 transition-all group">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-3 bg-primary/10 text-primary rounded-xl group-hover:bg-primary group-hover:text-black transition-colors">
+                    <span class="material-symbols-outlined">star</span>
+                </div>
+                <span class="text-xs font-bold text-black bg-primary px-2 py-1 rounded-full">Top 1%</span>
+            </div>
+            <p class="text-sm font-medium text-slate-400">Seller Rating</p>
+            <h3 class="text-2xl font-extrabold text-white mt-1">4.9 / 5.0</h3>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 bg-card-dark p-8 rounded-xl border border-white/5 shadow-xl">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h2 class="text-lg font-bold text-white">Revenue Analytics</h2>
+                    <p class="text-sm text-slate-400">BuyMe sales performance (Last 30 days)</p>
+                </div>
+                <div class="flex bg-black p-1 rounded-lg">
+                    <button class="px-3 py-1 text-xs font-bold bg-primary text-black rounded shadow-sm">Sales</button>
+                    <button class="px-3 py-1 text-xs font-bold text-slate-400 hover:text-white transition-colors">Visitors</button>
+                </div>
+            </div>
+            <div class="h-64 w-full relative">
+                <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 800 200">
+                    <defs>
+                        <lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                            <stop offset="0%" stop-color="#F5F5DC" stop-opacity="0.25"></stop>
+                            <stop offset="100%" stop-color="#F5F5DC" stop-opacity="0"></stop>
+                        </lineargradient>
+                    </defs>
+                    <path d="M0,180 C50,160 100,170 150,120 C200,70 250,90 300,60 C350,30 400,100 450,80 C500,60 550,40 600,70 C650,100 700,50 750,40 L800,20 L800,200 L0,200 Z" fill="url(#chartGradient)"></path>
+                    <path d="M0,180 C50,160 100,170 150,120 C200,70 250,90 300,60 C350,30 400,100 450,80 C500,60 550,40 600,70 C650,100 700,50 750,40 L800,20" fill="none" stroke="#F5F5DC" stroke-linecap="round" stroke-width="3"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div class="bg-card-dark p-8 rounded-xl border border-white/5 shadow-xl">
+            <h2 class="text-lg font-bold text-white mb-6">Low Stock Alerts</h2>
+            <div class="space-y-6">
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="font-bold text-slate-300">BuyMe Buds Pro</span>
+                        <span class="text-rose-400 font-bold">12 left</span>
+                    </div>
+                    <div class="h-1.5 w-full bg-black rounded-full overflow-hidden">
+                        <div class="h-full bg-rose-500" style="width: 15%"></div>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="font-bold text-slate-300">Ergo Office Chair</span>
+                        <span class="text-primary font-bold">45 left</span>
+                    </div>
+                    <div class="h-1.5 w-full bg-black rounded-full overflow-hidden">
+                        <div class="h-full bg-primary" style="width: 45%"></div>
+                    </div>
+                </div>
+            </div>
+            <button class="w-full mt-8 py-3 border-2 border-dashed border-primary/20 rounded-xl text-sm font-bold text-primary hover:bg-primary/5 transition-all">
+                Restock All Items
+            </button>
+        </div>
+    </div>
+
+    <div class="mt-8 bg-card-dark rounded-xl border border-white/5 shadow-xl overflow-hidden">
+        <div class="px-8 py-6 border-b border-white/5 flex items-center justify-between">
+            <h2 class="text-lg font-bold text-white">Recent Orders</h2>
+            <a class="text-sm font-bold text-primary hover:underline" href="#">View All</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="bg-black/40">
+                        <th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Order ID</th>
+                        <th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Customer</th>
+                        <th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Product</th>
+                        <th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Amount</th>
+                        <th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    <tr class="hover:bg-white/5 transition-colors">
+                        <td class="px-8 py-4 text-sm font-bold text-white">#BM-90210</td>
+                        <td class="px-8 py-4 text-slate-300 text-sm">Jane Doe</td>
+                        <td class="px-8 py-4 text-sm text-slate-400">Wireless Buds Pro</td>
+                        <td class="px-8 py-4 text-sm font-bold text-white">$129.00</td>
+                        <td class="px-8 py-4">
+                            <span class="px-2.5 py-1 bg-primary text-black rounded-full text-[10px] font-bold uppercase">Shipped</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<footer class="bg-black text-slate-500 py-12 px-6 lg:px-10 border-t border-white/10">
+    <div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div class="col-span-1">
+            <div class="flex items-center gap-2 text-white mb-6">
+                <span class="material-symbols-outlined text-primary text-3xl">shopping_bag</span>
+                <span class="text-xl font-bold tracking-tight">BuyMe</span>
+            </div>
+            <p class="text-sm leading-relaxed">Empowering modern sellers with data-driven insights. Manage, scale, and thrive on the BuyMe platform.</p>
+        </div>
+        <div>
+            <h4 class="text-white font-bold mb-6">Support</h4>
+            <ul class="space-y-4 text-sm">
+                <li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
+                <li><a class="hover:text-primary transition-colors" href="#">Seller Policies</a></li>
+            </ul>
+        </div>
+        <div class="col-span-1 md:col-span-2">
+            <h4 class="text-white font-bold mb-6">Newsletter</h4>
+            <div class="flex gap-2 max-w-sm">
+                <input class="bg-white/5 border-white/10 rounded-lg py-2 px-3 text-sm text-white w-full focus:ring-primary focus:border-primary" placeholder="Enter email" type="email"/>
+                <button class="bg-primary text-black px-4 rounded-lg hover:bg-cream-hover transition-colors">
+                    <span class="material-symbols-outlined align-middle">send</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="max-w-[1440px] mx-auto mt-12 pt-8 border-t border-white/5 text-[11px] font-bold uppercase tracking-widest flex justify-between">
+        <p>© 2026 BuyMe E-commerce.</p>
+        <div class="flex gap-6">
+            <a href="#" class="hover:text-white">Privacy</a>
+            <a href="#" class="hover:text-white">Terms</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

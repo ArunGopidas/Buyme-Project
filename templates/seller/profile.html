@@ -1,0 +1,16 @@
+<h2>Seller Profile</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="shopname" value="{{ seller.shopname }}" placeholder="Shop Name"><br><br>
+    <input type="text" name="category" value="{{ seller.category }}" placeholder="Category"><br><br>
+    <input type="text" name="website" value="{{ seller.website }}" placeholder="Website"><br><br>
+    <input type="text" name="gst_number" value="{{ seller.gst_number }}" placeholder="GST Number"><br><br>
+    <input type="text" name="pan_number" value="{{ seller.pan_number }}" placeholder="PAN Number"><br><br>
+    <input type="text" name="bank_account_number" value="{{ seller.bank_account_number }}" placeholder="Bank Account"><br><br>
+    <input type="text" name="ifsc_code" value="{{ seller.ifsc_code }}" placeholder="IFSC Code"><br><br>
+    <textarea name="business_address">{{ seller.business_address }}</textarea><br><br>
+
+    <button type="submit">Save Profile</button>
+</form>

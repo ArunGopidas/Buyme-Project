@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Login | BUYME Premium</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#efc139",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#221d10",
+                        "luxury-cream": "#fdfcf8",
+                        "luxury-black": "#121212",
+                    },
+                    fontFamily: { "display": ["Manrope", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex items-center justify-center font-display antialiased">
+
+<div class="w-full max-w-[1440px] px-6 py-12 flex flex-col items-center">
+    <div class="mb-12 text-center">
+        <div class="inline-flex items-center justify-center p-4">
+            <div class="w-16 h-16 bg-luxury-black dark:bg-primary flex items-center justify-center rounded-full shadow-2xl">
+                <span class="material-icons text-white dark:text-luxury-black text-3xl">shopping_bag</span>
+            </div>
+        </div>
+        <h1 class="mt-4 text-3xl font-black tracking-[0.2em] uppercase text-luxury-black dark:text-background-light">
+            BUYME<span class="text-primary">.</span>
+        </h1>
+    </div>
+
+    <div class="w-full max-w-md bg-luxury-cream dark:bg-black/20 p-8 md:p-12 border border-luxury-black/5 dark:border-primary/20 shadow-2xl rounded-xl">
+        <div class="mb-10 text-center">
+            <h2 class="text-3xl font-light text-luxury-black dark:text-background-light mb-2">Welcome Back</h2>
+            <p class="text-sm text-luxury-black/60 dark:text-background-light/60 tracking-wide">Enter your credentials to access your account</p>
+        </div>
+
+        {% if error %}
+        <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-xs italic flex items-center">
+            <span class="material-icons text-sm mr-2">error_outline</span>
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'login' %}" class="space-y-6">
+            {% csrf_token %}
+            
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-widest text-luxury-black/80 dark:text-background-light/80 mb-2" for="email">
+                    Email Address
+                </label>
+                <input type="email" id="email" name="email" required
+                    class="w-full bg-transparent border-b-2 border-luxury-black/10 dark:border-background-light/10 py-3 px-1 text-luxury-black dark:text-background-light placeholder:text-luxury-black/20 focus:border-primary transition-colors duration-300 rounded-none border-t-0 border-x-0 outline-none" 
+                    placeholder="name@example.com"/>
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-widest text-luxury-black/80 dark:text-background-light/80 mb-2" for="password">
+                    Password
+                </label>
+                <input type="password" id="password" name="password" required
+                    class="w-full bg-transparent border-b-2 border-luxury-black/10 dark:border-background-light/10 py-3 px-1 text-luxury-black dark:text-background-light placeholder:text-luxury-black/20 focus:border-primary transition-colors duration-300 rounded-none border-t-0 border-x-0 outline-none" 
+                    placeholder="••••••••"/>
+            </div>
+
+            <div class="flex items-center justify-between pt-2">
+                <label class="flex items-center cursor-pointer group">
+                    <input type="checkbox" class="w-4 h-4 rounded border-luxury-black/20 text-luxury-black focus:ring-primary"/>
+                    <span class="ml-2 text-xs text-luxury-black/60 dark:text-background-light/60 group-hover:text-primary transition-colors">Remember me</span>
+                </label>
+                <a class="text-xs text-luxury-black/60 dark:text-background-light/60 hover:text-primary transition-colors underline underline-offset-4" href="#">
+                    Forgot Password?
+                </a>
+            </div>
+
+            <div class="pt-6">
+                <button type="submit" class="w-full bg-luxury-black dark:bg-primary text-white dark:text-luxury-black py-4 px-8 rounded-lg font-bold tracking-widest uppercase text-xs hover:shadow-primary/20 transition-all transform hover:-translate-y-0.5 active:scale-95 shadow-xl flex items-center justify-center">
+                    Login to BUYME
+                    <span class="material-icons text-sm ml-2">login</span>
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-10 mb-8 flex items-center">
+            <div class="flex-grow border-t border-luxury-black/10 dark:border-background-light/10"></div>
+            <span class="mx-4 text-[10px] font-bold uppercase tracking-widest text-luxury-black/40 dark:text-background-light/40">Quick Access</span>
+            <div class="flex-grow border-t border-luxury-black/10 dark:border-background-light/10"></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <button class="flex items-center justify-center py-3 border border-luxury-black/10 dark:border-background-light/10 rounded-lg hover:bg-white transition-colors">
+                <img src="https://www.svgrepo.com/show/355037/google.svg" class="w-4 h-4 mr-2" alt="Google">
+                <span class="text-[10px] font-bold uppercase">Google</span>
+            </button>
+            <button class="flex items-center justify-center py-3 border border-luxury-black/10 dark:border-background-light/10 rounded-lg hover:bg-white transition-colors">
+                <span class="material-icons text-lg mr-2">apple</span>
+                <span class="text-[10px] font-bold uppercase">Apple</span>
+            </button>
+        </div>
+
+        <p class="mt-10 text-center text-xs text-luxury-black/60 dark:text-background-light/60">
+            New to the platform? 
+            <a class="font-bold text-luxury-black dark:text-primary hover:underline underline-offset-8 ml-1" href="{% url 'seller_register' %}">
+                Create account
+            </a>
+        </p>
+    </div>
+
+    <div class="mt-12 text-[9px] uppercase tracking-[0.3em] text-luxury-black/40 dark:text-background-light/40 flex space-x-8">
+        <a class="hover:text-primary transition-colors" href="#">Privacy</a>
+        <a class="hover:text-primary transition-colors" href="#">Terms</a>
+        <a class="hover:text-primary transition-colors" href="#">Contact</a>
+    </div>
+</div>
+
+</body>
+</html>

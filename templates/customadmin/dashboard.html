@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Luxury Admin Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f9d406",
+                        "background-light": "#fdfcf8",
+                        "background-dark": "#1a1814",
+                        "deep-black": "#0f0f0e",
+                        "soft-cream": "#f5f4f0",
+                        "muted-gold": "#c5a059",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .sidebar-item-active {
+            background-color: rgba(249, 212, 6, 0.1);
+            border-left: 3px solid #f9d406;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e6e4db;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-deep-black">
+<div class="flex min-h-screen">
+<!-- Sidebar -->
+<aside class="w-64 bg-deep-black flex flex-col fixed h-full z-50">
+<div class="p-8">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-deep-black text-xl font-bold">diamond</span>
+</div>
+<h1 class="text-white text-xl font-extrabold tracking-tight uppercase">Maison <span class="text-primary">Lux</span></h1>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1 mt-4">
+<a class="flex items-center gap-3 px-4 py-3 text-soft-cream/60 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-sm font-medium tracking-wide">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-soft-cream/60 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px]">inventory_2</span>
+<span class="text-sm font-medium tracking-wide">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-soft-cream/60 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px]">shopping_bag</span>
+<span class="text-sm font-medium tracking-wide">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-soft-cream/60 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px]">group</span>
+<span class="text-sm font-medium tracking-wide">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-soft-cream/60 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px]">bar_chart</span>
+<span class="text-sm font-medium tracking-wide">Analytics</span>
+</a>
+<div class="pt-4 pb-2 px-4">
+<p class="text-[10px] font-bold text-soft-cream/30 uppercase tracking-[2px]">Admin</p>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 text-white sidebar-item-active rounded-r-lg" href="#">
+<span class="material-symbols-outlined text-[22px] text-primary">person_outline</span>
+<span class="text-sm font-medium tracking-wide">Profile Settings</span>
+</a>
+</nav>
+<div class="p-6 border-t border-white/5">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full border border-primary/30 p-0.5">
+<img alt="Admin Avatar" class="rounded-full w-full h-full object-cover" data-alt="Professional male portrait in dark suit" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAztDn-7yvoyoRcF04AZcT-FOdo_Qp3mm3j6KM-bcrY2W4Ij3RQ6_RISY8OskKBuJCOpjUb7vkPb9XAEJw1haPGXrZt1wWxBIya2tGs-BqgdWU0f1VrR55J7c8WIJpSth1njGnz0Ew7AIh7fNyhv8n5TEgcabToqKyjKOe1G8bj19huzachctiMRoOA5BJs2B7jV-L_LB9BKqwc-VqxfNLcx-AT0e-QVcILmQ_x1XfAwDdTPDabdTlSNYk4nWvvJwhgQZBFlrSOT4T1"/>
+</div>
+<div class="flex flex-col">
+<p class="text-xs font-bold text-white tracking-tight">Alexander Vaughn</p>
+<p class="text-[10px] text-soft-cream/50 uppercase">Super Admin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-64 p-8 lg:p-12 overflow-y-auto">
+<div class="max-w-5xl mx-auto space-y-10">
+<!-- Profile Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="flex items-center gap-8">
+<div class="relative">
+<div class="size-32 rounded-xl bg-soft-cream p-1 shadow-sm border border-black/5">
+<img alt="Large Admin Avatar" class="rounded-lg w-full h-full object-cover shadow-inner" data-alt="Detailed close-up of administrative profile photo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfXabU3Irb8WVIb1Y1xR4c5U97wX2990d4KXZOuvI1tOL_Ic7x4nXPWYooG42FeO2KOVKSY_DibCM8Vry6iQF4fJj6r5IQBcKu64Fa91K_p-lca2PLflBEOlXQsGgBfRy5EAtuPiCkC86yU8QsKGTWVAJXgpML07EHukVe8nKxglJDEVsbg1LhFyy9q3NLZflIi6op-0zS3MzXHv1XeDN-kWAZse49U_OFih63J-R8OVVmrpUJAsvDdMSUxCQo-d_X_Zv-OeWb4qGd"/>
+</div>
+<button class="absolute -bottom-2 -right-2 size-8 bg-deep-black rounded-lg flex items-center justify-center text-primary shadow-lg border border-white/10 hover:bg-black transition-all">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-3">
+<h2 class="text-3xl font-extrabold tracking-tight text-deep-black">Alexander Vaughn</h2>
+<span class="px-2 py-0.5 bg-primary text-[10px] font-black uppercase tracking-widest text-deep-black rounded flex items-center gap-1">
+<span class="size-1.5 bg-deep-black rounded-full"></span> Active
+                                </span>
+</div>
+<p class="text-muted-gold font-medium">Super Administrator &amp; Platform Lead</p>
+<div class="flex gap-4 pt-2 text-sm text-deep-black/60">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">location_on</span> NYC Office</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> GMT -5 (EST)</span>
+</div>
+</div>
+</div>
+<div>
+<button class="px-6 py-3 bg-deep-black text-soft-cream text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-black transition-all flex items-center gap-2 group shadow-xl">
+                            Edit Public Profile
+                            <span class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<hr class="border-black/5"/>
+<!-- Grid Sections -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left Column: Personal Info -->
+<div class="lg:col-span-2 space-y-8">
+<section class="bg-white rounded-xl border border-black/5 p-8 shadow-sm">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">person</span>
+<h3 class="text-lg font-bold tracking-tight">Personal Information</h3>
+</div>
+<button class="text-xs font-bold uppercase tracking-widest text-muted-gold hover:text-primary transition-colors">Update</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-2">
+<label class="text-[10px] uppercase font-black tracking-widest text-deep-black/40">Full Name</label>
+<p class="text-sm font-semibold border-b border-black/5 pb-2">Alexander Vaughn</p>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] uppercase font-black tracking-widest text-deep-black/40">Email Address</label>
+<p class="text-sm font-semibold border-b border-black/5 pb-2">alexander.v@maisonlux.com</p>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] uppercase font-black tracking-widest text-deep-black/40">Phone Number</label>
+<p class="text-sm font-semibold border-b border-black/5 pb-2">+1 (555) 012-3456</p>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] uppercase font-black tracking-widest text-deep-black/40">Account Level</label>
+<p class="text-sm font-semibold border-b border-black/5 pb-2">Tier 3 (Super Admin)</p>
+</div>
+</div>
+</section>
+<section class="bg-white rounded-xl border border-black/5 overflow-hidden shadow-sm">
+<div class="p-8 pb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">history</span>
+<h3 class="text-lg font-bold tracking-tight">Access Logs</h3>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-soft-cream/50 border-y border-black/5">
+<tr>
+<th class="px-8 py-3 text-[10px] uppercase font-black tracking-widest text-deep-black/40">Device</th>
+<th class="px-8 py-3 text-[10px] uppercase font-black tracking-widest text-deep-black/40">IP Address</th>
+<th class="px-8 py-3 text-[10px] uppercase font-black tracking-widest text-deep-black/40">Location</th>
+<th class="px-8 py-3 text-[10px] uppercase font-black tracking-widest text-deep-black/40">Date</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-black/5">
+<tr>
+<td class="px-8 py-4 text-xs font-semibold">MacBook Pro (Chrome)</td>
+<td class="px-8 py-4 text-xs text-deep-black/60 font-mono">192.168.1.1</td>
+<td class="px-8 py-4 text-xs text-deep-black/60" data-location="New York, USA">New York, USA</td>
+<td class="px-8 py-4 text-xs text-deep-black/60">Oct 24, 10:14 AM</td>
+</tr>
+<tr>
+<td class="px-8 py-4 text-xs font-semibold">iPhone 15 Pro (Safari)</td>
+<td class="px-8 py-4 text-xs text-deep-black/60 font-mono">172.56.21.104</td>
+<td class="px-8 py-4 text-xs text-deep-black/60" data-location="New York, USA">New York, USA</td>
+<td class="px-8 py-4 text-xs text-deep-black/60">Oct 23, 08:45 PM</td>
+</tr>
+<tr>
+<td class="px-8 py-4 text-xs font-semibold">Windows PC (Edge)</td>
+<td class="px-8 py-4 text-xs text-deep-black/60 font-mono">203.0.113.1</td>
+<td class="px-8 py-4 text-xs text-deep-black/60" data-location="London, UK">London, UK</td>
+<td class="px-8 py-4 text-xs text-deep-black/60">Oct 22, 11:20 AM</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-soft-cream/30 text-center">
+<button class="text-[10px] font-black uppercase tracking-widest text-muted-gold hover:text-primary transition-colors">View All Session Logs</button>
+</div>
+</section>
+</div>
+<!-- Right Column: Security -->
+<div class="space-y-8">
+<section class="bg-deep-black rounded-xl p-8 text-soft-cream shadow-2xl">
+<div class="flex items-center gap-2 mb-8">
+<span class="material-symbols-outlined text-primary">security</span>
+<h3 class="text-lg font-bold tracking-tight">Security Settings</h3>
+</div>
+<div class="space-y-8">
+<div class="flex items-center justify-between gap-4">
+<div class="space-y-1">
+<p class="text-sm font-bold tracking-tight">Two-Factor Auth</p>
+<p class="text-[10px] text-soft-cream/40 uppercase tracking-widest font-medium">Recommended for Admins</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="pt-6 border-t border-white/10 space-y-4">
+<button class="w-full flex items-center justify-between text-left group">
+<div class="space-y-1">
+<p class="text-sm font-bold tracking-tight">Change Password</p>
+<p class="text-[10px] text-soft-cream/40 uppercase tracking-widest font-medium">Last changed 3 months ago</p>
+</div>
+<span class="material-symbols-outlined text-soft-cream/20 group-hover:text-primary transition-colors">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between text-left group">
+<div class="space-y-1">
+<p class="text-sm font-bold tracking-tight">Authorized Apps</p>
+<p class="text-[10px] text-soft-cream/40 uppercase tracking-widest font-medium">4 active connections</p>
+</div>
+<span class="material-symbols-outlined text-soft-cream/20 group-hover:text-primary transition-colors">chevron_right</span>
+</button>
+</div>
+<div class="mt-8">
+<div class="p-4 rounded-lg bg-primary/10 border border-primary/20 space-y-2">
+<p class="text-[10px] font-black uppercase text-primary tracking-widest">Security Alert</p>
+<p class="text-xs text-soft-cream/80 leading-relaxed">Your account access token is due for refresh in 12 days. Please re-validate your admin credentials.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-white rounded-xl border border-black/5 p-8 shadow-sm">
+<h3 class="text-sm font-black uppercase tracking-[3px] text-deep-black/30 mb-6">Support Portal</h3>
+<div class="space-y-4">
+<a class="flex items-center gap-3 p-3 rounded-lg border border-black/5 hover:bg-soft-cream transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted-gold group-hover:text-deep-black">help_outline</span>
+<span class="text-xs font-bold uppercase tracking-widest">Knowledge Base</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-lg border border-black/5 hover:bg-soft-cream transition-colors group" href="#">
+<span class="material-symbols-outlined text-muted-gold group-hover:text-deep-black">chat_bubble_outline</span>
+<span class="text-xs font-bold uppercase tracking-widest">Direct Support</span>
+</a>
+</div>
+</section>
+</div>
+</div>
+<!-- Footer Action -->
+<div class="pt-10 flex items-center justify-between border-t border-black/5">
+<p class="text-[10px] uppercase font-bold tracking-widest text-deep-black/30">Maison Lux Admin Dashboard © 2024</p>
+<button class="flex items-center gap-2 text-red-600 hover:text-red-700 transition-colors text-xs font-black uppercase tracking-widest">
+<span class="material-symbols-outlined text-lg">logout</span>
+                        Sign Out Session
+                    </button>
+</div>
+</div>
+</main>
+</div>
+</body></html>
