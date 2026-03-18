@@ -110,12 +110,12 @@
             </button>
         </div>
 
-        <p class="mt-10 text-center text-xs text-luxury-black/60 dark:text-background-light/60">
-            New to the platform? 
-            <a class="font-bold text-luxury-black dark:text-primary hover:underline underline-offset-8 ml-1" href="{% url 'seller_register' %}">
-                Create account
+        <div class="mt-10">
+            <a href="{% url 'customer_register' %}" class="w-full bg-transparent border-2 border-luxury-black/20 dark:border-background-light/20 text-luxury-black dark:text-background-light py-3 px-8 rounded-lg font-bold tracking-widest uppercase text-xs hover:border-primary hover:text-primary transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center">
+                I don't have an account
+                <span class="material-icons text-sm ml-2">person_add</span>
             </a>
-        </p>
+        </div>
     </div>
 
     <div class="mt-12 text-[9px] uppercase tracking-[0.3em] text-luxury-black/40 dark:text-background-light/40 flex space-x-8">

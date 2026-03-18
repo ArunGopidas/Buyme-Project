@@ -41,9 +41,9 @@
                 <h2 class="font-display text-xl font-bold tracking-widest uppercase">BUYME</h2>
             </div>
             <div class="flex items-center gap-8">
-                <button class="px-6 py-2 border border-primary text-xs uppercase tracking-widest font-bold hover:bg-primary hover:text-white transition-all">
+                <a href="{% url 'login' %}" class="px-6 py-2 border border-primary text-xs uppercase tracking-widest font-bold hover:bg-primary hover:text-white transition-all">
                     Sign In
-                </button>
+                </a>
             </div>
         </header>
 
@@ -82,7 +82,7 @@
                     </div>
                     {% endif %}
 
-                    <form method="POST" class="space-y-6">
+                    <form method="POST" enctype="multipart/form-data" class="space-y-6">
                         {% csrf_token %}
                         
                         <div class="grid grid-cols-2 gap-6">
@@ -114,6 +114,11 @@
                             <div>
                                 <label class="block text-[10px] uppercase tracking-widest font-bold mb-2">Confirm</label>
                                 <input type="password" name="confirm_password" required class="w-full bg-transparent border-b border-primary/20 py-3 focus:border-primary transition-colors outline-none text-sm">
+                            </div>
+                        </div>
+                            <div>
+                                <label class="block text-[10px] uppercase tracking-widest font-bold mb-2">Profile_pic</label>
+                                <input type="file" name="profile_image" required class="w-full bg-transparent border-b border-primary/20 py-3 focus:border-primary transition-colors outline-none text-sm">
                             </div>
                         </div>
                         <div class="pt-6">

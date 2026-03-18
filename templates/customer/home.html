@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>LUXE | Luxury Home Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#dda71d", // Gold
+                        "background-light": "#f8f7f6", // Warm Cream base
+                        "background-dark": "#1A1A1A", // Matte Black
+                        "cream": "#F5F5DC",
+                        "matte-black": "#1A1A1A",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Dropdown Styling */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-matte-black dark:text-cream overflow-x-hidden">
+
+<header class="sticky top-0 z-50 w-full border-b border-cream/10 bg-background-dark/95 backdrop-blur-md px-6 lg:px-20 py-4">
+    <div class="max-w-[1440px] mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-12">
+            <a class="flex items-center gap-2" href="#">
+                <span class="text-primary material-symbols-outlined text-3xl">storm</span>
+                <h1 class="font-serif text-2xl font-bold tracking-widest text-cream uppercase">LUXE</h1>
+            </a>
+            <nav class="hidden lg:flex items-center gap-8 text-[11px] font-semibold uppercase tracking-[0.2em]">
+                <a class="hover:text-primary transition-colors" href="#">Collections</a>
+                <a class="hover:text-primary transition-colors" href="#">Ready-to-Wear</a>
+                <a class="hover:text-primary transition-colors" href="#">Bespoke</a>
+                <a class="hover:text-primary transition-colors" href="#">The Journal</a>
+            </nav>
+        </div>
+
+        <div class="flex items-center gap-6">
+            <div class="hidden md:flex items-center bg-cream/5 border border-cream/10 rounded-full px-4 py-1.5">
+                <span class="material-symbols-outlined text-lg text-cream/60">search</span>
+                <input class="bg-transparent border-none focus:ring-0 text-[10px] tracking-widest w-32 placeholder:text-cream/40 uppercase" placeholder="SEARCH" type="text"/>
+            </div>
+            
+            <div class="dropdown relative group">
+                <button class="hidden sm:flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.2em] text-cream hover:text-primary transition-colors">
+                    Login <span class="material-symbols-outlined text-sm">expand_more</span>
+                </button>
+                <div class="dropdown-menu absolute right-0 hidden pt-4 w-40">
+                    <div class="bg-background-dark border border-cream/10 rounded-sm shadow-xl overflow-hidden">
+                        <a href="{% url 'login' %}?role=customer" class="block px-4 py-3 text-[9px] font-bold uppercase tracking-widest text-cream hover:bg-primary hover:text-matte-black transition-colors border-b border-cream/5">
+                            Customer Login
+                        </a>
+                        <a href="{% url 'login' %}?role=seller" class="block px-4 py-3 text-[9px] font-bold uppercase tracking-widest text-cream hover:bg-primary hover:text-matte-black transition-colors">
+                            Seller Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <button class="hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">person</span>
+            </button>
+            <button class="relative hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-matte-black">0</span>
+            </button>
+            <button class="lg:hidden">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main class="layout-container flex flex-col">
+    <section class="relative h-[90vh] w-full overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: linear-gradient(to right, rgba(26,26,26,0.8) 0%, rgba(26,26,26,0) 50%), url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80');"></div>
+        <div class="relative z-10 h-full max-w-[1440px] mx-auto flex flex-col justify-center px-6 lg:px-20">
+            <span class="text-primary font-semibold tracking-[0.4em] uppercase text-xs mb-4">Summer / Spring 2024</span>
+            <h2 class="font-serif text-5xl md:text-8xl text-cream leading-tight mb-8">
+                The Art of <br/><i class="font-normal italic">Refinement</i>
+            </h2>
+            <p class="text-cream/70 max-w-md text-sm md:text-base font-light leading-relaxed mb-10">
+                Experience the pinnacle of minimalist luxury. Our latest collection focuses on architectural silhouettes and the world's finest natural textiles.
+            </p>
+            <div class="flex gap-4">
+                <button class="bg-primary text-matte-black px-10 py-4 font-bold text-xs uppercase tracking-widest hover:bg-white transition-all duration-300 rounded">
+                    Shop Collection
+                </button>
+                <button class="border border-cream/30 text-cream px-10 py-4 font-bold text-xs uppercase tracking-widest hover:bg-cream hover:text-matte-black transition-all duration-300 rounded">
+                    Discovery
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-6 lg:px-20 max-w-[1440px] mx-auto w-full">
+        <div class="flex justify-between items-end mb-16">
+            <div>
+                <h3 class="font-serif text-3xl md:text-4xl italic mb-2">Curated Collections</h3>
+                <p class="text-cream/50 text-xs uppercase tracking-widest">Handcrafted essentials for the modern wardrobe</p>
+            </div>
+            <a class="text-xs font-bold uppercase tracking-widest border-b border-primary text-primary pb-1" href="#">View All</a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-cream/10">
+            <div class="group relative aspect-[3/4] overflow-hidden border-r border-cream/10">
+                <img class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80"/>
+                <div class="absolute inset-0 bg-matte-black/20 group-hover:bg-matte-black/40 transition-all"></div>
+                <div class="absolute bottom-10 left-10">
+                    <h4 class="font-serif text-2xl text-cream mb-2">Leather Goods</h4>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-opacity">Explore Category</span>
+                </div>
+            </div>
+            <div class="group relative aspect-[3/4] overflow-hidden border-r border-cream/10">
+                <img class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80"/>
+                <div class="absolute inset-0 bg-matte-black/20 group-hover:bg-matte-black/40 transition-all"></div>
+                <div class="absolute bottom-10 left-10">
+                    <h4 class="font-serif text-2xl text-cream mb-2">Fine Jewelry</h4>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-opacity">Explore Category</span>
+                </div>
+            </div>
+            <div class="group relative aspect-[3/4] overflow-hidden">
+                <img class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://images.unsplash.com/photo-1539109132382-381bb3f1c2b3?auto=format&fit=crop&q=80"/>
+                <div class="absolute inset-0 bg-matte-black/20 group-hover:bg-matte-black/40 transition-all"></div>
+                <div class="absolute bottom-10 left-10">
+                    <h4 class="font-serif text-2xl text-cream mb-2">Ready-to-Wear</h4>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-opacity">Explore Category</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-cream/[0.02] py-24 border-y border-cream/5">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-20">
+            <div class="flex items-center justify-between mb-12">
+                <h3 class="font-serif text-3xl md:text-4xl">New Arrivals</h3>
+                <div class="flex gap-4">
+                    <button class="size-10 border border-cream/20 flex items-center justify-center hover:bg-primary hover:border-primary transition-all text-cream hover:text-matte-black">
+                        <span class="material-symbols-outlined">chevron_left</span>
+                    </button>
+                    <button class="size-10 border border-cream/20 flex items-center justify-center hover:bg-primary hover:border-primary transition-all text-cream hover:text-matte-black">
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                </div>
+            </div>
+            <div class="flex gap-8 overflow-x-auto hide-scrollbar pb-10">
+                <div class="min-w-[300px] group cursor-pointer">
+                    <div class="aspect-[4/5] overflow-hidden mb-4 bg-cream/5">
+                        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1598033129183-c4f50c7176c8?auto=format&fit=crop&q=80"/>
+                    </div>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-cream/40 mb-1">Tailored</p>
+                    <h5 class="text-sm font-semibold tracking-wide group-hover:text-primary transition-colors">Architectural Linen Shirt</h5>
+                    <p class="text-primary font-bold mt-2">$420.00</p>
+                </div>
+                <div class="min-w-[300px] group cursor-pointer">
+                    <div class="aspect-[4/5] overflow-hidden mb-4 bg-cream/5">
+                        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&q=80"/>
+                    </div>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-cream/40 mb-1">Outerwear</p>
+                    <h5 class="text-sm font-semibold tracking-wide group-hover:text-primary transition-colors">Structured Wool Blazer</h5>
+                    <p class="text-primary font-bold mt-2">$1,250.00</p>
+                </div>
+                <div class="min-w-[300px] group cursor-pointer">
+                    <div class="aspect-[4/5] overflow-hidden mb-4 bg-cream/5">
+                        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&q=80"/>
+                    </div>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-cream/40 mb-1">Knitwear</p>
+                    <h5 class="text-sm font-semibold tracking-wide group-hover:text-primary transition-colors">Oversized Cashmere Polo</h5>
+                    <p class="text-primary font-bold mt-2">$890.00</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 px-6 text-center max-w-3xl mx-auto">
+        <span class="text-primary material-symbols-outlined text-4xl mb-6">workspace_premium</span>
+        <h2 class="font-serif text-4xl md:text-5xl italic mb-8">Crafted for the Eternal</h2>
+        <p class="font-display text-lg font-light leading-relaxed text-cream/70 mb-10">
+            Luxe is built on the philosophy that true luxury is found in the unspoken details. From the weight of our buttons to the invisible seams of our silks, we create pieces that transcend seasons and trends.
+        </p>
+        <a class="text-xs font-bold uppercase tracking-[0.3em] border-b border-cream/30 pb-2 hover:border-primary transition-colors inline-block" href="#">Learn About Our Heritage</a>
+    </section>
+
+    <section class="border-t border-cream/10 py-20 bg-matte-black">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h3 class="font-serif text-3xl mb-4 text-cream">Join the Inner Circle</h3>
+                <p class="text-cream/50 text-sm font-light">Be the first to access new collections and exclusive editorial content.</p>
+            </div>
+            <div class="flex gap-4">
+                <input class="flex-1 bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-xs uppercase tracking-widest px-0 py-4" placeholder="YOUR EMAIL ADDRESS" type="email"/>
+                <button class="bg-primary text-matte-black px-8 py-4 font-bold text-[10px] uppercase tracking-widest hover:bg-cream transition-colors">Subscribe</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="bg-matte-black border-t border-cream/5 pt-20 pb-10">
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-20">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-20">
+            <div class="col-span-2">
+                <div class="flex items-center gap-2 mb-6">
+                    <span class="text-primary material-symbols-outlined text-3xl">storm</span>
+                    <h1 class="font-serif text-2xl font-bold tracking-widest text-cream uppercase">LUXE</h1>
+                </div>
+                <p class="text-cream/40 text-xs font-light leading-relaxed max-w-xs mb-8">
+                    The pinnacle of minimalist high-fashion and artisanal craftsmanship since 1994.
+                </p>
+                <div class="flex gap-4">
+                    <a class="text-cream/40 hover:text-primary" href="#"><span class="material-symbols-outlined">share_reviews</span></a>
+                    <a class="text-cream/40 hover:text-primary" href="#"><span class="material-symbols-outlined">public</span></a>
+                    <a class="text-cream/40 hover:text-primary" href="#"><span class="material-symbols-outlined">play_circle</span></a>
+                </div>
+            </div>
+            <div>
+                <h5 class="text-[10px] font-bold uppercase tracking-[0.2em] text-cream mb-6">Client Care</h5>
+                <ul class="text-cream/40 text-[11px] font-medium space-y-4 uppercase tracking-widest">
+                    <li><a class="hover:text-primary transition-colors" href="#">Shipping</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Returns</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Warranty</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="text-[10px] font-bold uppercase tracking-[0.2em] text-cream mb-6">Explore</h5>
+                <ul class="text-cream/40 text-[11px] font-medium space-y-4 uppercase tracking-widest">
+                    <li><a class="hover:text-primary transition-colors" href="#">Boutiques</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Our Story</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Press</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="text-[10px] font-bold uppercase tracking-[0.2em] text-cream mb-6">Legal</h5>
+                <ul class="text-cream/40 text-[11px] font-medium space-y-4 uppercase tracking-widest">
+                    <li><a class="hover:text-primary transition-colors" href="#">Privacy</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Cookies</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Terms</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Accessibility</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="flex flex-col md:flex-row justify-between items-center border-t border-cream/5 pt-10 text-[9px] font-bold uppercase tracking-[0.3em] text-cream/20">
+            <p>© 2024 LUXE ATELIER. ALL RIGHTS RESERVED.</p>
+            <div class="flex gap-6 mt-4 md:mt-0">
+                <span>Paris</span>
+                <span>New York</span>
+                <span>Tokyo</span>
+                <span>London</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

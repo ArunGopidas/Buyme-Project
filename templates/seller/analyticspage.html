@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Analytics | BuyMe Seller</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#F5F5DC", /* Cream */
+                        "cream-hover": "#FFFDD0",
+                        "background-dark": "#121212",
+                        "card-dark": "#1E1E1E",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Public Sans', sans-serif; background-color: #121212; }
+        .black-cream-gradient { background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%); }
+        .chart-container { position: relative; height: 300px; width: 100%; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #121212; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+    </style>
+</head>
+<body class="font-display text-slate-100">
+
+<header class="sticky top-0 z-50 bg-black text-white px-4 lg:px-10 py-3 shadow-2xl border-b border-white/10">
+    <div class="max-w-[1440px] mx-auto flex items-center justify-between gap-4">
+        <div class="flex items-center gap-8">
+            <h2 class="text-xl font-extrabold tracking-tight">BuyMe <span class="text-primary/90 font-medium text-lg">Seller</span></h2>
+            <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-400">
+                <a class="text-primary border-b-2 border-primary pb-1" href="{% url 'seller_dashboard' %}">Dashboard</a>
+                <a class="hover:text-primary transition-colors pb-1" href="{% url 'orderpage' %}">Orders</a>
+                <a class="hover:text-primary transition-colors pb-1" href="{% url 'inventorypage' %}">Inventory</a>
+                <a class="hover:text-primary transition-colors pb-1" href="{% url 'analyticspage' %}">Analytics</a>
+            </nav>
+        </div>
+        <div class="w-10 h-10 rounded-full border-2 border-primary/50 overflow-hidden bg-card-dark">
+            <img alt="Seller" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"/>
+        </div>
+    </div>
+</header>
+
+<main class="max-w-[1440px] mx-auto p-4 lg:p-8 black-cream-gradient min-h-screen">
+    
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-3xl font-black text-white tracking-tight">Business Analytics</h1>
+            <p class="text-slate-400 mt-1">Real-time performance metrics and growth trends.</p>
+        </div>
+        <div class="flex bg-card-dark p-1 rounded-xl border border-white/10">
+            <button class="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white transition-all">7D</button>
+            <button class="px-4 py-2 text-xs font-bold bg-primary text-black rounded-lg shadow-md">30D</button>
+            <button class="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white transition-all">6M</button>
+            <button class="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white transition-all">1Y</button>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-card-dark p-6 rounded-2xl border border-white/5 relative overflow-hidden group">
+            <div class="absolute right-[-10px] top-[-10px] opacity-10 group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-8xl text-primary">trending_up</span>
+            </div>
+            <p class="text-xs font-bold text-slate-500 uppercase">Avg. Order Value</p>
+            <h3 class="text-2xl font-black text-white mt-2">$84.20</h3>
+            <p class="text-[10px] text-primary font-bold mt-1">↑ 4.2% vs last month</p>
+        </div>
+        <div class="bg-card-dark p-6 rounded-2xl border border-white/5">
+            <p class="text-xs font-bold text-slate-500 uppercase">Customer Retention</p>
+            <h3 class="text-2xl font-black text-white mt-2">24.8%</h3>
+            <p class="text-[10px] text-slate-500 font-bold mt-1">Steady growth</p>
+        </div>
+        <div class="bg-card-dark p-6 rounded-2xl border border-white/5">
+            <p class="text-xs font-bold text-slate-500 uppercase">Return Rate</p>
+            <h3 class="text-2xl font-black text-rose-400 mt-2">1.2%</h3>
+            <p class="text-[10px] text-rose-900 font-bold mt-1">↓ 0.5% decrease</p>
+        </div>
+        <div class="bg-card-dark p-6 rounded-2xl border border-white/5">
+            <p class="text-xs font-bold text-slate-500 uppercase">Traffic Source</p>
+            <h3 class="text-2xl font-black text-white mt-2">Direct</h3>
+            <p class="text-[10px] text-slate-500 font-bold mt-1">45% Organic search</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <div class="lg:col-span-2 bg-card-dark p-8 rounded-2xl border border-white/5">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-lg font-bold text-white">Revenue Growth</h2>
+                <span class="text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">Target: $60k</span>
+            </div>
+            <div class="h-64 flex items-end justify-between gap-2 px-2">
+                <div class="w-full bg-white/5 rounded-t-lg relative group" style="height: 40%;">
+                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-primary text-[10px] p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">$12k</div>
+                </div>
+                <div class="w-full bg-white/5 rounded-t-lg relative group" style="height: 65%;">
+                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-primary text-[10px] p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">$18k</div>
+                </div>
+                <div class="w-full bg-primary/80 rounded-t-lg relative group" style="height: 90%;">
+                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-primary text-[10px] p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">$24k</div>
+                </div>
+                <div class="w-full bg-white/5 rounded-t-lg relative group" style="height: 55%;"></div>
+                <div class="w-full bg-white/5 rounded-t-lg relative group" style="height: 75%;"></div>
+                <div class="w-full bg-white/5 rounded-t-lg relative group" style="height: 85%;"></div>
+                <div class="w-full bg-white/5 rounded-t-lg relative group" style="height: 45%;"></div>
+            </div>
+            <div class="flex justify-between mt-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest px-2">
+                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+            </div>
+        </div>
+
+        <div class="bg-card-dark p-8 rounded-2xl border border-white/5">
+            <h2 class="text-lg font-bold text-white mb-6">Top Regions</h2>
+            <div class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-primary"></span>
+                        <span class="text-sm font-medium text-slate-300">United States</span>
+                    </div>
+                    <span class="text-sm font-black text-white">42%</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-slate-700"></span>
+                        <span class="text-sm font-medium text-slate-300">United Kingdom</span>
+                    </div>
+                    <span class="text-sm font-black text-white">18%</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-slate-700"></span>
+                        <span class="text-sm font-medium text-slate-300">Germany</span>
+                    </div>
+                    <span class="text-sm font-black text-white">12%</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-slate-700"></span>
+                        <span class="text-sm font-medium text-slate-300">Others</span>
+                    </div>
+                    <span class="text-sm font-black text-white">28%</span>
+                </div>
+            </div>
+            <div class="mt-8 flex h-2 w-full rounded-full overflow-hidden bg-white/5">
+                <div class="bg-primary w-[42%]"></div>
+                <div class="bg-slate-500 w-[18%]"></div>
+                <div class="bg-slate-700 w-[12%]"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-card-dark rounded-2xl border border-white/5 overflow-hidden">
+            <div class="p-6 border-b border-white/5">
+                <h2 class="text-lg font-bold text-white">Top Performing Products</h2>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors">
+                    <div class="flex items-center gap-4">
+                        <span class="text-xs font-black text-primary">01</span>
+                        <p class="text-sm font-bold text-slate-200">Ergo Office Chair</p>
+                    </div>
+                    <p class="text-sm font-black text-white">$14,200 <span class="text-[10px] text-slate-500 ml-2">Sales</span></p>
+                </div>
+                <div class="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors">
+                    <div class="flex items-center gap-4">
+                        <span class="text-xs font-black text-slate-500">02</span>
+                        <p class="text-sm font-bold text-slate-200">BuyMe Buds Pro</p>
+                    </div>
+                    <p class="text-sm font-black text-white">$9,840 <span class="text-[10px] text-slate-500 ml-2">Sales</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-black/40 rounded-2xl border border-primary/10 p-6">
+            <div class="flex items-center gap-2 mb-6">
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                </span>
+                <h2 class="text-lg font-bold text-white">Live Activity</h2>
+            </div>
+            <div class="space-y-6">
+                <div class="flex gap-4">
+                    <div class="w-px bg-primary/20 relative">
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary"></div>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-white">New order received</p>
+                        <p class="text-[10px] text-slate-500 mt-1">Order #BM-90215 • 2 mins ago</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="w-px bg-primary/20 relative">
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-slate-700"></div>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-400">Inventory alert: Low stock</p>
+                        <p class="text-[10px] text-slate-500 mt-1">Buds Pro (12 remaining) • 45 mins ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="mt-20 py-10 border-t border-white/5 text-center">
+    <p class="text-[10px] font-bold text-slate-600 uppercase tracking-[0.2em]">Generated for BuyMe Merchant Services • 2026</p>
+</footer>
+
+</body>
+</html>

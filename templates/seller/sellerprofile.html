@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Seller Profile</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-[#121212] text-white">
+
+<header class="bg-black border-b border-white/10 px-8 py-4 flex justify-between">
+
+<h2 class="text-xl font-bold">BuyMe Seller</h2>
+
+<nav class="flex gap-6 text-sm text-gray-400">
+
+<a href="{% url 'seller_dashboard' %}" class="hover:text-white">Dashboard</a>
+
+<a href="{% url 'orderpage' %}" class="hover:text-white">Orders</a>
+
+<a href="{% url 'inventorypage' %}" class="hover:text-white">Inventory</a>
+
+<a href="{% url 'sellerprofile' %}" class="text-white border-b">Profile</a>
+
+</nav>
+
+</header>
+
+
+
+<main class="max-w-[1100px] mx-auto mt-10 grid grid-cols-12 gap-10">
+
+
+
+<!-- LEFT PROFILE CARD -->
+
+<div class="col-span-4 bg-[#1e1e1e] rounded-xl p-6 text-center">
+
+{% if request.user.profile_image %}
+<img src="{{ request.user.profile_image.url }}"
+class="w-24 h-24 rounded-full mx-auto object-cover">
+{% else %}
+<img src="https://via.placeholder.com/100"
+class="w-24 h-24 rounded-full mx-auto">
+{% endif %}
+
+<h3 class="text-xl font-bold mt-4">
+{{ request.user.first_name }} {{ request.user.last_name }}
+</h3>
+
+<p class="text-gray-400">@{{ profile.shopname }}</p>
+
+<div class="flex justify-center gap-10 mt-6">
+
+<div>
+<p class="text-xs text-gray-400">Rating</p>
+<p class="text-lg font-bold">{{ profile.rating }}</p>
+</div>
+
+<div>
+<p class="text-xs text-gray-400">Status</p>
+
+{% if profile.is_verified %}
+<p class="text-green-400 font-bold">Verified</p>
+{% else %}
+<p class="text-yellow-400 font-bold">Pending</p>
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- RIGHT FORM -->
+
+<div class="col-span-8 bg-[#1e1e1e] rounded-xl">
+
+<div class="p-6 border-b border-white/10 flex justify-between">
+
+<h2 class="font-bold text-lg">Business Settings</h2>
+
+<p class="text-xs">Profile ID: #{{ profile.id }}</p>
+
+</div>
+
+
+
+<form method="POST" enctype="multipart/form-data" class="p-6 space-y-6">
+
+{% csrf_token %}
+
+
+
+<!-- PROFILE IMAGE -->
+
+<div>
+
+<label class="block text-xs font-bold mb-2">Profile Image</label>
+
+<input type="file" name="profile_image" class="w-full bg-black border border-gray-700 p-2 rounded">
+
+</div>
+
+
+
+<div class="grid grid-cols-2 gap-6">
+
+<div>
+<label class="text-xs text-gray-400">Shop Name</label>
+
+<input type="text"
+name="shopname"
+value="{{ profile.shopname }}"
+class="w-full bg-black p-3 rounded">
+</div>
+
+
+<div>
+<label class="text-xs text-gray-400">Category</label>
+
+<input type="text"
+name="category"
+value="{{ profile.category }}"
+class="w-full bg-black p-3 rounded">
+</div>
+
+</div>
+
+
+
+<div>
+<label class="text-xs text-gray-400">Website</label>
+
+<input type="url"
+name="website"
+value="{{ profile.website }}"
+class="w-full bg-black p-3 rounded">
+</div>
+
+
+
+<div class="grid grid-cols-2 gap-6">
+
+<div>
+<label class="text-xs text-gray-400">GST</label>
+
+<input type="text"
+name="gst_number"
+value="{{ profile.gst_number }}"
+class="w-full bg-black p-3 rounded">
+</div>
+
+<div>
+<label class="text-xs text-gray-400">PAN</label>
+
+<input type="text"
+name="pan_number"
+value="{{ profile.pan_number }}"
+class="w-full bg-black p-3 rounded">
+</div>
+
+</div>
+
+
+
+<div class="grid grid-cols-2 gap-6">
+
+<div>
+<label class="text-xs text-gray-400">Account Number</label>
+
+<input type="text"
+name="bank_account_number"
+value="{{ profile.bank_account_number }}"
+class="w-full bg-black p-3 rounded">
+</div>
+
+<div>
+<label class="text-xs text-gray-400">IFSC</label>
+
+<input type="text"
+name="ifsc_code"
+value="{{ profile.ifsc_code }}"
+class="w-full bg-black p-3 rounded">
+</div>
+
+</div>
+
+
+
+<div>
+<label class="text-xs text-gray-400">Business Address</label>
+
+<textarea
+name="business_address"
+rows="3"
+class="w-full bg-black p-3 rounded">
+
+{{ profile.business_address }}
+
+</textarea>
+
+</div>
+
+
+
+<div class="flex justify-end">
+
+<button type="submit"
+class="bg-yellow-400 text-black px-6 py-2 rounded font-bold">
+
+Save Profile
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</main>
+
+</body>
+</html>

@@ -4,7 +4,7 @@ from core.models import User, SubCategory
 class SellerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="seller_profile")
     shopname = models.CharField(max_length=255)
-    shop_slug = models.SlugField(unique=True,blank=True)
+    shop_slug = models.SlugField(unique=True,blank=True,null=True)
     website = models.URLField(blank=True, null=True)
     category = models.CharField(max_length=200)
     gst_number = models.CharField(max_length=50,blank=True)
@@ -24,6 +24,9 @@ class Product(models.Model):
     description = models.TextField()
     brand = models.CharField(max_length=100)
     model_number = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='product_images/', null=True, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    stock = models.IntegerField(null=True, blank=True)
     is_cancellable = models.BooleanField(default=True)
     is_returnable = models.BooleanField(default=True)
     return_days = models.IntegerField(default=7)

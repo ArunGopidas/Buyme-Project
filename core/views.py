@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 def login_view(request):
     if request.method == "POST":
         email=request.POST.get("email")
@@ -13,16 +13,17 @@ def login_view(request):
         user=authenticate(request,username=email,password=password)
         if user is not None:
             login(request,user)
-            return redirect("seller_dashboard")
-        
+
+            if user.role == "SELLER":
+                return redirect("sellerprofile")
+            elif user.role == 'CUSTOMER':
+                return redirect("home")
+               
+
+
         return render(request,"login.html",{"error":"invalid email or password"})
     return render(request,"login.html")
 
-def seller_dashboard(request):
-    return render(request, "seller/dashboard.html")
-
-def customer_dashboard(request):
-    return render(request, "customer/dashboard.html")
-
-def admin_dashboard(request):
-    return render(request, "customadmin/dashboard.html")
+def logout_view(request):
+    logout(request)
+    return redirect("login")
