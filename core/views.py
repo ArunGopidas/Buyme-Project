@@ -13,17 +13,13 @@ def login_view(request):
         user=authenticate(request,username=email,password=password)
         if user is not None:
             login(request,user)
-
-            if user.role == "SELLER":
-                return redirect("sellerprofile")
-            elif user.role == 'CUSTOMER':
-                return redirect("home")
+            return redirect("home")
                
 
 
         return render(request,"login.html",{"error":"invalid email or password"})
-    return render(request,"login.html")
+    return render(request,"core/login.html")
 
 def logout_view(request):
     logout(request)
-    return redirect("login")
+    return redirect("/")
