@@ -4,13 +4,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('register/', views.seller_register, name='seller_register'),
+    path('register/', views.seller_register, name='register'),
     path('seller_dashboard/', views.seller_dashboard, name='seller_dashboard'),
-    path('sellerprofile/',views.seller_profile, name='sellerprofile'),
-    path('analyticspage/',views.analyticspage,name='analyticspage'),
-    path('inventorypage/',views.inventorypage,name='inventorypage'),
-    path('orderpage/',views.orderpage,name='orderpage'),
-    path('addproduct/',views.addproduct,name='addproduct'),
-    path("editproduct/<int:id>/",views.editproduct,name="editproduct"),
+    path('seller_profile/',views.seller_profile, name='seller_profile'),
+    path('analytics_page/',views.analyticspage,name='analytics_page'),
+    path('inventory_page/',views.inventorypage,name='inventory_page'),
+    path('order_page/',views.orderpage,name='order_page'),
+    path('add_product/',views.addproduct,name='add_product'),
+    path("edit_product/<int:id>/",views.edit_product,name="edit"),
+    path("delete_product/<int:id>/",views.delete_product,name='delete_product')
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

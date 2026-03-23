@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from core.models import *
 from seller.models import *
 from django.contrib.auth import get_user_model
+from django.contrib.auth import login
 User = get_user_model()
 
 
