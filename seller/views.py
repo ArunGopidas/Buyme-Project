@@ -1,11 +1,12 @@
 from django.shortcuts import render,redirect
 from core.models import User
 from django.contrib.auth.decorators import login_required
+
+from customer.models import Order
 from .models import SellerProfile
 from .models import Product,ProductVariant,ProductImage
 from core.models import SubCategory
 from django.utils.text import slugify
-
 
 
 def seller_register(request):
@@ -143,97 +144,69 @@ def inventorypage(request):
     return render(request, "seller/inventorypage.html", {"products": products})
 
 @login_required
-def editproduct(request,id):
-  
+def edit_product(request,id):
     if request.user.role != "SELLER":
-        return redirect("login")
+        return redirect('login')
 
-    seller = request.user.seller_profile
+    seller=request.user.seller_profile
 
-    if request.method == "POST":
+    product=Product.objects.get(id=id,seller=seller)
+    variant=product.variants.first()
 
-        name = request.POST.get("name")
-        description = request.POST.get("description")
-        brand = request.POST.get("brand")
-        model_number = request.POST.get("model_number")
+    if request.method =="POST":
+        #updating products
+        product.name = request.POST.get('name')
+        product.description=request.POST.get('description')
+        product.brand = request.POST.get('brand')
+        product.model_number = request.POST.get('model_number')
         subcategory_id = request.POST.get("subcategory")
+        product.subcategory = SubCategory.objects.get(id=subcategory_id)
+        sku = request.POST.get('sku')
+        price = request.POST.get('price')
+        stock  = request.POST.get('stock')
+        product.slug = slugify(product.name + "-" + sku)
+        product.save()
+        #updating variants
+        variant.sku_code= sku
+        variant.mrp= price
+        variant.selling_price= price
+        variant.cost_price= price
+        variant.stock_quantity = stock
+        variant.save()
 
-        sku = request.POST.get("sku")
-        price = request.POST.get("price")
-        stock = request.POST.get("stock")
-
-        image = request.POST.get("image_url")
-
-        subcategory = SubCategory.objects.get(id=subcategory_id)
-
-        slug = slugify(name + "-" + sku) 
-
-        product = Product.objects.create(
-            seller=seller,
-            subcategory=subcategory,
-            name=name,
-            slug=slug,
-            description=description,
-            brand=brand,
-            model_number=model_number,
+    image=request.FILES.get("image")
+    if image:
+        ProductImage.objects.create(
+            variant=variant,
+            image=image
         )
-
-        variant = ProductVariant.objects.create(
-            product=product,
-            sku_code=sku,
-            mrp=price,
-            selling_price=price,
-            cost_price=price,
-            stock_quantity=stock,
-            weight=1,
-            length=1,
-            width=1,
-            height=1,
-            tax_percentage=5
-        )
-
-
-        if image:
-            ProductImage.objects.create(
-                variant=variant,
-                image_url=image
-            )
-
-        return redirect("inventorypage")
-
-    subcategories = SubCategory.objects.all()
-    return render(request,"seller/editproduct.html",{"product":product,"variant":variant})
-
+        return redirect('inventorypage')
+    subcategories=SubCategory.objects.all()
+    data={
+        "product":product,
+        "variant":variant,
+        "subcategories":subcategories
+    }
+    return render(request,'seller/editproduct.html',data)
 @login_required
-def deleteproduct(request,id):
+def delete_product(request,id):
     if request.user.role != "SELLER":
         return redirect("login")
-    seller
-
-
-
-
+    else:
+        data=Product.objects.get(id=id)
+        data.delete()
 
 
 def customer_dashboard(request):
     return render(request, "customer/dashboard.html")
     
     
-
-
 def analyticspage(request):
     return render(request,"seller/analyticspage.html")
 
 
-
-
 def orderpage(request):
-    return render(request,"seller/orderpage.html")
-
-
-
-
-
-
-
-
+    if request.user.role != "SELLER":
+        return redirect("login")
+    order=Order.objects.all()
+    return render(request,"seller/orderpage.html",{'orders':order})

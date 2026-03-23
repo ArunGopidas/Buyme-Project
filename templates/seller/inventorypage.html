@@ -1,200 +1,164 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Inventory | BuyMe Seller</title>
-
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
-
-<script>
-tailwind.config = {
-darkMode: "class",
-theme: {
-extend: {
-colors: {
-"primary": "#F5F5DC",
-"cream-hover": "#FFFDD0",
-"background-dark": "#121212",
-"card-dark": "#1E1E1E",
-},
-fontFamily: {
-"display": ["Public Sans", "sans-serif"]
-},
-},
-},
-}
-</script>
-
-<style>
-body { font-family: 'Public Sans', sans-serif; background-color: #121212; }
-.black-cream-gradient { background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%); }
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Inventory | GlobalStore Seller</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+<body class="bg-gray-50 font-sans">
 
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-white border-r border-gray-200 hidden md:block">
+            <div class="p-6 border-b border-gray-100">
+                <h1 class="text-2xl font-bold text-green-600 tracking-tight">GlobalStore</h1>
+                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mt-1">Seller Dashboard</p>
+            </div>
+            <nav class="mt-6 px-4 space-y-2">
+                <a href="{% url 'seller_dashboard' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
+                    <i class="fas fa-chart-pie mr-3"></i> Dashboard
+                </a>
+                <a href="{% url 'inventorypage' %}" class="flex items-center px-4 py-3 text-sm font-bold text-green-700 bg-green-50 rounded-xl">
+                    <i class="fas fa-boxes mr-3"></i> My Inventory
+                </a>
+                <a href="{% url 'addproduct' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
+                    <i class="fas fa-plus-circle mr-3"></i> Add Product
+                </a>
+                <a href="{% url 'orderpage' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
+                    <i class="fas fa-shopping-cart mr-3"></i> Orders
+                </a>
+                <div class="pt-6 mt-6 border-t border-gray-100">
+                    <a href="{% url 'seller_profile' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
+                        <i class="fas fa-store mr-3"></i> Shop Settings
+                    </a>
+                </div>
+            </nav>
+        </aside>
 
-<body class="font-display text-slate-100">
+        <main class="flex-1 overflow-y-auto">
+            <header class="bg-white border-b border-gray-200 px-8 py-5 flex items-center justify-between sticky top-0 z-10">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">Product Inventory</h2>
+                    <p class="text-sm text-gray-500">View and manage all your listed items</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="{% url 'addproduct' %}" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md transition-all flex items-center">
+                        <i class="fas fa-plus mr-2"></i> Add New
+                    </a>
+                </div>
+            </header>
 
+            <div class="p-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex items-center">
+                        <div class="h-12 w-12 rounded-xl bg-green-100 text-green-600 flex items-center justify-center mr-4">
+                            <i class="fas fa-check-circle fa-lg"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 font-bold uppercase">Active Products</p>
+                            <h3 class="text-xl font-bold text-gray-800">{{ products.count }}</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex items-center">
+                        <div class="h-12 w-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center mr-4">
+                            <i class="fas fa-clock fa-lg"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 font-bold uppercase">Awaiting Approval</p>
+                            <h3 class="text-xl font-bold text-gray-800">Pending</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex items-center">
+                        <div class="h-12 w-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center mr-4">
+                            <i class="fas fa-exclamation-triangle fa-lg"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 font-bold uppercase">Out of Stock</p>
+                            <h3 class="text-xl font-bold text-gray-800">0</h3>
+                        </div>
+                    </div>
+                </div>
 
-<header class="sticky top-0 z-50 bg-black text-white px-4 lg:px-10 py-3 shadow-2xl border-b border-white/10">
-<div class="max-w-[1440px] mx-auto flex items-center justify-between gap-4">
-
-<div class="flex items-center gap-8">
-<div class="flex items-center gap-2">
-<h2 class="text-xl font-extrabold tracking-tight">
-BuyMe <span class="text-primary/90 font-medium text-lg">Seller</span>
-</h2>
-</div>
-
-<nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-400">
-<a class="hover:text-primary transition-colors pb-1" href="{% url 'seller_dashboard' %}">Dashboard</a>
-<a class="hover:text-primary transition-colors pb-1" href="{% url 'orderpage' %}">Orders</a>
-<a class="text-primary border-b-2 border-primary pb-1" href="{% url 'inventorypage' %}">Inventory</a>
-<a class="hover:text-primary transition-colors pb-1" href="{% url 'analyticspage' %}">Analytics</a>
-</nav>
-</div>
-
-<div class="flex items-center gap-3">
-
-<div class="text-right hidden md:block">
-<p class="text-xs font-bold text-white">Alex Johnson</p>
-<p class="text-[10px] text-primary/60">Pro Merchant</p>
-</div>
-
-<div class="w-10 h-10 rounded-full border-2 border-primary/50 overflow-hidden bg-card-dark">
-<img class="w-full h-full object-cover"
-src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"/>
-</div>
-
-</div>
-</div>
-</header>
-
-
-
-<main class="max-w-[1440px] mx-auto p-4 lg:p-8 black-cream-gradient min-h-screen">
-
-<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-
-<div>
-<h1 class="text-3xl font-black text-white tracking-tight">
-Product Inventory
-</h1>
-<p class="text-slate-400 mt-1">
-Manage your stock levels and product details.
-</p>
-</div>
-
-<a href="{% url 'addproduct' %}"
-class="flex items-center gap-2 px-6 py-2.5 bg-primary text-black font-bold rounded-xl hover:bg-cream-hover transition-all">
-
-<span class="material-symbols-outlined">add</span>
-Add New Product
-
-</a>
-
-</div>
-
-
-
-<div class="bg-card-dark rounded-xl border border-white/5 shadow-xl overflow-hidden">
-
-<div class="overflow-x-auto">
-
-<table class="w-full text-left">
-
-<thead>
-<tr class="bg-black/40 border-b border-white/5">
-
-<th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase">Product</th>
-<th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase">SKU</th>
-<th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase">Price</th>
-<th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase">Stock</th>
-<th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase">Status</th>
-<th class="px-8 py-4 text-xs font-bold text-slate-500 uppercase text-right">Actions</th>
-
-</tr>
-</thead>
-
-
-
-<tbody class="divide-y divide-white/5">
-
-{% for product in products %}
-
-<tr class="hover:bg-white/5 transition-colors">
-
-<td class="px-8 py-5 flex items-center gap-4">
-
-<div class="w-12 h-12 bg-black rounded-lg border border-white/10 overflow-hidden">
-
-{% if product.image %}
-<img src="{{product.image.url}}" class="w-full h-full object-cover">
-{% else %}
-<span class="material-symbols-outlined text-primary flex items-center justify-center h-full">inventory</span>
-{% endif %}
-
-</div>
-
-<span class="font-bold text-white">
-{{product.name}}
-</span>
-
-</td>
-
-
-<td class="px-8 py-5 text-sm text-slate-300">
-{{product.variants.first.sku_code}}
-</td>
-
-
-<td class="px-8 py-5 text-sm font-bold text-white">
-${{product.variants.first.selling_price}}
-</td>
-
-
-<td class="px-8 py-5 text-sm font-bold text-rose-400">
-{{product.variants.first.stock_quantity}}
-</td>
-
-
-<td class="px-8 py-5">
-
-{% if product.stock < 10 %}
-<span class="px-3 py-1 bg-rose-950/50 text-rose-200 rounded-full text-[10px] font-bold uppercase">
-Low Stock
-</span>
-{% else %}
-<span class="px-3 py-1 bg-green-900/50 text-green-200 rounded-full text-[10px] font-bold uppercase">
-In Stock
-</span>
-{% endif %}
-
-</td>
-
-
-<td class="px-8 py-5 text-right">
-    <a href="{% url 'editproduct' product.id %}" class="text-slate-400 hover:text-primary transition-colors">
-        <span class="material-symbols-outlined">edit</span>
-    </a>
-</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-
-</div>
-</div>
-
-</main>
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b border-gray-100">
+                            <tr>
+                                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Product Info</th>
+                                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Category</th>
+                                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Approval Status</th>
+                                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Price/Stock</th>
+                                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm">
+                            {% for product in products %}
+                            <tr class="hover:bg-gray-50 transition-colors group">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <div class="h-12 w-12 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden flex-shrink-0">
+                                            {% if product.variants.first.images.first %}
+                                                <img src="{{ product.variants.first.images.first.image.url }}" class="h-full w-full object-cover">
+                                            {% else %}
+                                                <div class="h-full w-full flex items-center justify-center text-gray-300">
+                                                    <i class="fas fa-image"></i>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="font-bold text-gray-900 leading-none mb-1">{{ product.name }}</p>
+                                            <p class="text-xs text-gray-400">SKU: {{ product.variants.first.sku_code }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-600 font-medium">
+                                    {{ product.subcategory.name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {% if product.is_approved %}
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                                            <span class="h-1.5 w-1.5 rounded-full bg-green-500 mr-2"></span> Active
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-600">
+                                            <i class="fas fa-hourglass-half mr-2 text-[10px]"></i> Pending Approval
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="font-bold text-gray-800">₹{{ product.variants.first.selling_price }}</div>
+                                    <div class="text-xs text-gray-400">{{ product.variants.first.stock_quantity }} units left</div>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex justify-end gap-2">
+                                        <a href="{% url 'edit_product' product.id %}" class="h-9 w-9 bg-white border border-gray-200 text-gray-500 hover:text-green-600 hover:bg-green-50 hover:border-green-100 rounded-lg flex items-center justify-center transition-all shadow-sm" title="Update">
+                                            <i class="fas fa-edit text-xs"></i>
+                                        </a>
+                                        <a href="{% url 'delete_product' product.id %}" onclick="return confirm('Delete this product?')" class="h-9 w-9 bg-white border border-gray-200 text-gray-500 hover:text-red-600 hover:bg-red-50 hover:border-red-100 rounded-lg flex items-center justify-center transition-all shadow-sm" title="Delete">
+                                            <i class="fas fa-trash-alt text-xs"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="px-6 py-20 text-center">
+                                    <div class="flex flex-col items-center">
+                                        <div class="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-200 mb-4">
+                                            <i class="fas fa-box-open fa-2x"></i>
+                                        </div>
+                                        <p class="text-gray-500 font-medium">No products found in your inventory</p>
+                                        <a href="{% url 'add_product' %}" class="text-green-600 hover:underline text-sm font-bold mt-2">Start adding products</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
 
 </body>
 </html>

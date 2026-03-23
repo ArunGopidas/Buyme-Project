@@ -78,14 +78,12 @@ WSGI_APPLICATION = 'Buymeproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+
+import os
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Buyme',
-        'USER': 'root',
-        'PASSWORD': 'minnu',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 

@@ -77,11 +77,13 @@
                         <div class="flex-grow border-t border-primary/10"></div>
                     </div>
 
-                    {% if error %}
-                    <div class="mb-6 p-4 bg-red-50 border-l-2 border-red-900 text-red-900 text-xs italic">
-                        {{ error }}
-                    </div>
-                    {% endif %}
+                    {% if messages %}
+    {% for message in messages %}
+        <div class="mb-6 p-4 bg-red-50 border-l-2 border-red-900 text-red-900 text-xs italic">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
 
                     <form method="POST" enctype="multipart/form-data" class="space-y-6">
                         {% csrf_token %}
