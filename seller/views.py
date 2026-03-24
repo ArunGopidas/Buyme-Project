@@ -71,7 +71,13 @@ def seller_profile(request):
 def seller_dashboard(request):
     if request.user.role != "SELLER":
         return redirect("login")
-    return render(request,"seller/seller_dashboard.html")
+    seller=request.user.seller_profile
+    products=Product.objects.filter(seller=seller)
+    recent_products=products.order_by("-created_at")
+    return render(request,"seller/seller_dashboard.html",{
+        "products":products,
+        "recent_products":recent_products
+    })
 
 
 @login_required
@@ -93,7 +99,7 @@ def addproduct(request):
         price = request.POST.get("price")
         stock = request.POST.get("stock")
 
-        image = request.POST.get("image")
+        image = request.FILES.get("image")
 
         subcategory = SubCategory.objects.get(id=subcategory_id)
 
@@ -107,6 +113,7 @@ def addproduct(request):
             description=description,
             brand=brand,
             model_number=model_number,
+            image=image
         )
 
         variant = ProductVariant.objects.create(
@@ -127,10 +134,10 @@ def addproduct(request):
         if image:
             ProductImage.objects.create(
                 variant=variant,
-                image_url=image
+                image=image
             )
 
-        return redirect("inventorypage")
+        return redirect("inventory_page")
 
     subcategories = SubCategory.objects.all()
 
@@ -140,8 +147,17 @@ def addproduct(request):
 @login_required
 def inventorypage(request):
     seller =request.user.seller_profile
-    products = Product.objects.filter(seller=seller).order_by("-created_at")
-    return render(request, "seller/inventorypage.html", {"products": products})
+    products = Product.objects.filter(seller=seller)
+    active_products=products.filter(approval_status="APPROVED").count()
+    pending_products=products.filter(approval_status="PENDING").count()
+    out_of_stock=products.filter(variants__stock_quantity=0).distinct().count()
+    context={
+        "products": products,
+        "active_products": active_products,
+        "pending_products": pending_products,
+        "out_of_stock": out_of_stock
+    }
+    return render(request, "seller/inventorypage.html",context)
 
 @login_required
 def edit_product(request,id):
@@ -161,6 +177,7 @@ def edit_product(request,id):
         product.model_number = request.POST.get('model_number')
         subcategory_id = request.POST.get("subcategory")
         product.subcategory = SubCategory.objects.get(id=subcategory_id)
+        product.image=request.FILES.get("image")
         sku = request.POST.get('sku')
         price = request.POST.get('price')
         stock  = request.POST.get('stock')
@@ -174,13 +191,13 @@ def edit_product(request,id):
         variant.stock_quantity = stock
         variant.save()
 
-    image=request.FILES.get("image")
-    if image:
+    new_image=request.FILES.get("image")
+    if new_image:
         ProductImage.objects.create(
             variant=variant,
-            image=image
+            image=new_image
         )
-        return redirect('inventorypage')
+        return redirect('inventory_page')
     subcategories=SubCategory.objects.all()
     data={
         "product":product,
@@ -188,6 +205,8 @@ def edit_product(request,id):
         "subcategories":subcategories
     }
     return render(request,'seller/editproduct.html',data)
+
+
 @login_required
 def delete_product(request,id):
     if request.user.role != "SELLER":
@@ -195,7 +214,7 @@ def delete_product(request,id):
     else:
         data=Product.objects.get(id=id)
         data.delete()
-
+    return redirect('inventory_page')
 
 def customer_dashboard(request):
     return render(request, "customer/dashboard.html")
@@ -210,3 +229,20 @@ def orderpage(request):
         return redirect("login")
     order=Order.objects.all()
     return render(request,"seller/orderpage.html",{'orders':order})
+
+
+
+def product_preview(request,id):
+    if request.user.role != 'SELLER':
+        return redirect('login')
+    seller=request.user.seller_profile
+    product=Product.objects.get(id=id,seller=seller)
+    variant=product.variants.first()
+    images=variant.images.all()
+    context={
+        "product":product,
+        "variant":variant,
+        "images":images
+    }
+    return render(request,"seller/product_preview.html",context)
+

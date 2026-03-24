@@ -6,7 +6,7 @@ def login_view(request):
         password=request.POST.get("password")
 
         if not email or not password:
-            return render(request,"login.html",{"error":"all fields are required"})
+            return render(request,"core/login.html",{"error":"all fields are required"})
 
         email=email.strip().lower()
 
@@ -14,7 +14,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
             if user.role=="SELLER":
-                return redirect("sellerprofile")
+                return redirect("seller_dashboard")
             elif user.role =="ADMIN":
                 return redirect('admin_dashboard')
             else:
