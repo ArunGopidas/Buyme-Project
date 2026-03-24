@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 
 from customer.models import Order
 from .models import SellerProfile
-from .models import Product,ProductVariant,ProductImage
+from .models import Product,ProductImage
 from core.models import SubCategory
 from django.utils.text import slugify
 
@@ -113,11 +113,7 @@ def addproduct(request):
             description=description,
             brand=brand,
             model_number=model_number,
-            image=image
-        )
-
-        variant = ProductVariant.objects.create(
-            product=product,
+            image=image,
             sku_code=sku,
             mrp=price,
             selling_price=price,
@@ -133,7 +129,7 @@ def addproduct(request):
 
         if image:
             ProductImage.objects.create(
-                variant=variant,
+                product=product,
                 image=image
             )
 
@@ -150,7 +146,7 @@ def inventorypage(request):
     products = Product.objects.filter(seller=seller)
     active_products=products.filter(approval_status="APPROVED").count()
     pending_products=products.filter(approval_status="PENDING").count()
-    out_of_stock=products.filter(variants__stock_quantity=0).distinct().count()
+    out_of_stock=products.filter(products__stock_quantity=0).distinct().count()
     context={
         "products": products,
         "active_products": active_products,
@@ -167,7 +163,6 @@ def edit_product(request,id):
     seller=request.user.seller_profile
 
     product=Product.objects.get(id=id,seller=seller)
-    variant=product.variants.first()
 
     if request.method =="POST":
         #updating products
@@ -178,30 +173,22 @@ def edit_product(request,id):
         subcategory_id = request.POST.get("subcategory")
         product.subcategory = SubCategory.objects.get(id=subcategory_id)
         product.image=request.FILES.get("image")
-        sku = request.POST.get('sku')
-        price = request.POST.get('price')
-        stock  = request.POST.get('stock')
-        product.slug = slugify(product.name + "-" + sku)
+        product.sku = request.POST.get('sku')
+        product.price = request.POST.get('price')
+        product.stock  = request.POST.get('stock')
+        product.slug = slugify(product.name + "-" + product.sku)
         product.save()
-        #updating variants
-        variant.sku_code= sku
-        variant.mrp= price
-        variant.selling_price= price
-        variant.cost_price= price
-        variant.stock_quantity = stock
-        variant.save()
 
     new_image=request.FILES.get("image")
     if new_image:
         ProductImage.objects.create(
-            variant=variant,
+            product=product,
             image=new_image
         )
         return redirect('inventory_page')
     subcategories=SubCategory.objects.all()
     data={
         "product":product,
-        "variant":variant,
         "subcategories":subcategories
     }
     return render(request,'seller/editproduct.html',data)
@@ -237,11 +224,9 @@ def product_preview(request,id):
         return redirect('login')
     seller=request.user.seller_profile
     product=Product.objects.get(id=id,seller=seller)
-    variant=product.variants.first()
-    images=variant.images.all()
+    images=product.images.all()
     context={
         "product":product,
-        "variant":variant,
         "images":images
     }
     return render(request,"seller/product_preview.html",context)
