@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Collections | BuyME</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#dda71d",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#1A1A1A",
+                        "cream": "#F5F5DC",
+                        "matte-black": "#1A1A1A",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-matte-black dark:text-cream">
+
+{% include 'customer/navbar.html' %}
+
+<main class="pt-32 pb-24 px-6 lg:px-20 max-w-[1440px] mx-auto">
+    <header class="mb-16">
+        <nav class="flex text-[10px] uppercase tracking-[0.2em] text-cream/40 mb-6">
+            <a href="/" class="hover:text-primary transition-colors">Home</a>
+            <span class="mx-2">/</span>
+            <span class="text-cream">All Collections</span>
+        </nav>
+        <h1 class="font-serif text-5xl md:text-6xl italic">The <span class="text-primary">Atelier</span> Series</h1>
+        <p class="text-cream/60 mt-4 max-w-xl font-light leading-relaxed">
+            Meticulously sourced materials meet contemporary silhouettes. Explore our curated selection of seasonal essentials.
+        </p>
+    </header>
+
+    <div class="flex flex-col md:flex-row justify-between items-center border-y border-cream/10 py-6 mb-12 gap-6">
+        <div class="flex gap-8 overflow-x-auto hide-scrollbar w-full md:w-auto">
+            <button class="text-[10px] font-bold uppercase tracking-widest text-primary border-b border-primary pb-1">All Pieces</button>
+            <button class="text-[10px] font-bold uppercase tracking-widest text-cream/50 hover:text-cream transition-colors">Outerwear</button>
+            <button class="text-[10px] font-bold uppercase tracking-widest text-cream/50 hover:text-cream transition-colors">Accessories</button>
+            <button class="text-[10px] font-bold uppercase tracking-widest text-cream/50 hover:text-cream transition-colors">Footwear</button>
+        </div>
+        <div class="flex items-center gap-4 w-full md:w-auto justify-end">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-cream/40">Sort By:</span>
+            <select class="bg-transparent border-none text-[10px] font-bold uppercase tracking-widest focus:ring-0 text-cream cursor-pointer">
+                <option class="bg-matte-black">Newest First</option>
+                <option class="bg-matte-black">Price: Low to High</option>
+                <option class="bg-matte-black">Price: High to Low</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
+        {% for x in products %}
+        <div class="group cursor-pointer">
+            <div class="relative aspect-[3/4] overflow-hidden bg-cream/5 mb-6">
+                <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                     src="{{ x.image_url|default:'https://images.unsplash.com/photo-1539109132382-381bb3f1c2b3?auto=format&fit=crop&q=80' }}" 
+                     alt="{{ x.product.name }}"/>
+                
+                <div class="absolute inset-0 bg-matte-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                    <button class="w-full bg-cream text-matte-black py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-primary transition-colors">
+                        Quick Add
+                    </button>
+                </div>
+                
+                {% if x.is_new %}
+                <span class="absolute top-4 left-4 bg-primary text-matte-black text-[9px] font-black uppercase px-2 py-1 tracking-tighter">New</span>
+                {% endif %}
+            </div>
+
+            <div class="space-y-2">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-cream/40 mb-1">BuyME Atelier</p>
+                        <h3 class="text-sm font-medium tracking-wide group-hover:text-primary transition-colors">{{ x.product.name }}</h3>
+                    </div>
+                    <p class="text-sm font-bold text-primary">{{ x.selling_price }}</p>
+                </div>
+                <p class="text-[11px] text-cream/50 font-light line-clamp-1 italic">{{ x.product.description }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="mt-24 flex justify-center items-center gap-8 border-t border-cream/10 pt-12">
+        <a href="#" class="material-symbols-outlined text-cream/30 hover:text-primary transition-colors">west</a>
+        <div class="flex gap-4">
+            <span class="text-xs font-bold text-primary">01</span>
+            <span class="text-xs font-bold text-cream/20">02</span>
+            <span class="text-xs font-bold text-cream/20">03</span>
+        </div>
+        <a href="#" class="material-symbols-outlined text-cream/30 hover:text-primary transition-colors">east</a>
+    </div>
+</main>
+
+{% include 'customer/footer.html' %}
+
+</body>
+</html>

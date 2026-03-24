@@ -10,10 +10,11 @@ User = get_user_model()
 
 # Create your views here.
 def home_view(request):
+    product=Product.objects.all().select_related("product").prefetch_related("images")
+    category=Category.objects.all()
     if request.user.is_authenticated:
-        user=request.user
-        return render(request,'customer/home.html',{'user':user})
-    return render(request,'customer/home.html')
+        return render(request,'customer/home.html',{"products":product,"categories":category})
+    return render(request,'customer/home.html',{"products":product,"categories":category})
 
 def customer_register(request):
     if request.method == "POST":
@@ -65,6 +66,40 @@ def customer_register(request):
     return render(request, "customer/customer_register.html")
 
 
+
+@login_required
+def customerprofile(request):
+    user=request.user
+    if user.role !="CUSTOMER":
+        return redirect("login")
+    return render(request,'customer/profile.html',{"user":user})
+
+def productlist(request):
+
+
+def singleproduct(request,id):
+    pass
+
+
+
+
+
+    
+
+
 @login_required
 def customer_dashboard(request):
     return render(request,"customer/dashboard.html")
+
+#-----------------------------------------------------------------------
+@login_required
+def customerorder(request):
+    return render(request,"customer/order.html")
+
+@login_required
+def customerwishlist(request):
+    return render(request,"customer/wishlist.html")
+
+@login_required
+def customersettings(request):
+    return render(request,"customer/settings.html")

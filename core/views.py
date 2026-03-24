@@ -15,11 +15,13 @@ def login_view(request):
             login(request, user)
             if user.role=="SELLER":
                 return redirect("sellerprofile")
+            elif user.role =="CUSTOMER":
+                return redirect('home')
             elif user.role =="ADMIN":
                 return redirect('admin_dashboard')
             else:
                 return redirect('home')
-        return render(request,"login.html",{"error":"invalid email or password"})
+        return render(request,"core/login.html",{"error":"invalid email or password"})
     return render(request,"core/login.html")
 
 def logout_view(request):

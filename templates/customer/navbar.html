@@ -3,7 +3,7 @@
         <div class="flex items-center gap-12">
             <a class="flex items-center gap-2" href="/">
                 <span class="text-primary material-symbols-outlined text-3xl">storm</span>
-                <h1 class="font-serif text-2xl font-bold tracking-widest text-cream uppercase">LUXE</h1>
+                <h1 class="font-serif text-2xl font-bold tracking-widest text-cream ">BuyME</h1>
             </a>
             <nav class="hidden lg:flex items-center gap-8 text-[11px] font-semibold uppercase tracking-[0.2em]">
                 <a class="hover:text-primary transition-colors" href="#">products</a>
@@ -22,12 +22,12 @@
                 <div class="relative group">
                     <button class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.2em] text-cream hover:text-primary transition-colors">
                         <span class="material-symbols-outlined">person</span>
-                        <span class="hidden sm:inline">{{ user.username }}</span>
+                        <span class="hidden sm:inline">{{ user.first_name}}</span>
                     </button>
                     
                     <div class="absolute right-0 hidden group-hover:block pt-4 w-40">
                         <div class="bg-background-dark border border-cream/10 rounded-sm shadow-xl overflow-hidden">
-                            <a href="#" class="block px-4 py-3 text-[9px] font-bold uppercase tracking-widest text-cream hover:bg-primary hover:text-matte-black transition-colors border-b border-cream/5">
+                            <a href="{% url 'customer_profile' %}" class="block px-4 py-3 text-[9px] font-bold uppercase tracking-widest text-cream hover:bg-primary hover:text-matte-black transition-colors border-b border-cream/5">
                                 My Profile
                             </a>
                             <a href="{% url 'logout' %}" class="block px-4 py-3 text-[9px] font-bold uppercase tracking-widest text-cream hover:bg-primary hover:text-matte-black transition-colors">
@@ -42,18 +42,19 @@
                     <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-matte-black">0</span>
                 </button>
             {% else %}
+                <a href="{% url 'login' %}" class="text-[10px] font-bold uppercase tracking-[0.2em] text-cream hover:text-primary transition-colors">Login</a>
                 <div class="relative group">
-                    <button class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.2em] text-cream hover:text-primary transition-colors">
-                        Login <span class="material-symbols-outlined text-sm">expand_more</span>
-                    </button>
+                    <a href="#" class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.2em] text-cream hover:text-primary transition-colors">
+                        Register <span class="material-symbols-outlined text-sm">expand_more</span>
+                    </a>
                     
                     <div class="absolute right-0 hidden group-hover:block pt-4 w-48">
                         <div class="bg-background-dark border border-cream/10 rounded-sm shadow-xl overflow-hidden">
-                            <a href="{% url 'login' %}?role=customer" class="block px-4 py-3 text-[9px] font-bold uppercase tracking-widest text-cream hover:bg-primary hover:text-matte-black transition-colors border-b border-cream/5">
-                                Customer Login
+                            <a href="{% url 'customer_register' %}" class="block px-4 py-3 text-[9px] font-bold uppercase tracking-widest text-cream hover:bg-primary hover:text-matte-black transition-colors border-b border-cream/5">
+                                Customer Register
                             </a>
-                            <a href="{% url 'seller_register' %}?role=seller" class="block px-4 py-3 text-[9px] font-bold uppercase tracking-widest text-cream hover:bg-primary hover:text-matte-black transition-colors">
-                                Become a Seller
+                            <a href="{% url 'register' %}?role=seller" class="block px-4 py-3 text-[9px] font-bold uppercase tracking-widest text-cream hover:bg-primary hover:text-matte-black transition-colors">
+                                Seller Register
                             </a>
                         </div>
                     </div>
