@@ -74,12 +74,11 @@ def customerprofile(request):
         return redirect("login")
     return render(request,'customer/profile.html',{"user":user})
 
-def productlist(request):
-
-
-def singleproduct(request,id):
-    pass
-
+# def productlist(request):
+#
+#
+# def singleproduct(request,id):
+#     pass
 
 
 
