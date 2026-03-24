@@ -10,6 +10,9 @@ User = get_user_model()
 
 # Create your views here.
 def home_view(request):
+    if request.user.is_authenticated:
+        user=request.user
+        return render(request,'customer/home.html',{'user':user})
     return render(request,'customer/home.html')
 
 def customer_register(request):
@@ -59,7 +62,6 @@ def customer_register(request):
         except Exception:
             messages.error(request, "Something went wrong")
             return redirect("customer_register")
-
     return render(request, "customer/customer_register.html")
 
 
