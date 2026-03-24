@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: {{ product.name }} | BuyMe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-white border-r border-gray-200 hidden md:block sticky top-0 h-screen">
+            <div class="p-6 border-b border-gray-100">
+                <h1 class="text-2xl font-bold text-green-600 tracking-tighter italic">BuyMe</h1>
+            </div>
+            <nav class="mt-6 px-4 space-y-2">
+                <a href="{% url 'seller_dashboard' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
+                    <i class="fas fa-chart-pie mr-3"></i> Dashboard
+                </a>
+                <a href="{% url 'inventory_page' %}" class="flex items-center px-4 py-3 text-sm font-bold text-green-700 bg-green-50 rounded-xl">
+                    <i class="fas fa-boxes mr-3"></i> My Inventory
+                </a>
+                <a href="{% url 'order_page' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
+                    <i class="fas fa-shopping-cart mr-3"></i> Orders
+                </a>
+            </nav>
+        </aside>
+
+        <main class="flex-1">
+            <header class="bg-white border-b border-gray-200 px-8 py-5 flex justify-between items-center sticky top-0 z-10">
+                <div class="flex items-center gap-4">
+                    <a href="{% url 'inventory_page' %}" class="text-gray-400 hover:text-green-600">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h2 class="text-xl font-bold text-gray-800">Product Details</h2>
+                </div>
+            </header>
+
+            <div class="p-8 max-w-5xl mx-auto">
+                <div class="bg-white rounded-[2rem] border border-gray-200 shadow-sm overflow-hidden flex flex-col lg:flex-row">
+
+                    <div class="lg:w-1/2 p-8 border-b lg:border-b-0 lg:border-r border-gray-100 space-y-4">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">Product Images</p>
+
+                        <div class="rounded-2xl bg-gray-50 overflow-hidden border border-gray-100">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" class="w-full object-cover">
+                            {% else %}
+                                <div class="py-20 text-center text-gray-300">
+                                    <i class="fas fa-image fa-3x"></i>
+                                    <p class="text-xs mt-2">No Image</p>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        {% if images %}
+                        <div class="grid grid-cols-2 gap-4 mt-6">
+<!--                            {% for img in images %}-->
+<!--                            <div class="rounded-xl bg-gray-50 overflow-hidden border border-gray-100">-->
+<!--                                <img src="{{ img.image.url }}" class="w-full h-32 object-cover">-->
+<!--                            </div>-->
+<!--                            {% endfor %}-->
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="lg:w-1/2 p-10 space-y-8">
+                        <div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest{% if product.approval_status == 'APPROVED' %} bg-green-50 text-green-600{% elif product.approval_status == 'PENDING'  %}bg-yellow-50 text-yellow-600{% else %}bg-red-50 text-red-600 {% endif %}">
+                                {{ product.approval_status }}
+                            </span>
+                            <h1 class="text-3xl font-bold text-gray-900 mt-4">{{ product.name }}</h1>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-8 border-y border-gray-100 py-8">
+                            <div>
+                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Price</p>
+                                <p class="text-3xl font-black text-gray-900">₹{{ variant.selling_price|default:"0" }}</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Stock</p>
+                                <p class="text-xl font-bold text-gray-800">{{ variant.stock_quantity|default:"0" }} Units</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Description</h4>
+                            <div class="text-gray-600 text-sm leading-relaxed bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                                {{ product.description|linebreaks|default:"No description provided." }}
+                            </div>
+                        </div>
+
+                        <div class="pt-4 grid grid-cols-2 gap-4">
+                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                <span class="text-[10px] font-bold text-gray-400 uppercase">SKU</span>
+                                <p class="text-sm font-bold text-gray-800">{{ variant.sku_code|default:"N/A" }}</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                <span class="text-[10px] font-bold text-gray-400 uppercase">Sub Category</span>
+                                <p class="text-sm font-bold text-gray-800">{{ product.subcategory.name }}</p>
+                            </div>
+                             <div class="flex gap-3">
+                                <a href="{% url 'edit' product.id %}" class="bg-white border border-gray-200 text-gray-600 px-5 py-2 rounded-xl text-sm font-bold hover:bg-gray-50 shadow-sm">
+                                    Edit
+                                </a>
+                              <a href="{% url 'delete_product' product.id %}" onclick="return confirm('Delete permanently?')" class="bg-red-50 text-red-600 px-5 py-2 rounded-xl text-sm font-bold hover:bg-red-100">
+                                    Delete
+                              </a>
+                </div>
+            </header>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

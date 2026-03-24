@@ -6,7 +6,7 @@ def login_view(request):
         password=request.POST.get("password")
 
         if not email or not password:
-            return render(request,"login.html",{"error":"all fields are required"})
+            return render(request,"core/login.html",{"error":"all fields are required"})
 
         email=email.strip().lower()
 

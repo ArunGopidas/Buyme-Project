@@ -26,9 +26,9 @@
             </div>
             <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-400">
                 <a class="text-primary border-b-2 border-primary pb-1" href="{% url 'seller_dashboard' %}">Dashboard</a>
-                <a class="hover:text-primary transition-colors pb-1" href="{% url 'orderpage' %}">Orders</a>
-                <a class="hover:text-primary transition-colors pb-1" href="{% url 'inventorypage' %}">Inventory</a>
-                <a class="hover:text-primary transition-colors pb-1" href="{% url 'analyticspage' %}">Analytics</a>
+                <a class="hover:text-primary transition-colors pb-1" href="{% url 'order_page' %}">Orders</a>
+                <a class="hover:text-primary transition-colors pb-1" href="{% url 'inventory_page' %}">Inventory</a>
+                <a class="hover:text-primary transition-colors pb-1" href="{% url 'analytics_page' %}">Analytics</a>
             </nav>
         </div>
 
@@ -54,7 +54,7 @@
                     <p class="text-[10px] text-primary/60">{{ profile.shopname|default:"Pro Merchant" }}</p>
                 </div>
                 <div class="w-10 h-10 rounded-full border-2 border-primary/50 overflow-hidden shadow-md hover:scale-105 transition-transform cursor-pointer bg-card-dark">
-                    <a href="{% url 'sellerprofile' %}">
+                    <a href="{% url 'seller_profile' %}">
                         {% if request.user.profile_image %}
                             <img alt="Seller profile" class="w-full h-full object-cover" src="{{ request.user.profile_image.url }}"/>
                         {% else %}

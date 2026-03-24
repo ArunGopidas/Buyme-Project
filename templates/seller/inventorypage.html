@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Inventory | GlobalStore Seller</title>
+    <title>Inventory | BuyMe</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -12,129 +12,100 @@
     <div class="flex min-h-screen">
         <aside class="w-64 bg-white border-r border-gray-200 hidden md:block">
             <div class="p-6 border-b border-gray-100">
-                <h1 class="text-2xl font-bold text-green-600 tracking-tight">GlobalStore</h1>
-                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mt-1">Seller Dashboard</p>
+                <h1 class="text-2xl font-bold text-green-600">BuyMe</h1>
             </div>
             <nav class="mt-6 px-4 space-y-2">
                 <a href="{% url 'seller_dashboard' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
                     <i class="fas fa-chart-pie mr-3"></i> Dashboard
                 </a>
-                <a href="{% url 'inventorypage' %}" class="flex items-center px-4 py-3 text-sm font-bold text-green-700 bg-green-50 rounded-xl">
+                <a href="{% url 'inventory_page' %}" class="flex items-center px-4 py-3 text-sm font-bold text-green-700 bg-green-50 rounded-xl">
                     <i class="fas fa-boxes mr-3"></i> My Inventory
                 </a>
-                <a href="{% url 'addproduct' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
-                    <i class="fas fa-plus-circle mr-3"></i> Add Product
-                </a>
-                <a href="{% url 'orderpage' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
+                <a href="{% url 'order_page' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
                     <i class="fas fa-shopping-cart mr-3"></i> Orders
                 </a>
-                <div class="pt-6 mt-6 border-t border-gray-100">
-                    <a href="{% url 'seller_profile' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
-                        <i class="fas fa-store mr-3"></i> Shop Settings
-                    </a>
-                </div>
             </nav>
         </aside>
 
         <main class="flex-1 overflow-y-auto">
-            <header class="bg-white border-b border-gray-200 px-8 py-5 flex items-center justify-between sticky top-0 z-10">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-800">Product Inventory</h2>
-                    <p class="text-sm text-gray-500">View and manage all your listed items</p>
-                </div>
-                <div class="flex items-center gap-4">
-                    <a href="{% url 'addproduct' %}" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md transition-all flex items-center">
-                        <i class="fas fa-plus mr-2"></i> Add New
-                    </a>
-                </div>
+            <header class="bg-white border-b border-gray-200 px-8 py-5 flex justify-between items-center sticky top-0 z-10">
+                <h2 class="text-2xl font-bold text-gray-800">Product Inventory</h2>
+                <a href="{% url 'add_product' %}" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg text-sm font-bold shadow-sm transition-all">
+                    + Add New
+                </a>
             </header>
 
             <div class="p-8">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex items-center">
-                        <div class="h-12 w-12 rounded-xl bg-green-100 text-green-600 flex items-center justify-center mr-4">
-                            <i class="fas fa-check-circle fa-lg"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-500 font-bold uppercase">Active Products</p>
-                            <h3 class="text-xl font-bold text-gray-800">{{ products.count }}</h3>
-                        </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Active Items</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ active_products }}</h3>
                     </div>
-                    <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex items-center">
-                        <div class="h-12 w-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center mr-4">
-                            <i class="fas fa-clock fa-lg"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-500 font-bold uppercase">Awaiting Approval</p>
-                            <h3 class="text-xl font-bold text-gray-800">Pending</h3>
-                        </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Pending Approval</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ pending_products }}</h3>
                     </div>
-                    <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex items-center">
-                        <div class="h-12 w-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center mr-4">
-                            <i class="fas fa-exclamation-triangle fa-lg"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-500 font-bold uppercase">Out of Stock</p>
-                            <h3 class="text-xl font-bold text-gray-800">0</h3>
-                        </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Out of Stock</p>
+                        <h3 class="text-2xl font-bold text-red-500 mt-1">{{ out_of_stock }}</h3>
                     </div>
                 </div>
 
                 <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-                    <table class="w-full text-left">
-                        <thead class="bg-gray-50 border-b border-gray-100">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-gray-50 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                             <tr>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Product Info</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Category</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Approval Status</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Price/Stock</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">Actions</th>
+                                <th class="px-6 py-4">Product Info</th>
+                                <th class="px-6 py-4">Status</th>
+                                <th class="px-6 py-4">Price & Stock</th>
+                                <th class="px-6 py-4 text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100 text-sm">
+                        <tbody class="divide-y divide-gray-100">
                             {% for product in products %}
-                            <tr class="hover:bg-gray-50 transition-colors group">
+                            <tr class="hover:bg-gray-50 transition-colors">
                                 <td class="px-6 py-4">
-                                    <div class="flex items-center">
-                                        <div class="h-12 w-12 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden flex-shrink-0">
-                                            {% if product.variants.first.images.first %}
-                                                <img src="{{ product.variants.first.images.first.image.url }}" class="h-full w-full object-cover">
-                                            {% else %}
-                                                <div class="h-full w-full flex items-center justify-center text-gray-300">
-                                                    <i class="fas fa-image"></i>
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                        <div class="ml-4">
-                                            <p class="font-bold text-gray-900 leading-none mb-1">{{ product.name }}</p>
-                                            <p class="text-xs text-gray-400">SKU: {{ product.variants.first.sku_code }}</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-gray-600 font-medium">
-                                    {{ product.subcategory.name }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {% if product.is_approved %}
-                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
-                                            <span class="h-1.5 w-1.5 rounded-full bg-green-500 mr-2"></span> Active
-                                        </span>
+                            <a href="{% url 'product_preview' product.id %}" class="flex items-center gap-4 group">
+                                <div class="h-12 w-12 rounded-lg bg-gray-100 overflow-hidden border group-hover:border-green-500 transition-all shadow-sm">
+                                    {% if product.image %}
+                                        <img src="{{ product.image.url }}" class="h-full w-full object-cover">
                                     {% else %}
-                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-600">
-                                            <i class="fas fa-hourglass-half mr-2 text-[10px]"></i> Pending Approval
-                                        </span>
+                                        <div class="h-full w-full flex items-center justify-center text-gray-300">
+                                        <i class="fas fa-image"></i>
+                                        </div>
                                     {% endif %}
+                                </div>
+
+        <div>
+            <p class="text-sm font-bold text-gray-800 group-hover:text-green-600 transition-colors">
+                {{ product.name }}
+            </p>
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tight">
+                {{ product.brand|default:"NO BRAND" }}
+            </p>
+        </div>
+    </a>
+</td>
+                                <td class="px-6 py-4">
+                                    <span class="px-3 py-1 rounded-full text-[10px] font-bold
+                                        {% if product.approval_status == 'APPROVED' %}bg-green-50 text-green-600{% elif product.approval_status == 'PENDING' %}bg-orange-50 text-orange-600{% else %}bg-red-50 text-red-600{% endif %}">
+                                        {{ product.approval_status }}
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="font-bold text-gray-800">₹{{ product.variants.first.selling_price }}</div>
-                                    <div class="text-xs text-gray-400">{{ product.variants.first.stock_quantity }} units left</div>
+                                    <div class="text-sm font-bold text-gray-800">
+                                        ₹{{ product.variants.first.selling_price|default:"0.00" }}
+                                    </div>
+                                    <div class="text-[10px] font-bold {% if product.variants.first.stock_quantity > 0 %}text-gray-400{% else %}text-red-500{% endif %}">
+                                        {{ product.variants.first.stock_quantity|default:"0" }} left
+                                    </div>
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex justify-end gap-2">
-                                        <a href="{% url 'edit_product' product.id %}" class="h-9 w-9 bg-white border border-gray-200 text-gray-500 hover:text-green-600 hover:bg-green-50 hover:border-green-100 rounded-lg flex items-center justify-center transition-all shadow-sm" title="Update">
+                                        <a href="{% url 'edit' product.id %}" class="p-2 text-gray-400 hover:text-green-600 transition-colors">
                                             <i class="fas fa-edit text-xs"></i>
                                         </a>
-                                        <a href="{% url 'delete_product' product.id %}" onclick="return confirm('Delete this product?')" class="h-9 w-9 bg-white border border-gray-200 text-gray-500 hover:text-red-600 hover:bg-red-50 hover:border-red-100 rounded-lg flex items-center justify-center transition-all shadow-sm" title="Delete">
+                                        <a href="{% url 'delete_product' product.id %}" onclick="return confirm('Delete this product?')" class="p-2 text-gray-400 hover:text-red-600 transition-colors">
                                             <i class="fas fa-trash-alt text-xs"></i>
                                         </a>
                                     </div>
@@ -142,14 +113,8 @@
                             </tr>
                             {% empty %}
                             <tr>
-                                <td colspan="5" class="px-6 py-20 text-center">
-                                    <div class="flex flex-col items-center">
-                                        <div class="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-200 mb-4">
-                                            <i class="fas fa-box-open fa-2x"></i>
-                                        </div>
-                                        <p class="text-gray-500 font-medium">No products found in your inventory</p>
-                                        <a href="{% url 'add_product' %}" class="text-green-600 hover:underline text-sm font-bold mt-2">Start adding products</a>
-                                    </div>
+                                <td colspan="4" class="px-6 py-12 text-center text-gray-400 text-sm font-medium">
+                                    No products found.
                                 </td>
                             </tr>
                             {% endfor %}

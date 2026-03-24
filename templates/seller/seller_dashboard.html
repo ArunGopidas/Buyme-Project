@@ -3,159 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seller Dashboard | GlobalStore</title>
+    <title>Seller Dashboard | BuyME</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 font-sans">
 
     <div class="flex min-h-screen">
-        <aside class="w-64 bg-white border-r border-gray-200 hidden md:block">
-            <div class="p-6">
-                <h1 class="text-2xl font-bold text-green-600">GlobalStore</h1>
-                <p class="text-xs text-gray-500 uppercase tracking-wider mt-1">Seller Central</p>
+        <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col sticky top-0 h-screen">
+            <div class="p-8">
+                <h1 class="text-3xl font-black text-green-600 italic tracking-tighter">BuyME</h1>
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-1">Partner Portal</p>
             </div>
-            <nav class="mt-4 px-4 space-y-1">
-                <a href="{% url 'seller_dashboard' %}" class="flex items-center px-4 py-3 text-sm font-medium text-green-700 bg-green-50 rounded-lg">
-                    <i class="fas fa-home mr-3"></i> Dashboard
+
+            <nav class="flex-1 px-4 space-y-2">
+                <a href="{% url 'seller_dashboard' %}" class="flex items-center px-4 py-3 text-sm font-bold text-green-700 bg-green-50 rounded-2xl">
+                    <i class="fas fa-home-alt mr-3"></i> Overview
                 </a>
-                <a href="{% url 'inventory_page' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-green-600 rounded-lg transition">
-                    <i class="fas fa-boxes mr-3"></i> Inventory
+                <a href="{% url 'inventory_page' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-2xl transition-all">
+                    <i class="fas fa-box-open mr-3"></i> Inventory
                 </a>
-                <a href="{% url 'add_product' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-green-600 rounded-lg transition">
-                    <i class="fas fa-plus-circle mr-3">+</i> Add Product
+                <a href="{% url 'order_page' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-2xl transition-all">
+                    <i class="fas fa-receipt mr-3"></i> Orders
                 </a>
-                <a href="{% url 'order_page' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-green-600 rounded-lg transition">
-                    <i class="fas fa-shopping-bag mr-3"></i> Orders
+                <a href="{% url 'analytics_page' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-2xl transition-all">
+                    <i class="fas fa-analytics mr-3"></i> Performance
                 </a>
-                <a href="{% url 'analytics_page' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-green-600 rounded-lg transition">
-                    <i class="fas fa-chart-line mr-3"></i> Analytics
-                </a>
-                <div class="pt-4 mt-4 border-t border-gray-100">
-                    <a href="{% url 'seller_profile' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-green-600 rounded-lg transition">
-                        <i class="fas fa-user-cog mr-3"></i> Shop Settings
-                    </a>
-                </div>
             </nav>
+
+            <div class="p-4 border-t border-gray-100">
+                <a href="{% url 'seller_profile' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-2xl transition-all">
+                    <i class="fas fa-cog mr-3"></i> Shop Settings
+                </a>
+            </div>
         </aside>
 
         <main class="flex-1">
-            <header class="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between">
-                <h2 class="text-xl font-semibold text-gray-800">Overview</h2>
-                <div class="flex items-center space-y-0 space-x-4">
+            <header class="bg-white/80 backdrop-blur-md border-b border-gray-200 px-8 py-4 flex items-center justify-between sticky top-0 z-20">
+                <div>
+                    <h2 class="text-xl font-bold text-gray-800">Dashboard</h2>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Real-time store metrics</p>
+                </div>
+
+                <div class="flex items-center gap-4">
                     <div class="text-right hidden sm:block">
-                        <p class="text-sm font-medium text-gray-900">{{ request.user.first_name }} {{ request.user.last_name }}</p>
-                        <p class="text-xs text-gray-500">{{ request.user.email }}</p>
+                        <p class="text-xs font-bold text-gray-900">{{ request.user.get_full_name|default:request.user.username }}</p>
+                        <p class="text-[10px] text-gray-400 font-medium">{{ request.user.email }}</p>
                     </div>
-                    <img src="{{ request.user.profile_image.url }}" alt="Profile" class="w-10 h-10 rounded-full border-2 border-green-500 object-cover">
+                    <div class="h-10 w-10 rounded-xl bg-green-100 border-2 border-white shadow-sm overflow-hidden">
+                        {% if request.user.profile_image %}
+                            <img src="{{ request.user.profile_image.url }}" class="h-full w-full object-cover">
+                        {% else %}
+                            <div class="h-full w-full flex items-center justify-center text-green-600 font-bold">
+                                {{ request.user.username|first|upper }}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </header>
 
             <div class="p-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                    <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="bg-green-100 p-3 rounded-lg text-green-600">
-                                <i class="fas fa-wallet fa-lg"></i>
-                            </div>
-                            <span class="text-green-500 text-sm font-semibold">+12%</span>
+                            <div class="bg-green-50 p-3 rounded-2xl text-green-600"><i class="fas fa-wallet"></i></div>
+                            <span class="text-[10px] font-black text-green-600 bg-green-50 px-2 py-1 rounded-lg">↑ 12%</span>
                         </div>
-                        <p class="text-sm text-gray-500">Total Revenue</p>
-                        <h3 class="text-2xl font-bold text-gray-800">₹0.00</h3>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total Earnings</p>
+                        <h3 class="text-2xl font-black text-gray-800 mt-1">₹{{ total_revenue|default:"0.00" }}</h3>
                     </div>
 
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                    <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="bg-blue-100 p-3 rounded-lg text-blue-600">
-                                <i class="fas fa-shopping-cart fa-lg"></i>
-                            </div>
-                            <span class="text-blue-500 text-sm font-semibold">New</span>
+                            <div class="bg-blue-50 p-3 rounded-2xl text-blue-600"><i class="fas fa-shopping-bag"></i></div>
                         </div>
-                        <p class="text-sm text-gray-500">Pending Orders</p>
-                        <h3 class="text-2xl font-bold text-gray-800">0</h3>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Active Orders</p>
+                        <h3 class="text-2xl font-black text-gray-800 mt-1">{{ pending_orders_count|default:"0" }}</h3>
                     </div>
 
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                    <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="bg-purple-100 p-3 rounded-lg text-purple-600">
-                                <i class="fas fa-archive fa-lg"></i>
-                            </div>
+                            <div class="bg-purple-50 p-3 rounded-2xl text-purple-600"><i class="fas fa-boxes"></i></div>
                         </div>
-                        <p class="text-sm text-gray-500">Total Products</p>
-                        <h3 class="text-2xl font-bold text-gray-800">{{ products.count|default:"0" }}</h3>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total Catalog</p>
+                        <h3 class="text-2xl font-black text-gray-800 mt-1">{{ products.count|default:"0" }}</h3>
                     </div>
 
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                    <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="bg-orange-100 p-3 rounded-lg text-orange-600">
-                                <i class="fas fa-exclamation-triangle fa-lg"></i>
-                            </div>
+                            <div class="bg-red-50 p-3 rounded-2xl text-red-600"><i class="fas fa-exclamation-triangle"></i></div>
                         </div>
-                        <p class="text-sm text-gray-500">Low Stock Alert</p>
-                        <h3 class="text-2xl font-bold text-gray-800">0</h3>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Low Stock</p>
+                        <h3 class="text-2xl font-black text-red-600 mt-1">{{ low_stock_count|default:"0" }}</h3>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-                    <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                            <h3 class="font-bold text-gray-800">Recent Orders</h3>
-                            <a href="{% url 'order_page' %}" class="text-sm text-green-600 font-medium hover:underline">View All</a>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left">
-                                <thead class="bg-gray-50 text-xs uppercase text-gray-500 font-semibold">
-                                    <tr>
-                                        <th class="px-6 py-4">Order ID</th>
-                                        <th class="px-6 py-4">Customer</th>
-                                        <th class="px-6 py-4">Status</th>
-                                        <th class="px-6 py-4">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-sm divide-y divide-gray-100">
-                                    <tr>
-                                        <td class="px-6 py-4 text-gray-400" colspan="4 text-center">No orders found.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="lg:col-span-2 space-y-8">
+                        <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
+                            <div class="p-6 border-b border-gray-50 flex justify-between items-center">
+                                <h3 class="font-bold text-gray-800">Recent Transactions</h3>
+                                <a href="{% url 'order_page' %}" class="text-[10px] font-bold text-green-600 uppercase hover:underline">Full Report</a>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left">
+                                    <thead class="bg-gray-50/50 text-[10px] uppercase text-gray-400 font-black tracking-widest">
+                                        <tr>
+                                            <th class="px-6 py-4">Order Info</th>
+                                            <th class="px-6 py-4">Customer</th>
+                                            <th class="px-6 py-4">Status</th>
+                                            <th class="px-6 py-4">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm divide-y divide-gray-50">
+                                        {% for order in recent_orders %}
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="4" class="px-6 py-12 text-center text-gray-400 italic text-xs">No recent orders found.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
                     <div class="space-y-6">
-                        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                            <h3 class="font-bold text-gray-800 mb-4">Quick Actions</h3>
-                            <div class="grid grid-cols-2 gap-3">
-                                <a href="{% url 'add_product' %}" class="flex flex-col items-center justify-center p-4 bg-green-50 rounded-lg text-green-700 hover:bg-green-100 transition border border-green-100">
-                                    <i class="fas fa-plus mb-2"></i>
-                                    <span class="text-xs font-semibold">Add Item</span>
-                                </a>
-                                <a href="{% url 'seller_profile' %}" class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-lg text-gray-700 hover:bg-gray-100 transition border border-gray-100">
-                                    <i class="fas fa-store mb-2"></i>
-                                    <span class="text-xs font-semibold">Edit Shop</span>
+                        <div class="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="font-bold text-gray-800">Recently Added</h3>
+                                <a href="{% url 'inventory_page' %}" class="h-8 w-8 flex items-center justify-center bg-gray-50 rounded-full text-gray-400 hover:text-green-600">
+                                    <i class="fas fa-arrow-right text-xs"></i>
                                 </a>
                             </div>
+
+                            <div class="space-y-4">
+                                {% for product in recent_products %}
+                                <a href="{% url 'product_preview' product.id %}" class="flex items-center p-3 rounded-2xl hover:bg-green-50/50 transition-all group">
+                                    <div class="h-12 w-12 rounded-xl bg-gray-50 overflow-hidden border border-gray-100 flex-shrink-0">
+                                        {% if product.image %}
+                                            <img src="{{ product.image.url }}" class="h-full w-full object-cover group-hover:scale-110 transition-transform">
+                                        {% else %}
+                                            <div class="h-full w-full flex items-center justify-center text-gray-300"><i class="fas fa-image"></i></div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="ml-4 overflow-hidden">
+                                        <p class="text-xs font-bold text-gray-800 truncate group-hover:text-green-700">{{ product.name }}</p>
+                                        <p class="text-[10px] font-bold text-gray-400">₹{{ product.variants.first.selling_price|default:product.price }}</p>
+                                    </div>
+                                </a>
+                                {% empty %}
+                                <p class="text-center text-[10px] text-gray-400 py-4 uppercase font-bold tracking-widest">Your catalog is empty</p>
+                                {% endfor %}
+                            </div>
+
+                            <a href="{% url 'add_product' %}" class="mt-6 w-full flex items-center justify-center gap-2 py-3 bg-green-600 text-white rounded-xl text-xs font-bold shadow-lg shadow-green-100 hover:bg-green-700 transition-all">
+                                <i class="fas fa-plus"></i> Add New Product
+                            </a>
                         </div>
 
-                        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                            <h3 class="font-bold text-gray-800 mb-4">Shop Information</h3>
-                            <div class="space-y-3">
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-500">Shop Name:</span>
-                                    <span class="font-medium text-gray-800">{{ request.user.seller_profile.shopname }}</span>
-                                </div>
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-500">Plan:</span>
-                                    <span class="px-2 py-0.5 bg-green-100 text-green-700 rounded text-xs">Standard</span>
-                                </div>
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-500">Joined:</span>
-                                    <span class="text-gray-800">{{ request.user.date_joined|date:"M Y" }}</span>
+                        <div class="bg-green-600 p-6 rounded-[2rem] text-white shadow-xl shadow-green-100 relative overflow-hidden">
+                            <div class="relative z-10">
+                                <p class="text-[10px] font-bold uppercase opacity-60 tracking-widest">Shop Status</p>
+                                <h4 class="text-lg font-bold mt-1">{{ request.user.seller_profile.shopname }}</h4>
+                                <div class="mt-4 flex items-center gap-2">
+                                    <span class="h-2 w-2 bg-green-300 rounded-full animate-pulse"></span>
+                                    <span class="text-[10px] font-bold uppercase tracking-widest">Active Member</span>
                                 </div>
                             </div>
+                            <i class="fas fa-store absolute -bottom-4 -right-4 text-7xl opacity-10"></i>
                         </div>
                     </div>
-
                 </div>
             </div>
         </main>
