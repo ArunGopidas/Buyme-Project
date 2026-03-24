@@ -7,6 +7,7 @@ __pycache__/
 db.sqlite3
 *.log
 local_settings.py
+**/migrations/
 
 # Environment variables
 .env
