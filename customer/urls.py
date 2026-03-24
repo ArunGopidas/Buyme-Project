@@ -11,6 +11,7 @@ urlpatterns = [
     path('customerorder/',views.customerorder,name="customer_order"),
     path('customerwishlist/',views.customerwishlist,name="customer_wishlist"),
     path('customersettings/',views.customersettings,name="customer_settings"),
+    path('productlist/',views.productlist,name="productlist"),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -10,7 +10,7 @@ User = get_user_model()
 
 # Create your views here.
 def home_view(request):
-    product=Product.objects.all().select_related("product").prefetch_related("images")
+    product=Product.objects.all().prefetch_related("images")
     category=Category.objects.all()
     if request.user.is_authenticated:
         return render(request,'customer/home.html',{"products":product,"categories":category})
@@ -75,6 +75,7 @@ def customerprofile(request):
     return render(request,'customer/profile.html',{"user":user})
 
 def productlist(request):
+    return render(request,"customer/productlist.html")
 
 
 def singleproduct(request,id):
