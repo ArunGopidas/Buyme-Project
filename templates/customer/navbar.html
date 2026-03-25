@@ -6,23 +6,23 @@
                 <h1 class="font-serif text-2xl font-bold tracking-widest text-cream ">BuyME</h1>
             </a>
             <nav class="hidden lg:flex items-center gap-8 text-[11px] font-semibold uppercase tracking-[0.2em]">
-                <a class="hover:text-primary transition-colors" href="{%  url 'productlist' %}">products</a>
-                <a class="hover:text-primary transition-colors" href="#">collection</a>
-                <a class="hover:text-primary transition-colors" href="#">category</a>
+                <a class="hover:text-primary transition-colors text-cream" href="{% url 'productlist' %}">products</a>
+                <a class="hover:text-primary transition-colors text-cream" href="{% url 'productcollection' %}">collection</a>
+                <a class="hover:text-primary transition-colors text-cream" href="{% url 'productcategory' %}">category</a>
             </nav>
         </div>
 
         <div class="flex items-center gap-6">
             <div class="hidden md:flex items-center bg-cream/5 border border-cream/10 rounded-full px-4 py-1.5">
                 <span class="material-symbols-outlined text-lg text-cream/60">search</span>
-                <input class="bg-transparent border-none focus:ring-0 text-[10px] tracking-widest w-32 placeholder:text-cream/40 uppercase" placeholder="SEARCH" type="text"/>
+                <input class="bg-transparent border-none focus:ring-0 text-[10px] tracking-widest w-32 placeholder:text-cream/40 uppercase text-cream" placeholder="SEARCH" type="text"/>
             </div>
 
             {% if user.is_authenticated %}
                 <div class="relative group">
                     <button class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.2em] text-cream hover:text-primary transition-colors">
                         <span class="material-symbols-outlined">person</span>
-                        <span class="hidden sm:inline">{{ user.first_name}}</span>
+                        <span class="hidden sm:inline">{{ user.first_name }}</span>
                     </button>
                     
                     <div class="absolute right-0 hidden group-hover:block pt-4 w-40">
@@ -37,12 +37,19 @@
                     </div>
                 </div>
 
-                <button class="relative hover:text-primary transition-colors">
-                    <span class="material-symbols-outlined">shopping_bag</span>
+                <a href="{% url 'wishlistview' %}" class="relative text-cream hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">favorite</span>
+                    <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-matte-black">0</span>
+                </a>
+
+                <a href="{% url 'cartview' %}"><button class="relative text-cream hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">shopping_cart</span></a>
                     <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-matte-black">0</span>
                 </button>
+
             {% else %}
                 <a href="{% url 'login' %}" class="text-[10px] font-bold uppercase tracking-[0.2em] text-cream hover:text-primary transition-colors">Login</a>
+                
                 <div class="relative group">
                     <a href="#" class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.2em] text-cream hover:text-primary transition-colors">
                         Register <span class="material-symbols-outlined text-sm">expand_more</span>

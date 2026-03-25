@@ -1,0 +1,43 @@
+{% load static %}
+
+<aside class="w-full lg:w-64 flex flex-col min-h-[60vh] border-r border-cream/5 pr-8">
+    <div class="space-y-8">
+        <div>
+            <h2 class="font-serif text-2xl italic mb-10 text-cream">My Account</h2>
+
+            <nav class="flex flex-col space-y-7">
+                <a href="{% url 'customer_profile' %}" 
+                   class="sidebar-link{% if request.resolver_match.url_name == 'customer_profile' %} active{% endif %} flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-cream/80 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-sm">person</span> Profile
+                </a>
+
+                <a href="{% url 'customer_order' %}" 
+                   class="sidebar-link{% if request.resolver_match.url_name == 'customer_order' %} active{% endif %} flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-cream/80 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-sm">shopping_bag</span> Orders
+                </a>
+
+                <a href="{% url 'wishlistview' %}" 
+                   class="sidebar-link{% if request.resolver_match.url_name == 'customer_wishlist' %} active{% endif %} flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-cream/80 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-sm">favorite</span> Wishlist
+                </a>
+
+                <a href="{% url 'cartview' %}" 
+                   class="sidebar-link{% if request.resolver_match.url_name == 'cart' %} active{% endif %} flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-cream/80 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-sm">shopping_cart</span> Cart
+                </a>
+
+                <a href="{% url 'customer_settings' %}" 
+                   class="sidebar-link{% if request.resolver_match.url_name == 'customer_settings' %} active{% endif %} flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-cream/80 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-sm">settings</span> Settings
+                </a>
+
+                <div class="h-[1px] w-8 bg-cream/10 my-2"></div>
+
+                <a href="{% url 'logout' %}" 
+                   class="flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-red-500/60 hover:text-red-500 transition-colors">
+                    <span class="material-symbols-outlined text-sm">logout</span> Logout
+                </a>
+            </nav>
+        </div>
+    </div>
+</aside>

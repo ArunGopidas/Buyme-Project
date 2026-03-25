@@ -12,6 +12,14 @@ urlpatterns = [
     path('customerwishlist/',views.customerwishlist,name="customer_wishlist"),
     path('customersettings/',views.customersettings,name="customer_settings"),
     path('productlist/',views.productlist,name="productlist"),
+    path('productcollection/',views.productcollection,name="productcollection"),
+    path('productcategory/',views.productcategory,name="productcategory"),
+    path('singleproduct/<int:id>/',views.singleproduct,name="singleproduct"),
+    path('addcart/<int:id>/',views.addcart,name="addcart"),
+    path('cartview/',views.cartview,name="cartview"),
+    path('wishlist/<int:id>/',views.wishlist,name="wishlist"),
+    path('wishlistview/',views.wishlistview,name="wishlistview"),
+    path('removewishlist/<int:id>/',views.removewishlist,name="removewishlist"),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

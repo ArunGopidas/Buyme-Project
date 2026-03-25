@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from core.models import *
 from seller.models import *
+from customer.models import *
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 User = get_user_model()
@@ -75,11 +76,78 @@ def customerprofile(request):
     return render(request,'customer/profile.html',{"user":user})
 
 def productlist(request):
-    return render(request,"customer/productlist.html")
+    product=Product.objects.all().prefetch_related("images")
+    return render(request,"customer/productlist.html",{"products":product})
+
+def productcollection(request):
+    return render(request,"customer/productcollection.html")
+
+def productcategory(request):
+    return render(request,"customer/productcategory.html")
 
 
 def singleproduct(request,id):
-    pass
+    product=Product.objects.get(id=id)
+    return render(request,"customer/singleproduct.html",{"product":product})
+@login_required
+def addcart(request,id):
+    user=request.user
+    product=Product.objects.get(id=id)
+    cart,created=Cart.objects.get_or_create(user=user)
+    
+    try:
+       cartitem=CartItem.objects.get(cart=cart,product=product)
+       cartitem.quantity+=1
+       cartitem.save()
+    except:
+        cartitem=CartItem.objects.create(
+            cart=cart,
+            product=product,
+            quantity=1,
+            price_at_time=product.selling_price
+        )
+    return redirect("cartview")
+@login_required
+def cartview(request):
+    user=request.user
+    cartitem=CartItem.objects.filter(cart__user=user)
+    return render(request,"customer/cart.html",{"cartitems":cartitem})
+
+@login_required
+def wishlist(request,id):
+    user=request.user
+    product=Product.objects.get(id=id)
+    wishlist,created=Wishlist.objects.get_or_create(user=user)
+    wishlistitem= WishlistItem.objects.filter(
+        wishlist=wishlist,
+        product=product
+        ).first()
+    if not wishlistitem:
+        WishlistItem.objects.create(
+            wishlist=wishlist,
+            product=product
+        )
+
+    return redirect("wishlistview")
+@login_required   
+def wishlistview(request):
+    user=request.user
+    wishlistitem=WishlistItem.objects.filter(wishlist__user=user).distinct()
+    return render(request,"customer/wishlist.html",{"wishlistitems":wishlistitem})
+
+@login_required
+def removewishlist(request,id):
+    user=request.user
+    WishlistItem.objects.filter(
+        id=id,
+        wishlist__user=user).delete()
+    return redirect("wishlistview")
+
+
+    
+
+
+
 
 
 
