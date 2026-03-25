@@ -25,7 +25,6 @@ class Product(models.Model):
     brand = models.CharField(max_length=100)
     model_number = models.CharField(max_length=100)
     image = models.ImageField(upload_to='product_images/', null=True, blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     stock = models.IntegerField(null=True, blank=True)
     is_cancellable = models.BooleanField(default=True)
     is_returnable = models.BooleanField(default=True)

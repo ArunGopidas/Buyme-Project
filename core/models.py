@@ -42,7 +42,7 @@ class Notification(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
-    image_url = models.URLField(blank=True, null=True)
+    image = models.ImageField(blank=True, null=True)
     description = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

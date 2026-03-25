@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>{{ category.name }} | BuyME Atelier</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#dda71d",
+                        "background-dark": "#1A1A1A",
+                        "cream": "#F5F5DC",
+                        "matte-black": "#1A1A1A",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-background-dark font-display text-cream overflow-x-hidden">
+
+{% include 'customer/navbar.html' %}
+
+<main class="flex flex-col">
+    <section class="relative h-[60vh] w-full flex items-center justify-center overflow-hidden border-b border-cream/10">
+        <div class="absolute inset-0 opacity-40">
+            <img src="{{ category.image_url }}" class="w-full h-full object-cover" alt="{{ category.name }}">
+            <div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-6">
+            <nav class="flex justify-center text-[10px] uppercase tracking-[0.4em] text-primary mb-6">
+                <a href="/" class="hover:text-white transition-colors">Home</a>
+                <span class="mx-3">/</span>
+                <span>Collections</span>
+            </nav>
+            <h1 class="font-serif text-6xl md:text-8xl italic mb-4">{{ category.name }}</h1>
+            <p class="max-w-2xl mx-auto text-cream/60 font-light text-sm md:text-base leading-relaxed">
+                {{ category.description|default:"Discover our curated selection of artisanal pieces, where traditional craftsmanship meets modern architectural silhouettes." }}
+            </p>
+        </div>
+    </section>
+
+    <section class="sticky top-0 z-40 bg-background-dark/80 backdrop-blur-xl border-b border-cream/5 px-6 lg:px-20 py-4">
+        <div class="max-w-[1440px] mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-8">
+                <button class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-lg">filter_list</span> Filter
+                </button>
+                <span class="hidden md:block text-[10px] text-cream/30 uppercase tracking-[0.2em]">{{ products|length }} Items</span>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <div class="hidden sm:flex gap-4">
+                    <button class="size-2 rounded-full bg-primary"></button>
+                    <button class="size-2 rounded-full bg-cream/20 hover:bg-cream/40 transition-colors"></button>
+                </div>
+                <select class="bg-transparent border-none text-[10px] font-bold uppercase tracking-widest focus:ring-0 text-cream cursor-pointer">
+                    <option class="bg-matte-black">Sort By: Featured</option>
+                    <option class="bg-matte-black">Price: High-Low</option>
+                    <option class="bg-matte-black">Newest Arrivals</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 px-6 lg:px-20 max-w-[1440px] mx-auto w-full">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20">
+            {% for x in products %}
+            <div class="group cursor-pointer">
+                <div class="relative aspect-[4/5] overflow-hidden bg-cream/[0.03] mb-6">
+                    <img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                         src="{{ x.image_url }}" 
+                         alt="{{ x.name }}"/>
+                    
+                    <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                        <button class="w-full bg-cream text-matte-black py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary transition-colors shadow-2xl">
+                            Select Size
+                        </button>
+                    </div>
+
+                    <button class="absolute top-6 right-6 text-cream/40 hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">favorite</span>
+                    </button>
+                </div>
+
+                <div class="text-center px-4">
+                    <p class="text-[9px] font-bold uppercase tracking-[0.3em] text-primary mb-2">New Season</p>
+                    <h3 class="font-serif text-lg mb-1 group-hover:italic transition-all">{{ x.name }}</h3>
+                    <p class="text-[11px] text-cream/40 uppercase tracking-widest mb-3">{{ x.color|default:"Atelier Edition" }}</p>
+                    <p class="font-bold text-sm tracking-widest">{{ x.selling_price }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if not products %}
+        <div class="py-40 text-center">
+            <h3 class="font-serif text-2xl italic text-cream/40">The collection is currently being curated.</h3>
+            <p class="mt-4 text-[10px] uppercase tracking-widest">Return shortly for the new season.</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <section class="border-t border-cream/10 py-24 bg-matte-black">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-20 flex flex-col items-center text-center">
+            <h3 class="font-serif text-3xl mb-4 italic text-cream">Beyond the Trends</h3>
+            <p class="text-cream/50 text-xs font-light tracking-widest mb-10 uppercase">Receive our quarterly editorial on timeless style.</p>
+            <div class="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+                <input class="flex-1 bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-xs uppercase tracking-widest px-0 py-4" placeholder="EMAIL ADDRESS" type="email"/>
+                <button class="bg-primary text-matte-black px-12 py-4 font-bold text-[10px] uppercase tracking-widest hover:bg-cream transition-colors">Join</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+
+</body>
+</html>
