@@ -38,15 +38,16 @@
             <div class="p-8">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Active Items</p>
+                        <p class="text-[12px] font-bold text-gray-400 uppercase tracking-widest">Active Items</p>
                         <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ active_products }}</h3>
                     </div>
                     <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Pending Approval</p>
+                        <p class="text-[12px] font-bold text-gray-400 uppercase tracking-widest">Pending Approval</p>
                         <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ pending_products }}</h3>
+                        <a href="{% url 'pending_products_list' %}" class="text-[14px] text-green-400 font-bold underline">view all</a>
                     </div>
                     <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Out of Stock</p>
+                        <p class="text-[12px] font-bold text-gray-400 uppercase tracking-widest">Out of Stock</p>
                         <h3 class="text-2xl font-bold text-red-500 mt-1">{{ out_of_stock }}</h3>
                     </div>
                 </div>
@@ -94,10 +95,10 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="text-sm font-bold text-gray-800">
-                                        ₹{{ product.variants.first.selling_price|default:"0.00" }}
+                                        ₹{{ product.selling_price|default:"0.00" }}
                                     </div>
                                     <div class="text-[10px] font-bold {% if product.variants.first.stock_quantity > 0 %}text-gray-400{% else %}text-red-500{% endif %}">
-                                        {{ product.variants.first.stock_quantity|default:"0" }} left
+                                        {{ product.stock_quantity|default:"0" }} left
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-right">

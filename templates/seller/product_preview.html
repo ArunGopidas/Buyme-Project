@@ -3,112 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preview: {{ product.name }} | BuyMe</title>
+    <title>Preview: {{ product.name }} | BuyMe Seller</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-[#F9FAFB] font-sans antialiased text-slate-900">
 
     <div class="flex min-h-screen">
-        <aside class="w-64 bg-white border-r border-gray-200 hidden md:block sticky top-0 h-screen">
-            <div class="p-6 border-b border-gray-100">
-                <h1 class="text-2xl font-bold text-green-600 tracking-tighter italic">BuyMe</h1>
+        <aside class="w-64 bg-white border-r border-gray-100 hidden md:block sticky top-0 h-screen">
+            <div class="p-8">
+                <h1 class="text-3xl font-black text-green-600 tracking-tighter italic">BuyMe</h1>
             </div>
-            <nav class="mt-6 px-4 space-y-2">
-                <a href="{% url 'seller_dashboard' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
+            <nav class="mt-4 px-6 space-y-3">
+                <a href="{% url 'seller_dashboard' %}" class="flex items-center px-4 py-3 text-sm font-semibold text-slate-400 hover:text-green-600 hover:bg-green-50 rounded-2xl transition-all">
                     <i class="fas fa-chart-pie mr-3"></i> Dashboard
                 </a>
-                <a href="{% url 'inventory_page' %}" class="flex items-center px-4 py-3 text-sm font-bold text-green-700 bg-green-50 rounded-xl">
+                <a href="{% url 'inventory_page' %}" class="flex items-center px-4 py-3 text-sm font-bold text-green-700 bg-green-50 rounded-2xl">
                     <i class="fas fa-boxes mr-3"></i> My Inventory
-                </a>
-                <a href="{% url 'order_page' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
-                    <i class="fas fa-shopping-cart mr-3"></i> Orders
                 </a>
             </nav>
         </aside>
 
         <main class="flex-1">
-            <header class="bg-white border-b border-gray-200 px-8 py-5 flex justify-between items-center sticky top-0 z-10">
-                <div class="flex items-center gap-4">
-                    <a href="{% url 'inventory_page' %}" class="text-gray-400 hover:text-green-600">
+            <header class="bg-white border-b border-gray-100 px-10 py-6 flex justify-between items-center sticky top-0 z-50">
+                <div class="flex items-center gap-5">
+                    <a href="{% url 'inventory_page' %}" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-50 text-slate-400 hover:text-green-600 transition-all">
                         <i class="fas fa-arrow-left"></i>
                     </a>
-                    <h2 class="text-xl font-bold text-gray-800">Product Details</h2>
+                    <h2 class="text-xl font-black tracking-tight text-slate-800">Product Preview</h2>
+                </div>
+                <div class="flex gap-4">
+                    <a href="{% url 'edit' product.id %}" class="bg-indigo-600 text-white px-6 py-2.5 rounded-xl text-xs font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100">
+                        Edit Listing
+                    </a>
                 </div>
             </header>
 
-            <div class="p-8 max-w-5xl mx-auto">
-                <div class="bg-white rounded-[2rem] border border-gray-200 shadow-sm overflow-hidden flex flex-col lg:flex-row">
+            <div class="p-10 max-w-6xl mx-auto">
+                <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-[0_20px_50px_rgba(0,0,0,0.02)] overflow-hidden">
+                    <div class="flex flex-col lg:flex-row">
 
-                    <div class="lg:w-1/2 p-8 border-b lg:border-b-0 lg:border-r border-gray-100 space-y-4">
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">Product Images</p>
+                        <div class="lg:w-1/2 p-10 bg-[#FAFBFC]">
+                            <div class="aspect-square rounded-[2rem] bg-white overflow-hidden border border-gray-100 shadow-sm relative">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" class="w-full h-full object-cover">
+                                {% else %}
+                                    <div class="w-full h-full flex flex-col items-center justify-center text-slate-200">
+                                        <i class="fas fa-image fa-4x mb-4"></i>
+                                        <p class="text-xs font-black uppercase tracking-widest">No Image Asset</p>
+                                    </div>
+                                {% endif %}
 
-                        <div class="rounded-2xl bg-gray-50 overflow-hidden border border-gray-100">
-                            {% if product.image %}
-                                <img src="{{ product.image.url }}" class="w-full object-cover">
-                            {% else %}
-                                <div class="py-20 text-center text-gray-300">
-                                    <i class="fas fa-image fa-3x"></i>
-                                    <p class="text-xs mt-2">No Image</p>
+                                <div class="absolute top-6 left-6">
+                                    {% if product.approval_status == 'PENDING' %}
+                                        <a href="{% url 'pending_products_list' %}" class="bg-amber-500 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg flex items-center gap-2 hover:scale-105 transition-transform">
+                                            <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                                            {{ product.approval_status }}
+                                            <i class="fas fa-external-link-alt text-[8px]"></i>
+                                        </a>
+                                    {% else %}
+                                        <span class="bg-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">
+                                            {{ product.approval_status }}
+                                        </span>
+                                    {% endif %}
                                 </div>
-                            {% endif %}
+                            </div>
+
+                            <div class="mt-8 grid grid-cols-2 gap-4">
+                                <div class="p-5 rounded-3xl border border-slate-100 bg-white">
+                                    <p class="text-[11px] font-black text-slate-300 uppercase tracking-widest mb-1">Returnable</p>
+                                    <p class="text-m font-bold {% if product.is_returnable %} text-green-600 {% else %} text-slate-400 {% endif %}">
+                                        {% if product.is_returnable %} {{ product.return_days }} Days Policy {% else %} No Returns {% endif %}
+                                    </p>
+                                </div>
+                                <div class="p-5 rounded-3xl border border-slate-100 bg-white">
+                                    <p class="text-[11px] font-black text-slate-300 uppercase tracking-widest mb-1">Cancellable</p>
+                                    <p class="text-m font-bold {% if product.is_cancellable %} text-indigo-600 {% else %} text-slate-400 {% endif %}">
+                                        {% if product.is_cancellable %} Allowed {% else %} Disabled {% endif %}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
 
-                        {% if images %}
-                        <div class="grid grid-cols-2 gap-4 mt-6">
-<!--                            {% for img in images %}-->
-<!--                            <div class="rounded-xl bg-gray-50 overflow-hidden border border-gray-100">-->
-<!--                                <img src="{{ img.image.url }}" class="w-full h-32 object-cover">-->
-<!--                            </div>-->
-<!--                            {% endfor %}-->
-                        </div>
-                        {% endif %}
-                    </div>
-
-                    <div class="lg:w-1/2 p-10 space-y-8">
-                        <div>
-                            <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest{% if product.approval_status == 'APPROVED' %} bg-green-50 text-green-600{% elif product.approval_status == 'PENDING'  %}bg-yellow-50 text-yellow-600{% else %}bg-red-50 text-red-600 {% endif %}">
-                                {{ product.approval_status }}
-                            </span>
-                            <h1 class="text-3xl font-bold text-gray-900 mt-4">{{ product.name }}</h1>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-8 border-y border-gray-100 py-8">
+                        <div class="lg:w-1/2 p-12 space-y-8">
                             <div>
-                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Price</p>
-                                <p class="text-3xl font-black text-gray-900">₹{{ variant.selling_price|default:"0" }}</p>
+                                <span class="bg-slate-100 text-slate-500 px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest">
+                                    {{ product.subcategory.name }}
+                                </span>
+                                <h1 class="text-4xl font-black text-slate-900 tracking-tighter leading-tight mt-4">{{ product.name }}</h1>
+                                <p class="text-sm font-bold text-slate-400 mt-2">Brand: <span class="text-slate-800">{{ product.brand }}</span></p>
                             </div>
-                            <div>
-                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Stock</p>
-                                <p class="text-xl font-bold text-gray-800">{{ variant.stock_quantity|default:"0" }} Units</p>
-                            </div>
-                        </div>
 
-                        <div class="space-y-4">
-                            <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Description</h4>
-                            <div class="text-gray-600 text-sm leading-relaxed bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                                {{ product.description|linebreaks|default:"No description provided." }}
+                            <div class="bg-slate-50 p-8 rounded-[2rem] border border-slate-100 flex items-center justify-between">
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Selling Price</p>
+                                    <p class="text-4xl font-black text-slate-900">₹{{ product.selling_price }}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Actual M.R.P</p>
+                                    <p class="text-xl font-bold text-slate-300 line-through">₹{{ product.price }}</p>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="pt-4 grid grid-cols-2 gap-4">
-                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                <span class="text-[10px] font-bold text-gray-400 uppercase">SKU</span>
-                                <p class="text-sm font-bold text-gray-800">{{ variant.sku_code|default:"N/A" }}</p>
+                            <div class="grid grid-cols-2 gap-8 border-y border-slate-50 py-10">
+                                <div class="relative">
+                                    <p class="text-[12px] font-black text-slate-300 uppercase tracking-widest mb-3">Live Stock</p>
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-3 h-3 rounded-full animate-pulse
+                                            {% if product.stock_quantity > 10 %} bg-green-500
+                                            {% elif product.stock_quantity > 0 %} bg-yellow-400
+                                            {% else %} bg-red-500 {% endif %}">
+                                        </div>
+                                        <p class="text-2xl font-black text-slate-800">{{ product.stock_quantity }} <span class="text-xs text-slate-400 uppercase ml-1">Units</span></p>
+                                    </div>
+                                    {% if product.stock_quantity < 10 and product.stock_quantity > 0 %}
+                                        <p class="absolute -bottom-6 left-0 text-[10px] font-bold text-yellow-600 uppercase">
+                                            <i class="fas fa-exclamation-triangle mr-1"></i> Low Stock Alert
+                                        </p>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <p class="text-[12px] font-black text-slate-300 uppercase tracking-widest mb-3 italic">Dimensions</p>
+                                    <p class="text-sm font-bold text-slate-600">
+                                        {{ product.length }}x{{ product.width }}x{{ product.height }} <span class="text-[10px] text-slate-400">cm</span>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                <span class="text-[10px] font-bold text-gray-400 uppercase">Sub Category</span>
-                                <p class="text-sm font-bold text-gray-800">{{ product.subcategory.name }}</p>
+
+                            <div class="space-y-4">
+                                <h4 class="text-[12px] font-black text-slate-300 uppercase tracking-widest">Internal Logistics</h4>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-white p-4 rounded-2xl border border-slate-100">
+                                        <span class="text-[12px] font-black text-slate-400 block uppercase">SKU Code</span>
+                                        <span class="text-base font-mono font-bold">{{ product.sku_code }}</span>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-2xl border border-slate-100">
+                                        <span class="text-[11x] font-black text-slate-400 block uppercase">Model No</span>
+                                        <span class="text-base font-bold">{{ product.model_number }}</span>
+                                    </div>
+                                </div>
                             </div>
-                             <div class="flex gap-3">
-                                <a href="{% url 'edit' product.id %}" class="bg-white border border-gray-200 text-gray-600 px-5 py-2 rounded-xl text-sm font-bold hover:bg-gray-50 shadow-sm">
-                                    Edit
-                                </a>
-                              <a href="{% url 'delete_product' product.id %}" onclick="return confirm('Delete permanently?')" class="bg-red-50 text-red-600 px-5 py-2 rounded-xl text-sm font-bold hover:bg-red-100">
-                                    Delete
-                              </a>
-                </div>
-            </header>
+
+                            <div class="space-y-3">
+                                <h4 class="text-[12px] font-black text-slate-300 uppercase tracking-widest">Product Description</h4>
+                                <div class="text-slate-500 text-m leading-relaxed italic">
+                                    "{{ product.description|linebreaksbr }}"
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

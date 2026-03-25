@@ -14,7 +14,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
             if user.role=="SELLER":
-                return redirect("sellerprofile")
+                return redirect("seller_profile")
             elif user.role =="CUSTOMER":
                 return redirect('home')
             elif user.role =="ADMIN":
