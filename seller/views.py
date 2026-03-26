@@ -112,11 +112,14 @@ def addproduct(request):
         is_returnable = True if request.POST.get("is_returnable") == 'on' else False
         is_cancellable = True if request.POST.get("is_cancellable") == 'on' else False
         return_days=request.POST.get("return_days",5)
-        image = request.FILES.get("image")
+
+
 
         subcategory = SubCategory.objects.get(id=subcategory_id)
 
-        slug = slugify(name + "-" + sku) 
+        slug = slugify(name + "-" + sku)
+
+
 
         product = Product.objects.create(
             seller=seller,
@@ -126,7 +129,6 @@ def addproduct(request):
             description=description,
             brand=brand,
             model_number=model_number,
-            image=image,
             sku_code=sku,
             price=price,
             selling_price=selling_price,
@@ -142,12 +144,13 @@ def addproduct(request):
             return_days=return_days
         )
 
+        images = request.FILES.getlist("images")
 
-        if image:
+        for i, img in enumerate(images):
             ProductImage.objects.create(
                 product=product,
-                image=image,
-                is_primary=True
+                image=img,
+                is_primary=(i == 0)
             )
 
         return redirect("inventory_page")
