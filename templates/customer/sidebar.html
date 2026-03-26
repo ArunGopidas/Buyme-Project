@@ -26,6 +26,11 @@
                     <span class="material-symbols-outlined text-sm">shopping_cart</span> Cart
                 </a>
 
+                <a href="{% url 'customeraddress' %}" 
+                   class="sidebar-link{% if request.resolver_match.url_name == 'customer_address' %} active{% endif %} flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-cream/80 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-sm">location_on</span> Address
+                </a>
+
                 <a href="{% url 'customer_settings' %}" 
                    class="sidebar-link{% if request.resolver_match.url_name == 'customer_settings' %} active{% endif %} flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-cream/80 hover:text-primary transition-colors">
                     <span class="material-symbols-outlined text-sm">settings</span> Settings

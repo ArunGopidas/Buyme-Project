@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Shipping Address | BuyME</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#dda71d",
+                        "background-dark": "#1A1A1A",
+                        "cream": "#F5F5DC",
+                        "matte-black": "#1A1A1A",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-dark font-display text-cream overflow-x-hidden">
+    
+    {% include 'customer/navbar.html' %}
+
+    <main class="min-h-screen pt-32 pb-24 px-6 lg:px-20 max-w-[1440px] mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+            
+            <aside class="lg:col-span-3">
+                {% include 'customer/sidebar.html' %}
+            </aside>
+
+            <div class="lg:col-span-6">
+                <header class="mb-12">
+                    <span class="text-primary font-semibold tracking-[0.4em] uppercase text-[10px] mb-2 block">Step 02 — Logistics</span>
+                    <h1 class="font-serif text-5xl italic mb-4">Shipping <span class="text-primary">Destination</span></h1>
+                    <p class="text-cream/40 text-[11px] uppercase tracking-widest font-light">Please provide the precise coordinates for your delivery.</p>
+                </header>
+
+                <form method="POST" class="space-y-10">
+                    {% csrf_token %}
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Full Name</label>
+                            <input type="text" name="full_name" required 
+                                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Phone Number</label>
+                            <input type="tel" name="phone_number" required
+                                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Pincode</label>
+                            <input type="text" name="pincode" required
+                                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors">
+                        </div>
+                        <div class="flex flex-col gap-2 md:col-span-2">
+                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Locality / Area</label>
+                            <input type="text" name="locality" required
+                                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Flat, House no., Building, Company, Apartment</label>
+                        <input type="text" name="house_info" required
+                            class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">City</label>
+                            <input type="text" name="city" required
+                                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">State</label>
+                            <input type="text" name="state" required
+                                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Country</label>
+                            <input type="text" name="country" value="India" readonly
+                                class="bg-transparent border-b border-cream/10 border-t-0 border-x-0 focus:ring-0 text-sm py-3 px-0 opacity-50 cursor-not-allowed">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Landmark</label>
+                            <input type="text" name="landmark"
+                                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors" placeholder="(Optional)">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-12 pt-6">
+                        <div class="space-y-4">
+                            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary mb-4">Address Type</p>
+                            <div class="flex gap-6">
+                                <label class="flex items-center gap-2 cursor-pointer group">
+                                    <input type="radio" name="address_type" value="HOME" checked class="hidden peer">
+                                    <span class="w-4 h-4 border border-cream/30 rounded-full peer-checked:bg-primary peer-checked:border-primary transition-all"></span>
+                                    <span class="text-[11px] uppercase tracking-widest text-cream/50 peer-checked:text-cream">Home</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer group">
+                                    <input type="radio" name="address_type" value="WORK" class="hidden peer">
+                                    <span class="w-4 h-4 border border-cream/30 rounded-full peer-checked:bg-primary peer-checked:border-primary transition-all"></span>
+                                    <span class="text-[11px] uppercase tracking-widest text-cream/50 peer-checked:text-cream">Work</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary mb-4">Default</p>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" name="is_default" class="w-4 h-4 bg-transparent border-cream/30 border text-primary focus:ring-0 rounded-sm">
+                                <span class="text-[11px] uppercase tracking-widest text-cream/50">Set as primary address</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="pt-12 border-t border-cream/10 flex flex-col md:flex-row gap-6">
+                        <button type="submit" class="bg-primary text-matte-black px-12 py-5 font-bold text-[10px] uppercase tracking-widest hover:bg-white transition-all flex-1 md:flex-none">
+                            Deliver to this Address
+                        </button>
+                        <a href="#" class="border border-cream/20 text-cream px-12 py-5 font-bold text-[10px] uppercase tracking-widest hover:bg-cream hover:text-matte-black transition-all text-center">
+                            Back to Selection
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="lg:col-span-3">
+                <div class="bg-cream/5 p-8 sticky top-32 border border-cream/5">
+                    <h2 class="font-serif text-2xl italic mb-6">Atelier Support</h2>
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <span class="material-symbols-outlined text-primary">local_shipping</span>
+                            <div>
+                                <p class="text-[10px] font-bold uppercase tracking-widest mb-1">White Glove Delivery</p>
+                                <p class="text-cream/40 text-[11px] leading-relaxed">All orders are shipped in our signature sustainable packaging.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <span class="material-symbols-outlined text-primary">verified_user</span>
+                            <div>
+                                <p class="text-[10px] font-bold uppercase tracking-widest mb-1">Secure Transaction</p>
+                                <p class="text-cream/40 text-[11px] leading-relaxed">Your data is encrypted and managed under strict privacy protocols.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>

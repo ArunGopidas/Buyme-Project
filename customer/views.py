@@ -76,7 +76,14 @@ def customerprofile(request):
     return render(request,'customer/profile.html',{"user":user})
 
 def productlist(request):
+    sort= request.GET.get("sort")
     product=Product.objects.filter(approval_status="APPROVED").prefetch_related("images")
+    if sort == "newest":
+        product=product.order_by("-created_at")
+    elif sort == "low":
+        product=product.order_by("selling_price")
+    elif sort == "high":
+        product=product.order_by("-selling_price")
     return render(request,"customer/productlist.html",{"products":product})
 
 def productcollection(request):
@@ -142,6 +149,19 @@ def removewishlist(request,id):
         id=id,
         wishlist__user=user).delete()
     return redirect("wishlistview")
+@login_required
+def customer_address(request):
+    user=request.user
+    address=Address.objects.filter(user=user)
+    return render(request,"customer/address.html",{"address":address})
+
+@login_required
+def checkout(request):
+    user=request.user
+    cartitem=Cart.objects.filter(user=user)
+    return render(request,"customer/checkout.html",{"cart":cartitem})
+
+
 
 
     

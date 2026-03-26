@@ -20,6 +20,7 @@ urlpatterns = [
     path('wishlist/<int:id>/',views.wishlist,name="wishlist"),
     path('wishlistview/',views.wishlistview,name="wishlistview"),
     path('removewishlist/<int:id>/',views.removewishlist,name="removewishlist"),
-
+    path('customeraddress/',views.customer_address,name="customeraddress"),
+    path('checkout/',views.checkout,name="checkout"),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
