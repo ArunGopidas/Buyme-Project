@@ -32,7 +32,6 @@
 
 {% include 'customer/navbar.html' %}
 
-
 <main class="pt-32 pb-24 px-6 lg:px-20 max-w-[1440px] mx-auto">
     <header class="mb-12">
         <nav class="flex text-[10px] uppercase tracking-[0.2em] text-cream/40 mb-6">
@@ -42,9 +41,14 @@
         </nav>
         <h1 class="font-serif text-5xl md:text-6xl italic">Your <span class="text-primary">Selection</span></h1>
     </header>
-{% include 'customer/sidebar.html' %}
+
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
-        <div class="lg:col-span-8">
+        
+        <aside class="hidden lg:block lg:col-span-2">
+            {% include 'customer/sidebar.html' %}
+        </aside>
+
+        <div class="lg:col-span-6">
             <div class="border-t border-cream/10">
                 {% for item in cartitems %}
                 <div class="flex flex-col sm:flex-row py-10 border-b border-cream/10 gap-8 group">
@@ -66,9 +70,9 @@
 
                         <div class="flex justify-between items-center mt-8">
                             <div class="flex items-center border border-cream/20 px-4 py-2 gap-6">
-                                <button class="text-cream/40 hover:text-primary transition-colors text-xs">-</button>
+                                <button class="text-cream/40 hover:text-primary transition-colors text-xs" aria-label="Decrease quantity">-</button>
                                 <span class="text-xs font-bold w-4 text-center">{{ item.quantity }}</span>
-                                <button class="text-cream/40 hover:text-primary transition-colors text-xs">+</button>
+                                <button class="text-cream/40 hover:text-primary transition-colors text-xs" aria-label="Increase quantity">+</button>
                             </div>
                             
                             <button class="text-[10px] font-bold uppercase tracking-widest text-cream/30 hover:text-red-400 transition-colors flex items-center gap-2">
@@ -81,7 +85,7 @@
                 <div class="py-20 text-center">
                     <p class="text-cream/40 font-light italic mb-8">Your selection is currently empty.</p>
                     <a href="{% url 'productlist' %}" class="inline-block bg-primary text-matte-black px-12 py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-cream transition-colors">
-                      productlist
+                      Continue Shopping
                     </a>
                 </div>
                 {% endfor %}
@@ -110,9 +114,11 @@
                     </div>
                 </div>
 
-                <button class="w-full bg-cream text-matte-black py-5 text-[10px] font-bold uppercase tracking-widest hover:bg-primary transition-colors mb-4">
-                    Proceed to Checkout
-                </button>
+                <a href="{% url 'checkout' %}" class="block w-full">
+                    <button class="w-full bg-cream text-matte-black py-5 text-[10px] font-bold uppercase tracking-widest hover:bg-primary transition-colors mb-4">
+                        Proceed to Checkout
+                    </button>
+                </a>
                 
                 <div class="flex items-center justify-center gap-2 text-[9px] uppercase tracking-widest text-cream/30">
                     <span class="material-symbols-outlined text-[14px]">lock</span>
@@ -120,6 +126,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </main>
 
