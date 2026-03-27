@@ -1,3 +1,5 @@
+from random import choices
+
 from django.db import models
 from core.models import User, SubCategory
 
@@ -13,9 +15,14 @@ class SellerProfile(models.Model):
     ifsc_code = models.CharField(max_length=20,blank=True)
     business_address = models.TextField(blank=True)
     rating = models.FloatField(default=0)
-    is_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-
+    STATUS_CHOICES=[
+        ("APPROVED",'approved'),
+        ("PENDING","pending"),
+        ("REJECTED",'rejected')
+    ]
+    status=models.CharField(max_length=10,choices=STATUS_CHOICES,default="PENDING")
+    rejection_reason=models.TextField(blank=True,null=True)
 class Product(models.Model):
     seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE, related_name="products")
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name="products")

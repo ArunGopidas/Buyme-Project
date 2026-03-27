@@ -2,13 +2,14 @@ from email.policy import default
 
 from django.shortcuts import render,redirect
 from core.models import User
-from django.contrib.auth.decorators import login_required
+from seller.decorators import seller_required,login_required
 
 from customer.models import Order
 from .models import SellerProfile
 from .models import Product,ProductImage
 from core.models import SubCategory
 from django.utils.text import slugify
+
 
 
 def seller_register(request):
@@ -39,17 +40,16 @@ def seller_register(request):
             profile_image=profile_image,
             role="SELLER"
         )
-        user.save()
+        SellerProfile.objects.create(
+            user=user
+           )
         return redirect("login")
 
     return render(request, "seller/register.html")
 
 
-
 @login_required
 def seller_profile(request):
-    if request.user.role != "SELLER":
-        return redirect("login")
     profile,created=SellerProfile.objects.get_or_create(user=request.user)
     if request.method == "POST":
         profile.shopname = request.POST.get("shopname")
@@ -58,21 +58,26 @@ def seller_profile(request):
         profile.gst_number =request.POST.get("gst_number")
         profile.pan_number =request.POST.get("pan_number")
         profile.bank_account_number =request.POST.get("bank_account_number")
-        profile.ifsc_code  =request.POST.get("ifsc_code")
-        profile.business_address =request.POST.get("business_address")
+        profile.ifsc_code  = request.POST.get("ifsc_code")
+        profile.business_address = request.POST.get("business_address")
+
+        if profile.shopname:
+            profile.shop_slug = slugify(profile.shopname)
+
         if request.FILES.get("profile_image"):
             request.user.profile_image =request.FILES.get("profile_image")
             request.user.save()
-        profile.save()
-        return redirect("seller_dashboard")
+        if request.method == "POST":
+            profile.status = "PENDING"
+            profile.save()
+            return redirect("pending_approval")
     return render(request,"seller/sellerprofile.html",{"profile":profile})
 
 
+
  
-@login_required
+@seller_required
 def seller_dashboard(request):
-    if request.user.role != "SELLER":
-        return redirect("login")
     seller=request.user.seller_profile
     products=Product.objects.filter(seller=seller)
     pending_products = products.filter(approval_status="PENDING").count()
@@ -84,11 +89,8 @@ def seller_dashboard(request):
     })
 
 
-@login_required
+@seller_required
 def addproduct(request):
-
-    if request.user.role != "SELLER":
-        return redirect("login")
 
     seller =SellerProfile.objects.get(user=request.user)
 
@@ -160,10 +162,10 @@ def addproduct(request):
     return render(request, "seller/addproduct.html", {"subcategories": subcategories})
         
 
-@login_required
+@seller_required
 def inventorypage(request):
-    seller =request.user.seller_profile
-    products = Product.objects.filter(seller=seller)
+
+    products = Product.objects.filter(seller=request.user.seller_profile)
     active_products=products.filter(approval_status="APPROVED").count()
     pending_products=products.filter(approval_status="PENDING").count()
     out_of_stock=products.filter(stock_quantity=0).distinct().count()
@@ -175,14 +177,10 @@ def inventorypage(request):
     }
     return render(request, "seller/inventorypage.html",context)
 
-@login_required
+@seller_required
 def edit_product(request,id):
-    if request.user.role != "SELLER":
-        return redirect('login')
 
-    seller=request.user.seller_profile
-
-    product=Product.objects.get(id=id,seller=seller)
+    product=Product.objects.get(id=id,seller=request.user.seller_profile)
 
     if request.method =="POST":
         #updating products
@@ -223,34 +221,34 @@ def edit_product(request,id):
     return render(request,'seller/editproduct.html',data)
 
 
-@login_required
+@seller_required
 def delete_product(request,id):
-    if request.user.role != "SELLER":
-        return redirect("login")
-    else:
-        data=Product.objects.get(id=id)
-        data.delete()
+    data=Product.objects.get(id=id,seller=request.user.seller_profile)
+    data.delete()
     return redirect('inventory_page')
 
+
+@seller_required
 def customer_dashboard(request):
     return render(request, "customer/dashboard.html")
+
+
     
-    
+@seller_required
 def analyticspage(request):
     return render(request,"seller/analyticspage.html")
 
 
+
+@seller_required
 def orderpage(request):
-    if request.user.role != "SELLER":
-        return redirect("login")
-    order=Order.objects.all()
+    order=Order.objects.all(seller=request.user.seller_profile)
     return render(request,"seller/orderpage.html",{'orders':order})
 
 
 
+@seller_required
 def product_preview(request,id):
-    if request.user.role != 'SELLER':
-        return redirect('login')
     seller=request.user.seller_profile
     product=Product.objects.get(id=id,seller=seller)
     images=product.images.all()
@@ -260,9 +258,18 @@ def product_preview(request,id):
     }
     return render(request,"seller/product_preview.html",context)
 
+
+
+@seller_required
 def pending_products(request):
-    if request.user.role != "SELLER":
-        return redirect("login")
     seller=request.user.seller_profile
     pending_product=Product.objects.filter(seller=seller,approval_status="PENDING").order_by("-id")
     return render(request,"seller/pending_products.html",{"pending_products":pending_product})
+
+
+@login_required
+def pending_approval(request):
+    seller=request.user.seller_profile
+    if seller.STATUS_CHOICES == "APPROVED":
+        return redirect('seller_dashboard')
+    return render(request,'seller/Seller_profile_review.html')
