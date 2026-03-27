@@ -51,6 +51,14 @@ def seller_register(request):
 @login_required
 def seller_profile(request):
     profile,created=SellerProfile.objects.get_or_create(user=request.user)
+
+    if not created:
+        if profile.status =="PENDING":
+            return redirect('pending_approval')
+        elif profile.status == "APPROVED":
+            return redirect('seller_dashboard')
+
+
     if request.method == "POST":
         profile.shopname = request.POST.get("shopname")
         profile.category=request.POST.get("category")
@@ -67,11 +75,12 @@ def seller_profile(request):
         if request.FILES.get("profile_image"):
             request.user.profile_image =request.FILES.get("profile_image")
             request.user.save()
-        if request.method == "POST":
-            profile.status = "PENDING"
-            profile.save()
-            return redirect("pending_approval")
-    return render(request,"seller/sellerprofile.html",{"profile":profile})
+
+        profile.status = "PENDING"
+        profile.save()
+
+        return redirect("pending_approval")
+    return render(request,"seller/seller_profile.html",{"profile":profile})
 
 
 
@@ -90,7 +99,7 @@ def seller_dashboard(request):
 
 
 @seller_required
-def addproduct(request):
+def add_product(request):
 
     seller =SellerProfile.objects.get(user=request.user)
 
@@ -159,11 +168,11 @@ def addproduct(request):
 
     subcategories = SubCategory.objects.all()
 
-    return render(request, "seller/addproduct.html", {"subcategories": subcategories})
+    return render(request, "seller/add_product.html", {"subcategories": subcategories})
         
 
 @seller_required
-def inventorypage(request):
+def inventory_page(request):
 
     products = Product.objects.filter(seller=request.user.seller_profile)
     active_products=products.filter(approval_status="APPROVED").count()
@@ -175,7 +184,7 @@ def inventorypage(request):
         "pending_products": pending_products,
         "out_of_stock": out_of_stock
     }
-    return render(request, "seller/inventorypage.html",context)
+    return render(request, "seller/inventory_page.html",context)
 
 @seller_required
 def edit_product(request,id):
@@ -218,7 +227,7 @@ def edit_product(request,id):
         "product":product,
         "subcategories":subcategories
     }
-    return render(request,'seller/editproduct.html',data)
+    return render(request,'seller/edit_product.html',data)
 
 
 @seller_required
@@ -235,15 +244,15 @@ def customer_dashboard(request):
 
     
 @seller_required
-def analyticspage(request):
-    return render(request,"seller/analyticspage.html")
+def analytics_page(request):
+    return render(request,"seller/analytics_page.html")
 
 
 
 @seller_required
-def orderpage(request):
+def order_page(request):
     order=Order.objects.all(seller=request.user.seller_profile)
-    return render(request,"seller/orderpage.html",{'orders':order})
+    return render(request,"seller/order_page.html",{'orders':order})
 
 
 
@@ -270,6 +279,6 @@ def pending_products(request):
 @login_required
 def pending_approval(request):
     seller=request.user.seller_profile
-    if seller.STATUS_CHOICES == "APPROVED":
+    if seller.status == "APPROVED":
         return redirect('seller_dashboard')
     return render(request,'seller/Seller_profile_review.html')
