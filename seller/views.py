@@ -113,6 +113,36 @@ def seller_dashboard(request):
     })
 
 
+
+def seller_profile_edit(request):
+    seller=request.user.seller_profile
+
+    if seller !="APPROVED":
+        return redirect("pending_approval")
+
+    if request.method == "POST":
+        seller.shopname = request.POST.get('shopname')
+        seller.website = request.POST.get('website')
+        seller.category = request.POST.get('category')
+        seller.business_address=request.POST.get('business_address')
+        seller.save()
+
+        user = request.user
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.post.get('last_name')
+
+
+
+
+
+@login_required
+def pending_approval(request):
+    seller=request.user.seller_profile
+    if seller.status == "APPROVED":
+        return redirect('seller_dashboard')
+    return render(request,'seller/Seller_profile_review.html')
+
+
 @seller_required
 def add_product(request):
 
@@ -291,9 +321,6 @@ def pending_products(request):
     return render(request,"seller/pending_products.html",{"pending_products":pending_product})
 
 
-@login_required
-def pending_approval(request):
-    seller=request.user.seller_profile
-    if seller.status == "APPROVED":
-        return redirect('seller_dashboard')
-    return render(request,'seller/Seller_profile_review.html')
+
+
+
