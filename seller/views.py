@@ -2,7 +2,8 @@ from email.policy import default
 
 from django.shortcuts import render,redirect
 from core.models import User
-from seller.decorators import seller_required,login_required
+from seller.decorators import seller_required
+from django.contrib.auth.decorators import login_required
 
 from customer.models import Order
 from .models import SellerProfile
@@ -30,7 +31,11 @@ def seller_register(request):
         
         if User.objects.filter(email=email).exists():
             return render(request, "seller/register.html", {"error": "Email already registered"})
-        
+
+        if User.objects.filter(username=email).exists():
+            return render(request, "seller/register.html", {
+                "error": "User already exists"
+            })
         user = User.objects.create_user(
             username=email.strip().lower(),
             email=email.strip().lower(),
@@ -40,49 +45,59 @@ def seller_register(request):
             profile_image=profile_image,
             role="SELLER"
         )
-        SellerProfile.objects.create(
-            user=user
-           )
         return redirect("login")
 
     return render(request, "seller/register.html")
 
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from .models import SellerProfile
+from django.utils.text import slugify
+
+
 @login_required
 def seller_profile(request):
-    profile,created=SellerProfile.objects.get_or_create(user=request.user)
 
-    if not created:
-        if profile.status =="PENDING":
-            return redirect('pending_approval')
-        elif profile.status == "APPROVED":
-            return redirect('seller_dashboard')
+    seller = SellerProfile.objects.filter(user=request.user).first()
 
+    if seller:
+
+        if seller.status == "REJECTED":
+            return redirect("rejected_page")
+
+        if seller.status == "PENDING":
+            return redirect("pending_approval")
+
+
+        if seller.status == "APPROVED":
+            return redirect("seller_dashboard")
 
     if request.method == "POST":
-        profile.shopname = request.POST.get("shopname")
-        profile.category=request.POST.get("category")
-        profile.website=request.POST.get("website")
-        profile.gst_number =request.POST.get("gst_number")
-        profile.pan_number =request.POST.get("pan_number")
-        profile.bank_account_number =request.POST.get("bank_account_number")
-        profile.ifsc_code  = request.POST.get("ifsc_code")
-        profile.business_address = request.POST.get("business_address")
-
-        if profile.shopname:
-            profile.shop_slug = slugify(profile.shopname)
+        seller = SellerProfile.objects.create(
+            user=request.user,
+            shopname=request.POST.get("shopname"),
+            category=request.POST.get("category"),
+            website=request.POST.get("website"),
+            gst_number=request.POST.get("gst_number"),
+            pan_number=request.POST.get("pan_number"),
+            bank_account_number=request.POST.get("bank_account_number"),
+            ifsc_code=request.POST.get("ifsc_code"),
+            business_address=request.POST.get("business_address"),
+            status="PENDING"
+        )
+        print(seller)
+        if seller.shopname:
+            seller.shop_slug = slugify(seller.shopname)
+            seller.save()
 
         if request.FILES.get("profile_image"):
-            request.user.profile_image =request.FILES.get("profile_image")
+            request.user.profile_image = request.FILES.get("profile_image")
             request.user.save()
 
-        profile.status = "PENDING"
-        profile.save()
-
         return redirect("pending_approval")
-    return render(request,"seller/seller_profile.html",{"profile":profile})
 
-
+    return render(request, "seller/seller_profile.html")
 
  
 @seller_required

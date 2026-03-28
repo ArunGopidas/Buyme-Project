@@ -18,17 +18,20 @@ def login_view(request):
         if user is not None:
             login(request, user)
             if user.role =="SELLER":
-                seller,created=SellerProfile.objects.get_or_create(user=user)
-                if created:
+                try:
+                    seller = SellerProfile.objects.get(user=user)
+
+                    if seller.status =="PENDING":
+                        return redirect('pending_approval')
+
+                    elif seller.status == "APPROVED":
+                        return redirect("seller_dashboard")
+
+                    elif seller.status == "REJECTED":
+                        return redirect("rejected_page")
+
+                except SellerProfile.DoesNotExist:
                     return redirect('seller_profile')
-
-                if seller.status =="PENDING":
-                    return redirect('pending_approval')
-
-                elif seller.status == "APPROVED":
-                    return redirect("seller_dashboard")
-                elif seller.status == "REJECTED":
-                    return redirect("rejected_page")
 
             elif user.role =="CUSTOMER":
                 return redirect('home')
