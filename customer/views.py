@@ -121,6 +121,14 @@ def cartview(request):
     return render(request,"customer/cart.html",{"cartitems":cartitem})
 
 @login_required
+def removecart(request,id):
+    user=request.user
+    CartItem.objects.filter(
+        id=id,
+        cart__user=user,).delete()
+    return redirect("cartview")
+
+@login_required
 def wishlist(request,id):
     user=request.user
     product=Product.objects.get(id=id)
@@ -160,21 +168,7 @@ def checkout(request):
     user=request.user
     cartitem=Cart.objects.filter(user=user)
     return render(request,"customer/checkout.html",{"cart":cartitem})
-
-
-
-
     
-
-
-
-
-
-
-
-
-    
-
 
 @login_required
 def customer_dashboard(request):
