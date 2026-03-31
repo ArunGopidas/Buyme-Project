@@ -1,0 +1,149 @@
+{% extends "seller/base.html" %}
+
+{% block content %}
+<div class="min-h-screen bg-slate-50 pb-12">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-8 pb-6 border-b border-slate-200">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Seller Profile</h1>
+            <p class="text-sm text-slate-500 mt-1">Detailed overview of your business identity and verification status.</p>
+        </div>
+        <div class="mt-4 md:mt-0">
+            <a href="{% url 'edit_profile' %}" class="inline-flex items-center px-5 py-2.5 text-sm font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition shadow-md">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+                Edit Profile
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <div class="lg:col-span-4 space-y-6">
+            <div class="bg-white border border-slate-200 rounded-md shadow-sm overflow-hidden">
+                <div class="px-6 py-3 border-b border-slate-100 flex items-center justify-between {% if seller.status == 'APPROVED' %}bg-green-50/50{% elif seller.status == 'PENDING' %}bg-amber-50/50{% else %}bg-red-50/50{% endif %}">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Account Status</span>
+                    <span class="px-2 py-0.5 text-[10px] font-bold uppercase border rounded
+                        {% if seller.status == 'APPROVED' %}border-green-200 text-green-700 bg-white
+                        {% elif seller.status == 'PENDING' %}border-amber-200 text-amber-700 bg-white
+                        {% else %}border-red-200 text-red-700 bg-white{% endif %}">
+                        {{ seller.status }}
+                    </span>
+                </div>
+
+                <div class="p-6 text-center lg:text-left">
+                    <div class="flex flex-col lg:flex-row items-center lg:space-x-4 mb-6">
+                        <div class="h-20 w-20 bg-slate-100 rounded-md border border-slate-200 overflow-hidden flex-shrink-0 shadow-inner">
+                            {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}" class="h-full w-full object-cover" alt="Shop Logo">
+                            {% else %}
+                                <div class="h-full w-full flex items-center justify-center text-slate-400 font-bold text-2xl bg-slate-50">
+                                    {{ seller.shopname|slice:":1" }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mt-4 lg:mt-0">
+                            <h2 class="text-xl font-bold text-slate-900 leading-tight">{{ seller.shopname }}</h2>
+                            <p class="text-sm text-blue-600 font-medium">{{ seller.category }}</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-blue-50 border border-blue-100 rounded-md">
+                        <label class="block text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Public Store URL</label>
+                        <div class="flex items-center text-sm font-bold text-blue-800 break-all">
+                            <svg class="w-4 h-4 mr-2 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                            </svg>
+                            mystore.com/shop/<span class="underline decoration-blue-300">{{ seller.shop_slug|default:"not-set" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-md shadow-sm p-6">
+                <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center">
+                    <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                    Contact Information
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase">Registered Owner</span>
+                        <span class="text-sm font-semibold text-slate-800">{{ user.first_name }} {{ user.last_name }}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase">Direct Email</span>
+                        <span class="text-sm font-semibold text-slate-800">{{ user.email }}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase">Contact Number</span>
+                        <span class="text-sm font-semibold text-slate-800">{{ user.phone_number|default:"No Phone Provided" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-8 space-y-6">
+
+            <div class="bg-white border border-slate-200 rounded-md shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                    <h3 class="text-sm font-bold text-slate-800">Shop Registration Details</h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+                        <div class="md:col-span-1">
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Official Website</label>
+                            <p class="text-sm font-bold text-blue-600">
+                                {% if seller.website %}{{ seller.website }}{% else %}No external website{% endif %}
+                            </p>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Business Address</label>
+                            <p class="text-sm font-semibold text-slate-800 leading-relaxed max-w-xl">
+                                {{ seller.business_address }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-md shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                    <h3 class="text-sm font-bold text-slate-800">Tax & Banking Credentials</h3>
+                    <div class="flex space-x-1">
+                        <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
+                        <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
+                        <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">GST / Tax Identification</label>
+                            <p class="text-sm font-mono font-bold text-slate-700 p-2 bg-slate-50 border border-slate-200 rounded inline-block">{{ seller.gst_number }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">PAN Number</label>
+                            <p class="text-sm font-mono font-bold text-slate-700 p-2 bg-slate-50 border border-slate-200 rounded inline-block">{{ seller.pan_number }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Bank Account</label>
+                            <p class="text-sm font-mono font-bold text-slate-700 tracking-widest">
+                                <span class="text-slate-300">****</span>{{ seller.bank_account_number|slice:"-4:" }}
+                            </p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">IFSC Code</label>
+                            <p class="text-sm font-mono font-bold text-slate-700 uppercase tracking-wider">{{ seller.ifsc_code }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-100 flex items-center">
+                    <svg class="w-3.5 h-3.5 text-slate-400 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                    <p class="text-[10px] text-slate-400 font-medium">To modify tax or banking documents, a verification request is required.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

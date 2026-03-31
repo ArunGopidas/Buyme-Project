@@ -3,133 +3,144 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@300;400;700&family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-    <script id="tailwind-config">
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <script>
         tailwind.config = {
-            darkMode: "class",
             theme: {
                 extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
                     colors: {
-                        "primary": "#141414",
-                        "accent-cream": "#F9F7F2",
-                        "background-light": "#f7f7f7",
-                        "background-dark": "#191919",
-                        "border-muted": "#E5E5E5",
-                    },
-                    fontFamily: {
-                        "display": ["Noto Serif", "serif"],
-                        "sans": ["Noto Sans", "sans-serif"]
-                    },
-                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-                },
-            },
+                        brand: {
+                            500: '#6366f1', // Electric Indigo
+                            600: '#4f46e5',
+                            950: '#020617', // Deep Navy
+                        }
+                    }
+                }
+            }
         }
     </script>
-    <title>BUYME | Seller Registration</title>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+    <title>BUYME | Merchant Registration</title>
 </head>
-<body class="bg-background-light dark:bg-background-dark font-sans text-primary">
-    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-        
-        <header class="flex items-center justify-between border-b border-primary/10 bg-white/80 backdrop-blur-md px-8 lg:px-20 py-4 sticky top-0 z-50">
-            <div class="flex items-center gap-3 text-primary">
-                <div class="size-6 text-primary">
-                    <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
-                    </svg>
-                </div>
-                <h2 class="font-display text-xl font-bold tracking-widest uppercase">BUYME</h2>
-            </div>
-            <div class="flex items-center gap-8">
-                <a href="{% url 'login' %}" class="px-6 py-2 border border-primary text-xs uppercase tracking-widest font-bold hover:bg-primary hover:text-white transition-all">
-                    Sign In
-                </a>
-            </div>
-        </header>
+<body class="bg-[#F8FAFC] font-sans text-slate-900 antialiased">
+    <div class="flex min-h-screen p-4 lg:p-6">
 
-        <main class="flex flex-1 flex-col lg:flex-row min-h-[calc(100vh-73px)]">
-            <div class="hidden lg:block lg:w-5/12 relative overflow-hidden bg-primary">
-                <div class="absolute inset-0 opacity-80 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80')"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent"></div>
-                <div class="absolute bottom-20 left-12 right-12 text-white">
-                    <span class="text-xs uppercase tracking-[0.3em] font-medium mb-4 block">Merchant Alliance</span>
-                    <h3 class="font-display text-3xl font-light leading-tight">Join the world's premier destination for high-end commerce.</h3>
+        <div class="hidden lg:flex lg:w-[42%] bg-brand-950 rounded-[2.5rem] p-16 flex-col justify-between relative overflow-hidden shadow-2xl">
+            <div class="absolute top-0 right-0 -translate-y-24 translate-x-24 size-[500px] bg-indigo-600/20 blur-[120px] rounded-full"></div>
+            <div class="absolute bottom-0 left-0 translate-y-24 -translate-x-24 size-[400px] bg-blue-600/10 blur-[100px] rounded-full"></div>
+
+            <div class="relative z-10">
+                <div class="flex items-center gap-3 text-white">
+                    <div class="size-11 bg-white/10 rounded-2xl flex items-center justify-center border border-white/20 backdrop-blur-md shadow-xl">
+                        <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <span class="text-2xl font-bold tracking-tight">Buy<span class="text-slate-500 font-medium italic">ME</span></span>
                 </div>
             </div>
 
-            <div class="flex-1 flex flex-col justify-center px-8 lg:px-24 py-16 bg-accent-cream">
-                <div class="max-w-md w-full mx-auto">
-                    <h1 class="font-display text-4xl font-bold mb-4">Partner with BUYME</h1>
-                    <p class="text-sm text-primary/60 mb-8 leading-relaxed uppercase tracking-widest">Create your professional seller identity.</p>
-                    <div class="grid grid-cols-2 gap-4 mb-8">
-                        <a href="#" class="flex items-center justify-center gap-2 border border-primary/20 py-3 hover:bg-white transition-all text-[10px] font-bold uppercase tracking-widest">
-                            <img src="https://www.svgrepo.com/show/355037/google.svg" class="size-3" alt="Google"> Google
-                        </a>
-                        <a href="#" class="flex items-center justify-center gap-2 border border-primary/20 py-3 hover:bg-white transition-all text-[10px] font-bold uppercase tracking-widest">
-                            <img src="https://www.svgrepo.com/show/512120/facebook-176.svg" class="size-3" alt="Facebook"> Facebook
-                        </a>
-                    </div>
+            <div class="relative z-10">
+                <h1 class="text-6xl font-extrabold text-white leading-[1.05] tracking-tighter mb-8">
+                    The platform for <br/><span class="text-indigo-500">modern commerce.</span>
+                </h1>
 
-                    <div class="relative flex items-center mb-8">
-                        <div class="flex-grow border-t border-primary/10"></div>
-                        <span class="mx-4 text-[10px] uppercase tracking-widest text-primary/40">Or register manually</span>
-                        <div class="flex-grow border-t border-primary/10"></div>
-                    </div>
-
-                    {% if error %}
-                    <div class="mb-6 p-4 bg-red-50 border-l-2 border-red-900 text-red-900 text-xs italic">
-                        {{ error }}
-                    </div>
-                    {% endif %}
-
-                    <form method="POST" enctype="multipart/form-data" class="space-y-6">
-                        {% csrf_token %}
-                        
-                        <div class="grid grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-[10px] uppercase tracking-widest font-bold mb-2">First Name</label>
-                                <input type="text" name="first_name" required class="w-full bg-transparent border-b border-primary/20 py-3 focus:border-primary transition-colors outline-none text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] uppercase tracking-widest font-bold mb-2">Last Name</label>
-                                <input type="text" name="last_name" required class="w-full bg-transparent border-b border-primary/20 py-3 focus:border-primary transition-colors outline-none text-sm">
-                            </div>
+                <div class="space-y-8">
+                    <div class="flex gap-5 items-start">
+                        <div class="mt-1 p-2.5 bg-indigo-500/10 rounded-xl text-indigo-400 border border-indigo-500/20">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </div>
-
                         <div>
-                            <label class="block text-[10px] uppercase tracking-widest font-bold mb-2">Email Address</label>
-                            <input type="email" name="email" required class="w-full bg-transparent border-b border-primary/20 py-3 focus:border-primary transition-colors outline-none text-sm">
+                            <p class="text-white font-bold text-lg">Predictive Analytics</p>
+                            <p class="text-slate-400 text-sm leading-relaxed">Gain deep insights into your inventory and sales performance with our technical dashboard.</p>
                         </div>
+                    </div>
 
+                    <div class="flex gap-5 items-start">
+                        <div class="mt-1 p-2.5 bg-indigo-500/10 rounded-xl text-indigo-400 border border-indigo-500/20">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
                         <div>
-                            <label class="block text-[10px] uppercase tracking-widest font-bold mb-2">Phone Number</label>
-                            <input type="tel" name="phone" required class="w-full bg-transparent border-b border-primary/20 py-3 focus:border-primary transition-colors outline-none text-sm" placeholder="+1 (000) 000-0000">
+                            <p class="text-white font-bold text-lg">Global Fulfillment</p>
+                            <p class="text-slate-400 text-sm leading-relaxed">Instantly reach 180+ countries with automated shipping and localized currency processing.</p>
                         </div>
-
-                        <div class="grid grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-[10px] uppercase tracking-widest font-bold mb-2">Password</label>
-                                <input type="password" name="password" required class="w-full bg-transparent border-b border-primary/20 py-3 focus:border-primary transition-colors outline-none text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] uppercase tracking-widest font-bold mb-2">Confirm</label>
-                                <input type="password" name="confirm_password" required class="w-full bg-transparent border-b border-primary/20 py-3 focus:border-primary transition-colors outline-none text-sm">
-                            </div>
-                        </div>
-                            <div>
-                                <label class="block text-[10px] uppercase tracking-widest font-bold mb-2">Profile_pic</label>
-                                <input type="file" name="profile_image" required class="w-full bg-transparent border-b border-primary/20 py-3 focus:border-primary transition-colors outline-none text-sm">
-                            </div>
-                        </div>
-                        <div class="pt-6">
-                            <button type="submit" class="w-full bg-primary text-white py-4 text-xs uppercase tracking-[0.3em] font-bold hover:bg-opacity-90 transition-all">
-                                Submit Account
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </main>
+
+            <div class="relative z-10 glass-card p-8 rounded-3xl">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="h-10 w-10 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center text-xs font-bold text-white">GS</div>
+                    <div>
+                        <p class="text-white text-sm font-bold tracking-tight">BuyME </p>
+                        <p class="text-indigo-400 text-[10px] uppercase font-bold tracking-widest">Verified Merchant</p>
+                    </div>
+                </div>
+                <p class="text-slate-300 text-sm leading-relaxed italic">
+                    "Managing high-volume inventory has never been this intuitive. The 'Elite' UI gives us the speed we need to scale."
+                </p>
+            </div>
+        </div>
+
+        <div class="flex-1 flex flex-col justify-center px-6 py-12 lg:px-24 bg-transparent">
+            <div class="max-w-md w-full mx-auto">
+                <div class="mb-12">
+                    <h2 class="text-4xl font-extrabold text-slate-900 tracking-tight">Create your Console</h2>
+                    <p class="text-slate-500 mt-3 text-base font-medium">Join the elite merchant alliance on <span class="text-slate-900 font-bold border-b-2 border-indigo-500">BUYME</span>.</p>
+                </div>
+
+                <form method="POST" class="space-y-6">
+                    {% csrf_token %}
+
+                    <div class="grid grid-cols-2 gap-5">
+                        <div class="space-y-2">
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest ml-1">First name</label>
+                            <input type="text" name="first_name" required class="w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all text-sm shadow-sm" placeholder="Enter Your First Name">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest ml-1">Last name</label>
+                            <input type="text" name="last_name" required class="w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all text-sm shadow-sm" placeholder="Enter your  Last Name">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest ml-1"> Email</label>
+                        <input type="email" name="email" required class="w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all text-sm shadow-sm" placeholder="Enter your G-mail ">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest ml-1">Phone Number</label>
+                        <input type="tel" name="phone_number" required class="w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all text-sm shadow-sm" placeholder="Enter Your  Number">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-5">
+                        <div class="space-y-2">
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest ml-1">Password</label>
+                            <input type="password" name="password" required class="w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all text-sm shadow-sm">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest ml-1">Confirm Password</label>
+                            <input type="password" name="confirm_password" required class="w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all text-sm shadow-sm">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-slate-900 text-white py-4.5 rounded-2xl text-sm font-bold hover:bg-indigo-600 transition-all shadow-2xl shadow-indigo-200 mt-6 active:scale-[0.98] py-4">
+                        Initialize Seller Account
+                    </button>
+                </form>
+
+                <p class="mt-10 text-center text-xs text-slate-400 font-medium">
+                    Already a partner?
+                    <a href="{% url 'login' %}" class="text-indigo-600 font-bold hover:underline ml-1">Sign in to Console</a>
+                </p>
+            </div>
+        </div>
     </div>
 </body>
 </html>

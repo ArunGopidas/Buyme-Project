@@ -23,6 +23,7 @@ class SellerProfile(models.Model):
     ]
     status=models.CharField(max_length=10,choices=STATUS_CHOICES,default="PENDING")
     rejection_reason=models.TextField(blank=True,null=True)
+
 class Product(models.Model):
     seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE, related_name="products")
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name="products")
@@ -32,7 +33,6 @@ class Product(models.Model):
     brand = models.CharField(max_length=100)
     model_number = models.CharField(max_length=100)
     image = models.ImageField(upload_to='product_images/', null=True, blank=True)
-    stock = models.IntegerField(null=True, blank=True)
     is_cancellable = models.BooleanField(default=True)
     is_returnable = models.BooleanField(default=True)
     return_days = models.IntegerField(default=7)
@@ -43,11 +43,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2,null=True)
     selling_price = models.DecimalField(max_digits=10, decimal_places=2)
     cost_price = models.DecimalField(max_digits=10, decimal_places=2)
-    stock_quantity = models.IntegerField()
-    weight = models.FloatField(help_text="Weight in kg")
-    length = models.FloatField(help_text="Length in cm")
-    width = models.FloatField(help_text="Width in cm")
-    height = models.FloatField(help_text="Height in cm")
+    stock_quantity = models.IntegerField(null=True,blank=True)
     tax_percentage = models.FloatField()
 
 class ProductImage(models.Model):

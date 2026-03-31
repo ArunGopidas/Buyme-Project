@@ -1,124 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seller Profile | BuyMe</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body class="bg-gray-50 font-sans">
+{% extends "seller/base.html" %}
 
-    <div class="flex min-h-screen">
-        <aside class="w-64 bg-white border-r border-gray-200 hidden md:block">
-            <div class="p-6 border-b border-gray-100">
-                <h1 class="text-2xl font-bold text-green-600">BuyMe</h1>
-            </div>
-            <nav class="mt-6 px-4 space-y-2">
-                <a href="{% url 'seller_dashboard' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
-                    <i class="fas fa-chart-pie mr-3"></i> Dashboard
-                </a>
-                <a href="{% url 'inventory_page' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all">
-                    <i class="fas fa-boxes mr-3"></i> My Inventory
-                </a>
-                <a href="{% url 'seller_profile' %}" class="flex items-center px-4 py-3 text-sm font-bold text-green-700 bg-green-50 rounded-xl">
-                    <i class="fas fa-id-card mr-3"></i> Profile Settings
-                </a>
-            </nav>
-        </aside>
-
-        <main class="flex-1 overflow-y-auto">
-            <header class="bg-white border-b border-gray-200 px-8 py-5 flex justify-between items-center sticky top-0 z-10">
-                <h2 class="text-2xl font-bold text-gray-800">Business Profile</h2>
-                <span class="text-xs font-bold text-gray-400 uppercase">ID: #{{ profile.id }}</span>
-            </header>
-
-            <div class="p-8 max-w-4xl mx-auto">
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="mb-6 p-4 rounded-xl {% if message.tags == 'error' %}bg-red-50 text-red-700{% else %}bg-green-50 text-green-700{% endif %} text-xs font-bold border border-current">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-
-                <form method="POST" enctype="multipart/form-data" class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm space-y-8">
-                    {% csrf_token %}
-
-                    <div>
-                        <h3 class="text-sm font-bold text-green-600 mb-4 flex items-center">
-                            <i class="fas fa-store mr-2"></i> Store Identity
-                        </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold text-gray-400 uppercase">Shop Name</label>
-                                <input type="text" name="shopname" value="{{ profile.shopname|default:'' }}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold text-gray-400 uppercase">Category</label>
-                                <select name="category" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none">
-                                    <option value="Electronics" {% if profile.category == 'Electronics' %}selected{% endif %}>Electronics</option>
-                                    <option value="Fashion" {% if profile.category == 'Fashion' %}selected{% endif %}>Fashion</option>
-                                    <option value="Home" {% if profile.category == 'Home' %}selected{% endif %}>Home & Kitchen</option>
-                                </select>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold text-gray-400 uppercase">Website (Optional)</label>
-                                <input type="url" name="website" value="{{ profile.website|default:'' }}" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold text-gray-400 uppercase">Profile Image</label>
-                                <input type="file" name="profile_image" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-green-50 file:text-green-700">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="pt-6 border-t border-gray-100">
-                        <h3 class="text-sm font-bold text-green-600 mb-4 flex items-center">
-                            <i class="fas fa-file-invoice mr-2"></i> Legal & Tax Details
-                        </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold text-gray-400 uppercase">GST Number</label>
-                                <input type="text" name="gst_number" value="{{ profile.gst_number|default:'' }}" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold text-gray-400 uppercase">PAN Number</label>
-                                <input type="text" name="pan_number" value="{{ profile.pan_number|default:'' }}" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="pt-6 border-t border-gray-100">
-                        <h3 class="text-sm font-bold text-green-600 mb-4 flex items-center">
-                            <i class="fas fa-university mr-2"></i> Banking Details
-                        </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold text-gray-400 uppercase">Bank Account Number</label>
-                                <input type="text" name="bank_account_number" value="{{ profile.bank_account_number|default:'' }}" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold text-gray-400 uppercase">IFSC Code</label>
-                                <input type="text" name="ifsc_code" value="{{ profile.ifsc_code|default:'' }}" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-1 pt-6 border-t border-gray-100">
-                        <label class="text-[10px] font-bold text-gray-400 uppercase">Business Address</label>
-                        <textarea name="business_address" rows="3" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none">{{ profile.business_address|default:'' }}</textarea>
-                    </div>
-
-                    <div class="pt-8 flex justify-end">
-                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-12 py-3 rounded-xl font-bold shadow-lg transition-all transform active:scale-95">
-                            Update Business Profile
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </main>
+{% block content %}
+<div class="min-h-screen bg-slate-50 pb-12">
+    <div class="mb-8 border-b border-slate-200 pb-6">
+        <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Complete Your Seller Profile</h1>
+        <p class="text-sm text-slate-500 mt-1">Please provide your business and banking details to get verified and start selling.</p>
     </div>
 
-</body>
-</html>
+    <div class="max-w-4xl">
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+
+            <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">A. Basic Business Information</h2>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label for="shopname" class="text-sm font-medium text-slate-600">Shop Name</label>
+                            <input type="text" name="shopname" id="shopname" required
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white text-slate-800 transition">
+                        </div>
+                        <div class="space-y-1">
+                            <label for="category" class="text-sm font-medium text-slate-600">Business Category</label>
+                            <select name="category" id="category" required
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white text-slate-800 transition">
+                                <option value="" disabled selected>Select Category</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Fashion">Fashion</option>
+                                <option value="Home & Kitchen">Home & Kitchen</option>
+                                <option value="Beauty">Beauty</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <label for="business_address" class="text-sm font-medium text-slate-600">Business Address</label>
+                        <textarea name="business_address" id="business_address" rows="3" required
+                            class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white text-slate-800 transition"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">B. Legal Verification</h2>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="flex items-center p-3 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-md">
+                        <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                        </svg>
+                        <span><strong>Important:</strong> GST and PAN numbers cannot be changed after submission. Please double-check the values.</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label for="gst_number" class="text-sm font-medium text-slate-600">GST Number</label>
+                            <input type="text" name="gst_number" id="gst_number" placeholder="e.g. 22AAAAA0000A1Z5" required
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white text-slate-800 transition">
+                        </div>
+                        <div class="space-y-1">
+                            <label for="pan_number" class="text-sm font-medium text-slate-600">PAN Number</label>
+                            <input type="text" name="pan_number" id="pan_number" placeholder="e.g. ABCDE1234F" required
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white text-slate-800 transition">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">C. Bank Account Details</h2>
+                </div>
+                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label for="bank_account_number" class="text-sm font-medium text-slate-600">Account Number</label>
+                        <input type="text" name="bank_account_number" id="bank_account_number" required
+                            class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white text-slate-800 transition">
+                    </div>
+                    <div class="space-y-1">
+                        <label for="ifsc_code" class="text-sm font-medium text-slate-600">IFSC Code</label>
+                        <input type="text" name="ifsc_code" id="ifsc_code" placeholder="e.g. SBIN0001234" required
+                            class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white text-slate-800 transition">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">D. Store Branding</h2>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-3">
+                        <label class="text-sm font-medium text-slate-600 block">Profile Image / Shop Logo</label>
+                        <div class="flex items-center space-x-6">
+                            <div class="flex-shrink-0 h-20 w-20 bg-slate-100 rounded-lg border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden" id="preview-container">
+                                <svg class="h-8 w-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="placeholder-icon">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <img id="image-preview" src="#" alt="Preview" class="hidden h-full w-full object-cover">
+                            </div>
+                            <div class="flex-1">
+                                <input type="file" name="profile_image" id="profile_image" accept="image/*" required
+                                    class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition cursor-pointer">
+                                <p class="mt-2 text-xs text-slate-400">JPG, PNG or WEBP. Max size 2MB.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 shadow-md">
+                    Submit for Verification
+                </button>
+                <p class="text-center text-xs text-slate-400 mt-4">
+                    By submitting, you agree to our Seller Terms of Service.
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('profile_image').onchange = evt => {
+        const [file] = evt.target.files;
+        if (file) {
+            const preview = document.getElementById('image-preview');
+            const placeholder = document.getElementById('placeholder-icon');
+            preview.src = URL.createObjectURL(file);
+            preview.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+        }
+    }
+</script>
+{% endblock %}
