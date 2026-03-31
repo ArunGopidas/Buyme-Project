@@ -1,5 +1,9 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
+
+from seller.models import SellerProfile
+
+
 def login_view(request):
     if request.method == "POST":
         email=request.POST.get("email")
@@ -13,10 +17,25 @@ def login_view(request):
         user=authenticate(request,username=email,password=password)
         if user is not None:
             login(request, user)
-            if user.role=="SELLER":
-                return redirect("seller_profile")
+            if user.role =="SELLER":
+                try:
+                    seller = SellerProfile.objects.get(user=user)
+
+                    if seller.status =="PENDING":
+                        return redirect('pending_approval')
+
+                    elif seller.status == "APPROVED":
+                        return redirect("seller_dashboard")
+
+                    elif seller.status == "REJECTED":
+                        return redirect("rejected_page")
+
+                except SellerProfile.DoesNotExist:
+                    return redirect('seller_profile')
+
             elif user.role =="CUSTOMER":
                 return redirect('home')
+
             elif user.role =="ADMIN":
                 return redirect('admin_dashboard')
             else:

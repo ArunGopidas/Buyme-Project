@@ -1,21 +1,28 @@
+from random import choices
+
 from django.db import models
 from core.models import User, SubCategory
 
 class SellerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="seller_profile")
-    shopname = models.CharField(max_length=255)
-    shop_slug = models.SlugField(unique=True,blank=True,null=True)
-    website = models.URLField(blank=True, null=True)
+    shopname = models.CharField(max_length=255,unique=True)
+    shop_slug = models.SlugField(unique=True)
+    website = models.URLField(blank=True,null=True,unique=True)
     category = models.CharField(max_length=200)
-    gst_number = models.CharField(max_length=50,blank=True)
-    pan_number = models.CharField(max_length=50,blank=True)
-    bank_account_number = models.CharField(max_length=50,blank=True)
-    ifsc_code = models.CharField(max_length=20,blank=True)
-    business_address = models.TextField(blank=True)
+    gst_number = models.CharField(max_length=50,unique=True)
+    pan_number = models.CharField(max_length=50,unique=True)
+    bank_account_number = models.CharField(max_length=50,unique=True)
+    ifsc_code = models.CharField(max_length=20,unique=True)
+    business_address = models.TextField()
     rating = models.FloatField(default=0)
-    is_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-
+    STATUS_CHOICES=[
+        ("APPROVED",'approved'),
+        ("PENDING","pending"),
+        ("REJECTED",'rejected')
+    ]
+    status=models.CharField(max_length=10,choices=STATUS_CHOICES,default="PENDING")
+    rejection_reason=models.TextField(blank=True,null=True)
 class Product(models.Model):
     seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE, related_name="products")
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name="products")

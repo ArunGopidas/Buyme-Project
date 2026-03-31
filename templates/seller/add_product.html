@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product | BuyME Partner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        body{font-family: 'Plus Jakarta Sans', sans-serif;}
+    </style>
+</head>
+<body class="bg-[#F9FAFB] pb-24">
+
+    <nav class="bg-white border-b border-gray-100 px-10 py-6 flex justify-between items-center sticky top-0 z-50 shadow-sm">
+        <div class="flex items-center gap-6">
+            <a href="javascript:history.back()" class="h-12 w-12 flex items-center justify-center rounded-2xl bg-gray-50 text-gray-400 hover:text-green-600 hover:bg-green-50 transition-all">
+                <i class="fas fa-chevron-left text-lg"></i>
+            </a>
+            <div>
+                <h1 class="text-2xl font-black text-gray-900 italic uppercase tracking-tighter">Global<span class="text-green-600">Store</span></h1>
+                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">New Listing Portal</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button type="reset" form="productForm" class="px-6 py-3.5 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-gray-900 transition-all">
+                Discard
+            </button>
+            <button type="submit" form="productForm" class="px-12 py-4 rounded-2xl bg-green-600 text-white text-[11px] font-black uppercase tracking-widest shadow-xl shadow-green-100 hover:bg-green-700 hover:-translate-y-0.5 transition-all">
+                Deploy to Marketplace
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto mt-12 px-8">
+        <form id="productForm" action="{% url 'add_product' %}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            {% csrf_token %}
+
+            <div class="lg:col-span-8 space-y-10">
+
+                <div class="bg-white p-12 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-10">
+                    <div class="flex items-center gap-4">
+                        <span class="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center font-black text-sm">01</span>
+                        <h3 class="text-sm font-black text-gray-900 uppercase tracking-[0.2em]">Product Identity</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <label class="text-[12px] font-black text-gray-400 uppercase tracking-widest ml-1">Product Title*</label>
+                            <input type="text" id="id_name" name="name" required placeholder="Ex: Wireless Noise Cancelling Headphones"
+                                   onkeyup="document.getElementById('id_slug').value = this.value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')"
+                                   class="w-full px-7 py-5 rounded-2xl bg-gray-50 border border-transparent text-gray-900 font-bold outline-none focus:bg-white focus:border-green-500/20 transition-all">
+                        </div>
+                        <div class="space-y-4">
+                            <label class="text-[12px] font-black text-purple-600 uppercase tracking-widest ml-1 italic">Listing Slug (Auto)</label>
+                            <input type="text" id="id_slug" name="slug" required placeholder="auto-generated-link"
+                                   class="w-full px-7 py-5 rounded-2xl bg-purple-50 text-purple-700 border-none font-black outline-none lowercase italic tracking-tight">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <label class="text-[12px] font-black text-gray-400 uppercase tracking-widest ml-1">Subcategory*</label>
+                            <div class="relative">
+                                <select name="subcategory" required class="w-full px-7 py-5 rounded-2xl bg-gray-50 border-transparent text-gray-900 font-bold outline-none appearance-none cursor-pointer focus:bg-white focus:border-green-500/20">
+                                    {% for sub in subcategories %}
+                                        <option value="{{ sub.id }}">{{ sub.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <i class="fas fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none"></i>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <label class="text-[12px] font-black text-gray-400 uppercase tracking-widest ml-1"> SKU Code*</label>
+                            <input type="text" name="sku" required placeholder="GS-001-ALPHA" class="w-full px-7 py-5 rounded-2xl bg-gray-50 border-none font-black outline-none uppercase tracking-tighter text-green-600 focus:bg-white">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <label class="text-[12px] font-black text-gray-400 uppercase tracking-widest ml-1">Manufacturer / Brand</label>
+                            <input type="text" name="brand" placeholder="Brand Name" class="w-full px-7 py-5 rounded-2xl bg-gray-50 border-none font-bold outline-none">
+                        </div>
+                        <div class="space-y-4">
+                            <label class="text-[12px] font-black text-gray-400 uppercase tracking-widest ml-1">Model Reference</label>
+                            <input type="text" name="model_number" placeholder="MN-2026-X" class="w-full px-7 py-5 rounded-2xl bg-gray-50 border-none font-bold outline-none">
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <label class="text-[12px] font-black text-gray-400 uppercase tracking-widest ml-1">Product Narrative*</label>
+                        <textarea name="description" rows="6" placeholder="Describe the key features, technical specs, and benefits..." class="w-full px-7 py-6 rounded-[2rem] bg-gray-50 border-none text-gray-700 font-medium leading-relaxed outline-none focus:bg-white"></textarea>
+                    </div>
+                </div>
+
+                <div class="bg-white p-12 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-10">
+                    <div class="flex items-center gap-4">
+                        <span class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-black text-sm">02</span>
+                        <h3 class="text-sm font-black text-gray-900 uppercase tracking-[0.2em]">Financial Engineering</h3>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="space-y-4">
+                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest">List Price (MRP)*</label>
+                            <input type="number" step="0.01" name="price" required placeholder="0.00" class="w-full px-6 py-5 rounded-2xl bg-gray-50 border-none font-black outline-none">
+                        </div>
+                        <div class="space-y-4">
+                            <label class="text-[11px] font-black text-green-600 uppercase tracking-widest">Selling Price*</label>
+                            <input type="number" step="0.01" name="selling_price" required placeholder="0.00" class="w-full px-6 py-5 rounded-2xl bg-green-50 text-green-700 border-none font-black outline-none">
+                        </div>
+                        <div class="space-y-4">
+                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Cost Basis*</label>
+                            <input type="number" step="0.01" name="cost_price" required placeholder="0.00" class="w-full px-6 py-5 rounded-2xl bg-gray-50 border-none font-black outline-none">
+                        </div>
+                        <div class="space-y-4">
+                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest">GST / Tax (%)*</label>
+                            <input type="number" step="0.1" name="tax_percentage" value="5" class="w-full px-6 py-5 rounded-2xl bg-gray-50 border-none font-black outline-none">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-4 space-y-10">
+
+                <div class="bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-[11px] font-black text-orange-600 uppercase tracking-[0.2em]">03. Gallery Assets</h3>
+                        <span class="text-[9px] font-black text-orange-400 uppercase bg-orange-50 px-3 py-1 rounded-full">High Res</span>
+                    </div>
+
+                    <div class="aspect-video w-full bg-gray-50 rounded-[2rem] border-2 border-dashed border-gray-100 flex flex-col items-center justify-center relative group hover:border-green-400 transition-all cursor-pointer">
+                        <div class="text-center p-6">
+                            <i class="fas fa-images text-4xl text-gray-200 group-hover:text-green-500 mb-4 transition-colors"></i>
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-relaxed">
+                                Upload Gallery<br>
+                                <span class="text-gray-300 font-bold mt-1 block lowercase italic text-[9px]">Select multiple files at once</span>
+                            </p>
+                        </div>
+                        <input type="file" name="images" required multiple accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="showImagePreviews(this)" >
+                    </div>
+
+                    <div id="image-preview-container" class="flex gap-3 overflow-x-auto py-2"></div>
+
+                    <div class="p-5 bg-gray-50 rounded-2xl border border-gray-100">
+                        <p class="text-[10px] text-gray-400 font-bold leading-relaxed italic">
+                            The primary display image will be the first file selected.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
+                    <h3 class="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em]">04. Logistics & Policy</h3>
+
+                    <div class="flex justify-between items-center bg-gray-50 p-6 rounded-3xl">
+                        <label class="text-xs font-black text-gray-400 uppercase italic">Stock Count*</label>
+                        <input type="number" name="stock" required min="0" value="0" class="bg-white rounded-xl px-5 py-3 text-right font-black text-2xl outline-none w-24 text-green-600 border border-gray-100">
+                    </div>
+
+                    <div class="space-y-5 px-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-black text-gray-500 uppercase tracking-wider italic">Returns Allowed</span>
+                            <input type="checkbox" name="is_returnable" checked class="w-6 h-6 accent-green-600 rounded">
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-black text-gray-500 uppercase tracking-wider italic">Cancellable</span>
+                            <input type="checkbox" name="is_cancellable" checked class="w-6 h-6 accent-green-600 rounded">
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-50">
+                            <span class="text-[11px] font-black text-gray-400 uppercase tracking-wider">Return Window</span>
+                            <div class="flex items-center gap-2">
+                                <input type="number" name="return_days" required min="0" value="7" class="bg-gray-50 rounded-lg px-4 py-2 text-xs font-black w-14 text-center text-gray-900 border-none">
+                                <span class="text-[10px] font-bold text-gray-300 uppercase">Days</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
+                    <h3 class="text-[11px] font-black text-purple-600 uppercase tracking-[0.2em]">05. Physicality</h3>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-3">
+                            <p class="text-[10px] font-black text-gray-300 uppercase tracking-widest">Weight (kg)</p>
+                            <input type="number" step="0.01" name="weight" placeholder="0.00" class="w-full bg-gray-50 px-5 py-4 rounded-2xl border-none text-sm font-black outline-none focus:bg-white transition-all">
+                        </div>
+                        <div class="space-y-3">
+                            <p class="text-[10px] font-black text-gray-300 uppercase tracking-widest">Length (cm)</p>
+                            <input type="number" name="length" placeholder="0" class="w-full bg-gray-50 px-5 py-4 rounded-2xl border-none text-sm font-black outline-none focus:bg-white transition-all">
+                        </div>
+                        <div class="space-y-3">
+                            <p class="text-[10px] font-black text-gray-300 uppercase tracking-widest">Width (cm)</p>
+                            <input type="number" name="width" placeholder="0" class="w-full bg-gray-50 px-5 py-4 rounded-2xl border-none text-sm font-black outline-none focus:bg-white transition-all">
+                        </div>
+                        <div class="space-y-3">
+                            <p class="text-[10px] font-black text-gray-300 uppercase tracking-widest">Height (cm)</p>
+                            <input type="number" name="height" placeholder="0" class="w-full bg-gray-50 px-5 py-4 rounded-2xl border-none text-sm font-black outline-none focus:bg-white transition-all">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        function showImagePreviews(input) {
+            const container = document.getElementById('image-preview-container');
+            container.innerHTML = ''; // Clear out old previews
+
+            if (input.files) {
+                Array.from(input.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Creates a small square image and drops it in the container
+                        container.innerHTML += `<img src="${e.target.result}" class="h-16 w-16 object-cover rounded-xl border-2 border-green-500 shadow-sm">`;
+                    }
+                    reader.readAsDataURL(file); // This is the line that actually reads your hard drive!
+                });
+            }
+        }
+    </script>
+</body>
+</html>
