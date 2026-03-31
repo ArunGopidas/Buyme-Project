@@ -57,7 +57,7 @@
                     <div class="text-center">
                         <h5 class="text-xs font-bold uppercase tracking-widest mb-1">{{ item.product.name }}</h5>
                         <p class="text-primary text-xs font-bold mb-6">{{ item.product.selling_price }}</p>
-                        <button class="w-full bg-primary text-matte-black py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-white transition-colors">Add to Bag</button>
+                        <a href="{% url 'addcart' item.product.id %}"><button class="w-full bg-primary text-matte-black py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-white transition-colors">Add to Bag</button></a>
                     </div>
                 </div>
                 {% endfor %}

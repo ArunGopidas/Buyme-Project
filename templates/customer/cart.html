@@ -75,8 +75,8 @@
                                 <button class="text-cream/40 hover:text-primary transition-colors text-xs" aria-label="Increase quantity">+</button>
                             </div>
                             
-                            <button class="text-[10px] font-bold uppercase tracking-widest text-cream/30 hover:text-red-400 transition-colors flex items-center gap-2">
-                                <span class="material-symbols-outlined text-sm">close</span> Remove
+                            <a href="{% url 'removecart' item.id %}"><button class="text-[10px] font-bold uppercase tracking-widest text-cream/30 hover:text-red-400 transition-colors flex items-center gap-2">
+                           <span class="material-symbols-outlined text-sm">close</span></a>
                             </button>
                         </div>
                     </div>

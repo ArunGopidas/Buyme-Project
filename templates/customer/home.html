@@ -44,14 +44,15 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-        /* Dropdown Styling */
         .dropdown:hover .dropdown-menu {
             display: block;
         }
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display text-matte-black dark:text-cream overflow-x-hidden">
+
 {% include 'customer/navbar.html' %}
+
 <main class="layout-container flex flex-col">
     <section class="relative h-[90vh] w-full overflow-hidden">
         <div class="absolute inset-0 bg-cover bg-center" style="background-image: linear-gradient(to right, rgba(26,26,26,0.8) 0%, rgba(26,26,26,0) 50%), url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80');"></div>
@@ -82,8 +83,9 @@
             </div>
             <a class="text-xs font-bold uppercase tracking-widest border-b border-primary text-primary pb-1" href="#">View All</a>
         </div>
-        {% for x in categories %}
+        
         <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-cream/10">
+            {% for x in categories %}
             <div class="group relative aspect-[3/4] overflow-hidden border-r border-cream/10">
                 <img class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" src="{{ x.image }}"/>
                 <div class="absolute inset-0 bg-matte-black/20 group-hover:bg-matte-black/40 transition-all"></div>
@@ -93,6 +95,7 @@
                 </div>
             </div>
             {% endfor %}
+            
             <div class="group relative aspect-[3/4] overflow-hidden border-r border-cream/10">
                 <img class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80"/>
                 <div class="absolute inset-0 bg-matte-black/20 group-hover:bg-matte-black/40 transition-all"></div>
@@ -125,17 +128,19 @@
                     </button>
                 </div>
             </div>
+            
             <div class="flex gap-8 overflow-x-auto hide-scrollbar pb-10">
                 {% for x in products %}
-                <div class="min-w-[300px] group cursor-pointer">
-                    <div class="aspect-[4/5] overflow-hidden mb-4 bg-cream/5">
-                        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="{{ x.image.url }}"/>
+                <div class="min-w-[280px] md:min-w-[320px] group cursor-pointer">
+                    <div class="relative aspect-[4/5] w-full overflow-hidden mb-4 bg-cream/5">
+                        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                             src="{{ x.image.url }}" 
+                             alt="{{ x.name }}"/>
                     </div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-cream/40 mb-1">{{x.name}}</p>
-                    <h5 class="text-sm font-semibold tracking-wide group-hover:text-primary transition-colors">{{x.description}}</h5>
-                    <p class="text-primary font-bold mt-2">{{x.selling_price}}</p>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-cream/40 mb-1">{{ x.name }}</p>
+                    <h5 class="text-sm font-semibold tracking-wide group-hover:text-primary transition-colors line-clamp-1">{{ x.description }}</h5>
+                    <p class="text-primary font-bold mt-2">{{ x.selling_price }}</p>
                 </div>
-                
                 {% endfor %}
             </div>
         </div>
