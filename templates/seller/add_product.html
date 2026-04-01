@@ -1,206 +1,217 @@
-{% extends "seller/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product | BuyMe Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased">
 
-{% block content %}
-<div class="min-h-screen bg-slate-50 pb-12">
-    <form method="POST" enctype="multipart/form-data" id="productForm" class="max-w-7xl mx-auto">
-        {% csrf_token %}
-
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 pb-6 border-b border-slate-200">
-            <div>
-                <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Add New Product</h1>
-                <p class="text-sm text-slate-500 mt-1">Create a new listing for your global store inventory.</p>
+    <nav class="sticky top-0 z-50 w-full bg-white border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
+                    <span class="text-white font-bold text-xl">B</span>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-slate-800">BuyMe</span>
             </div>
-            <div class="flex items-center space-x-3 mt-4 md:mt-0">
-                <a href="{% url 'inventory_page' %}" class="px-4 py-2 text-sm font-semibold text-slate-600 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition">
-                    Discard
+            
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:block text-right">
+                    <p class="text-sm font-semibold text-slate-700 leading-none">Global Seller</p>
+                    <p class="text-xs text-slate-400 mt-1">Admin Panel</p>
+                </div>
+                <button class="px-3 py-1.5 text-sm font-medium text-red-600 border border-red-100 rounded-md hover:bg-red-50 transition">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900">Add New Product</h1>
+                <p class="text-sm text-slate-500">List a new product to your BuyMe store.</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="{% url 'inventory_page' %}" class="px-5 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition text-center">
+                    Cancel
                 </a>
-                <button type="submit" class="px-6 py-2 text-sm font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition shadow-md">
+                <button type="submit" form="product-form" class="px-5 py-2 text-sm font-bold text-white bg-blue-600 border border-blue-700 rounded-md hover:bg-blue-700 shadow-sm transition">
                     Publish Product
                 </button>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <form id="product-form" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {% csrf_token %}
 
-            <div class="lg:col-span-8 space-y-6">
+            <div class="lg:col-span-2 space-y-6">
 
-                <div class="bg-white border border-slate-200 rounded-md shadow-sm p-6">
-                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-6 pb-2 border-b border-slate-50">General Information</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="md:col-span-2 space-y-1">
-                            <label class="text-xs font-bold text-slate-500 uppercase">Product Name</label>
-                            <input type="text" name="name" id="id_name" required class="w-full px-3 py-2 border border-slate-300 rounded-md focus:border-blue-600 outline-none text-sm transition">
-                        </div>
+                <section class="bg-white border border-slate-200 rounded-md p-6 shadow-sm">
+                    <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6 border-b pb-2">General Information</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
-                        <div class="md:col-span-2 space-y-1">
-                            <label class="text-xs font-bold text-slate-500 uppercase">Product Slug</label>
-                            <div class="flex items-center">
-                                <span class="bg-slate-100 px-3 py-2 border border-r-0 border-slate-300 rounded-l-md text-slate-400 text-xs">/product/</span>
-                                <input type="text" name="slug" id="id_slug" class="flex-1 px-3 py-2 border border-slate-300 rounded-r-md focus:border-blue-600 outline-none text-sm font-medium text-blue-700">
-                            </div>
-                            <p class="text-[10px] text-slate-400 italic">Auto-generated from name and SKU, but editable.</p>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Product Name *</label>
+                            <input type="text" name="name" id="p-name" required placeholder="e.g. Wireless Headphones"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
                         </div>
 
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-500 uppercase">Brand</label>
-                            <input type="text" name="brand" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:border-blue-600 outline-none text-sm">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Slug (Auto-generated)</label>
+                            <input type="text" name="slug" id="p-slug" readonly placeholder="product-slug-sku"
+                                class="w-full px-3 py-2 border border-slate-200 bg-slate-50 rounded-md text-slate-500 text-sm outline-none cursor-not-allowed">
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-500 uppercase">SKU</label>
-                            <input type="text" name="sku" id="id_sku" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:border-blue-600 outline-none text-sm font-mono">
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Brand *</label>
+                            <input type="text" name="brand" required placeholder="Brand Name"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-500 uppercase">Model Number</label>
-                            <input type="text" name="model_number" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:border-blue-600 outline-none text-sm">
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">SKU *</label>
+                            <input type="text" name="sku" id="p-sku" required placeholder="BM-1001"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm font-mono transition">
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-500 uppercase">Subcategory</label>
-                            <select name="subcategory" class="w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:border-blue-600 outline-none text-sm">
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Model Number *</label>
+                            <input type="text" name="model_number" required placeholder="MD-202X"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Subcategory *</label>
+                            <select name="subcategory" required class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none bg-white text-sm transition">
                                 <option value="">Select Subcategory</option>
                                 {% for sub in subcategories %}
-                                <option value="{{ sub.id }}">{{ sub.name }}</option>
+                                    <option value="{{ sub.id }}">{{ sub.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="md:col-span-2 space-y-1">
-                            <label class="text-xs font-bold text-slate-500 uppercase">Description</label>
-                            <textarea name="description" rows="5" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:border-blue-600 outline-none text-sm transition"></textarea>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Description *</label>
+                            <textarea name="description" required rows="5" placeholder="Detailed product description..."
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition"></textarea>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                <div class="bg-white border border-slate-200 rounded-md shadow-sm p-6">
-                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-6 pb-2 border-b border-slate-50">Pricing & Inventory</h3>
+                <section class="bg-white border border-slate-200 rounded-md p-6 shadow-sm">
+                    <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6 border-b pb-2">Pricing & Inventory</h2>
                     <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase">MRP</label>
-                            <input type="number" name="price" step="0.01" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:border-blue-600 outline-none text-sm">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">MRP *</label>
+                            <input type="number" name="mrp" step="0.01" required placeholder="0.00"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase">Selling Price</label>
-                            <input type="number" name="selling_price" step="0.01" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:border-blue-600 outline-none text-sm font-bold text-blue-600">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Selling Price *</label>
+                            <input type="number" name="selling_price" step="0.01" required placeholder="0.00"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm font-bold text-blue-600 transition">
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase">Cost Price</label>
-                            <input type="number" name="cost_price" step="0.01" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:border-blue-600 outline-none text-sm">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Cost Price *</label>
+                            <input type="number" name="cost_price" step="0.01" required placeholder="0.00"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase">Stock Qty</label>
-                            <input type="number" name="stock_quantity" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:border-blue-600 outline-none text-sm">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Stock Qty *</label>
+                            <input type="number" name="stock_quantity" required placeholder="0"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase">Tax %</label>
-                            <input type="number" name="tax" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:border-blue-600 outline-none text-sm">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tax (%) *</label>
+                            <input type="number" name="tax" required placeholder="18"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
 
-            <div class="lg:col-span-4 space-y-6">
+            <div class="space-y-6">
 
-                <div class="bg-white border border-slate-200 rounded-md shadow-sm p-6">
-                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4">Product Images</h3>
-
-                    <div class="relative border-2 border-dashed border-slate-200 rounded-md p-8 text-center hover:border-blue-400 transition cursor-pointer bg-slate-50/50" onclick="document.getElementById('imageInput').click()">
-                        <svg class="w-8 h-8 text-slate-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <p class="text-xs font-bold text-slate-500 uppercase tracking-tighter">Click to upload multiple</p>
-                        <input type="file" name="image" id="imageInput" multiple accept="image/*" class="hidden" onchange="handleImagePreview(event)">
-                    </div>
-
-                    <input type="hidden" name="main_image_index" id="mainImageIndex" value="0">
-
-                    <div id="imagePreviewGrid" class="grid grid-cols-2 gap-3 mt-6">
-                        </div>
-                    <p class="text-[10px] text-slate-400 mt-4 italic text-center">Click an image to set it as <span class="text-blue-600 font-bold">Main</span>.</p>
-                </div>
-
-                <div class="bg-white border border-slate-200 rounded-md shadow-sm p-6">
-                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-6">Policies & Returns</h3>
+                <section class="bg-white border border-slate-200 rounded-md p-6 shadow-sm">
+                    <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Product Images</h2>
                     <div class="space-y-4">
-                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-md border border-slate-100">
-                            <label class="text-sm font-semibold text-slate-700">Returnable</label>
-                            <input type="checkbox" name="is_returnable" class="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
-                        </div>
-                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-md border border-slate-100">
-                            <label class="text-sm font-semibold text-slate-700">Cancellable</label>
-                            <input type="checkbox" name="is_cancellable" class="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
-                        </div>
-                        <div class="space-y-1 pt-2">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase">Return Policy (Days)</label>
-                            <input type="number" name="return_days" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:border-blue-600 outline-none text-sm">
+                        <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-300 rounded-md cursor-pointer bg-slate-50 hover:bg-slate-100 transition group">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <svg class="w-8 h-8 mb-2 text-slate-400 group-hover:text-blue-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                <p class="text-xs font-semibold text-slate-500">Upload Multiple Images</p>
+                            </div>
+                            <input type="file" name="images" id="image-upload" multiple accept="image/*" class="hidden" />
+                        </label>
+                        <div id="image-preview" class="grid grid-cols-3 gap-2"></div>
+                        <div class="p-3 bg-blue-50 rounded border border-blue-100">
+                            <p class="text-[11px] text-blue-700 leading-tight italic">
+                                <strong>Note:</strong> Primary image can be selected while editing the product.
+                            </p>
                         </div>
                     </div>
-                </div>
+                </section>
 
+                <section class="bg-white border border-slate-200 rounded-md p-6 shadow-sm">
+                    <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6">Policies</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-md">
+                            <input type="checkbox" name="is_returnable" id="returnable" class="w-4 h-4 text-blue-600 rounded border-slate-300">
+                            <label for="returnable" class="text-sm font-medium text-slate-700">Returnable Product</label>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-md">
+                            <input type="checkbox" name="is_cancellable" id="cancellable" class="w-4 h-4 text-blue-600 rounded border-slate-300">
+                            <label for="cancellable" class="text-sm font-medium text-slate-700">Cancellable Order</label>
+                        </div>
+                        <div class="pt-2">
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Return Days (Required)</label>
+                            <input type="number" name="return_days" required placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
+                        </div>
+                    </div>
+                </section>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </main>
 
-<script>
-    // 1. SLUG AUTO-GENERATION
-    const nameInput = document.getElementById('id_name');
-    const skuInput = document.getElementById('id_sku');
-    const slugInput = document.getElementById('id_slug');
+    <script>
+        // SLUG GENERATION
+        const nameInput = document.getElementById('p-name');
+        const skuInput = document.getElementById('p-sku');
+        const slugInput = document.getElementById('p-slug');
 
-    function updateSlug() {
-        const namePart = nameInput.value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-        const skuPart = skuInput.value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-');
-
-        if (namePart) {
-            slugInput.value = skuPart ? `${namePart}-${skuPart}` : namePart;
+        function generateSlug() {
+            const nameVal = nameInput.value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            const skuVal = skuInput.value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-');
+            slugInput.value = nameVal ? (skuVal ? `${nameVal}-${skuVal}` : nameVal) : '';
         }
-    }
+        nameInput.addEventListener('input', generateSlug);
+        skuInput.addEventListener('input', generateSlug);
 
-    nameInput.addEventListener('input', updateSlug);
-    skuInput.addEventListener('input', updateSlug);
+        // IMAGE PREVIEW
+        const imageInput = document.getElementById('image-upload');
+        const previewGrid = document.getElementById('image-preview');
 
-    // 2. IMAGE PREVIEW & MAIN SELECTION
-    let selectedFiles = [];
-
-    function handleImagePreview(event) {
-        const grid = document.getElementById('imagePreviewGrid');
-        const files = Array.from(event.target.files);
-        grid.innerHTML = '';
-        selectedFiles = files;
-
-        files.forEach((file, index) => {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const div = document.createElement('div');
-                div.className = `relative aspect-square rounded-md border-2 cursor-pointer overflow-hidden transition-all ${index === 0 ? 'border-blue-600 ring-2 ring-blue-100' : 'border-slate-200 hover:border-slate-300'}`;
-                div.id = `img-wrapper-${index}`;
-                div.onclick = () => setMainImage(index);
-
-                div.innerHTML = `
-                    <img src="${e.target.result}" class="w-full h-full object-cover">
-                    ${index === 0 ? '<span class="absolute top-1 left-1 bg-blue-600 text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow-sm uppercase">Main</span>' : ''}
-                `;
-                grid.appendChild(div);
-            }
-            reader.readAsDataURL(file);
-        });
-        document.getElementById('mainImageIndex').value = 0;
-    }
-
-    function setMainImage(index) {
-        document.getElementById('mainImageIndex').value = index;
-        const wrappers = document.querySelectorAll('#imagePreviewGrid > div');
-
-        wrappers.forEach((el, i) => {
-            if (i === index) {
-                el.classList.add('border-blue-600', 'ring-2', 'ring-blue-100');
-                el.classList.remove('border-slate-200');
-                if (!el.querySelector('span')) {
-                    el.insertAdjacentHTML('afterbegin', '<span class="absolute top-1 left-1 bg-blue-600 text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow-sm uppercase">Main</span>');
+        imageInput.addEventListener('change', function() {
+            previewGrid.innerHTML = '';
+            Array.from(this.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const div = document.createElement('div');
+                    div.className = "aspect-square rounded-md border border-slate-200 overflow-hidden bg-white shadow-sm";
+                    div.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+                    previewGrid.appendChild(div);
                 }
-            } else {
-                el.classList.remove('border-blue-600', 'ring-2', 'ring-blue-100');
-                el.classList.add('border-slate-200');
-                const badge = el.querySelector('span');
-                if (badge) badge.remove();
-            }
+                reader.readAsDataURL(file);
+            });
         });
-    }
-</script>
-{% endblock %}
+    </script>
+</body>
+</html>

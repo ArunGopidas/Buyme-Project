@@ -71,8 +71,9 @@
                     <tr class="hover:bg-slate-50/50 transition-colors">
                         <td class="px-6 py-4">
                             <div class="flex items-center">
-                            {% if product.image %}
-                                <img class="h-12 w-12 rounded border border-slate-200 object-cover" src="{{ product.image.url }}" alt="">
+                            {% with product.images.all.first as first_image %}
+                            {% if first_image.is_primary == True %}
+                                <img class="h-12 w-12 rounded border border-slate-200 object-cover" src="{{ first_image.image.url }}" alt="">
                             {% else %}
                                 <div class="h-12 w-12 rounded border border-slate-200 bg-slate-100 flex items-center justify-center">
                                     <svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,6 +81,7 @@
                                     </svg>
                                 </div>
                             {% endif %}
+                            {% endwith %}
                                 <div class="ml-4">
                                     <div class="text-sm font-bold text-slate-800">{{ product.name }}</div>
                                     <div class="text-xs text-slate-400 font-medium">{{ product.brand|default:"No Brand" }}</div>

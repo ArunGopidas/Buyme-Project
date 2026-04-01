@@ -160,7 +160,7 @@ def add_product(request):
         selling_price=request.POST.get('selling_price')
         cost_price=request.POST.get('cost_price')
         tax_percentage=request.POST.get('tax_percentage',5)
-        stock_quantity = request.POST.get("stock")
+        stock_quantity = request.POST.get("stock_quantity")
         is_returnable = True if request.POST.get("is_returnable") == 'on' else False
         is_cancellable = True if request.POST.get("is_cancellable") == 'on' else False
         return_days=request.POST.get("return_days",5)
@@ -193,14 +193,13 @@ def add_product(request):
         )
 
         images = request.FILES.getlist("images")
-
-        for i, img in enumerate(images):
+        for index, img in enumerate(images)  :
             ProductImage.objects.create(
                 product=product,
                 image=img,
-                is_primary=(i == 0)
+                is_primary = True if (index == 0 )  else False
             )
-
+        print(request.files)
         return redirect("inventory_page")
 
     subcategories = SubCategory.objects.all()
@@ -289,7 +288,7 @@ def order_page(request):
 
 
 @seller_required
-def product_preview(request,id):
+def product_preview(request,id,slug):
     seller=request.user.seller_profile
     product=Product.objects.get(id=id,seller=seller)
     images=product.images.all()
