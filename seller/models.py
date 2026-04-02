@@ -28,7 +28,7 @@ class Product(models.Model):
     seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE, related_name="products")
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name="products")
     name = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True,default="temp-slug")
     description = models.TextField()
     brand = models.CharField(max_length=100)
     model_number = models.CharField(max_length=100)
