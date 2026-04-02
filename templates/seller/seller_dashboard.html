@@ -104,8 +104,9 @@
                     <tr class="hover:bg-slate-50/80 transition-colors">
                         <td class="px-6 py-4">
                             <div class="flex items-center">
-                            {% if product.image %}
-                                <img class="h-10 w-10 rounded border border-slate-200 object-cover" src="{{ product.image.url }}" alt="{{ product.name }}"
+                            {% with product.images.all.first as first_image %}
+                            {% if first_image.is_primary == True %}
+                                <img class="h-10 w-10 rounded border border-slate-200 object-cover" src="{{ first_image.image.url }}" alt="{{ product.name }}"
                             {% else %}
                                 <div class="h-10 w-10 rounded border border-slate-200 bg-slate-100 flex items-center justify-center">
                                     <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -113,6 +114,7 @@
                                 </svg>
                                 </div>
                             {% endif %}
+                            {% endwith %}
                                 <span class="ml-3 text-sm font-semibold text-slate-700">{{ product.name }}</span>
                             </div>
                         </td>
@@ -123,7 +125,7 @@
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="text-sm font-bold text-slate-900">${{ product.selling_price }}</span>
+                            <span class="text-sm font-bold text-slate-900">₹{{ product.selling_price }}</span>
                         </td>
                         <td class="px-6 py-4">
                             <span class="text-sm text-slate-600">{{ product.stock_quantity }} units</span>

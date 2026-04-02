@@ -233,10 +233,15 @@ def edit_product(request,id):
         product.brand = request.POST.get('brand')
         product.model_number = request.POST.get('model_number')
         subcategory_id = request.POST.get("subcategory")
-        product.subcategory = SubCategory.objects.get(id=subcategory_id)
-        product.image=request.FILES.get("image")
-        product.sku = request.POST.get('sku')
+        if subcategory_id:
+            product.subcategory = SubCategory.objects.get(id=subcategory_id)
+
+        if request.FILES.get("image"):
+            product.image=request.FILES.get("image")
+
+        product.sku_code = request.POST.get('sku_code')
         product.stock  = request.POST.get('stock')
+
         product.slug = slugify(product.name + "-" + product.sku)
         product.price = request.POST.get('price')
         product.selling_price = request.POST.get('selling_price')
@@ -246,12 +251,17 @@ def edit_product(request,id):
         product.is_cancellable = True if request.POST.get("is_cancellable") == 'on' else False
         product.save()
 
-        new_image=request.FILES.get("image")
-        if new_image:
+        new_image=request.FILES.getlist("images")
+        for img in new_image:
             ProductImage.objects.create(
                 product=product,
-                image=new_image
+                image=img,
+                is_primary=False
             )
+        primary_image=request.POST.get('primary_image_id')
+        if primary_image:
+            product.images.get
+
         return redirect('inventory_page')
     subcategories=SubCategory.objects.all()
     data={
