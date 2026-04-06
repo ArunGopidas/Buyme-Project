@@ -1,129 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Login | BUYME Premium</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#efc139",
-                        "background-light": "#f8f7f6",
-                        "background-dark": "#221d10",
-                        "luxury-cream": "#fdfcf8",
-                        "luxury-black": "#121212",
-                    },
-                    fontFamily: { "display": ["Manrope", "sans-serif"] },
-                },
-            },
-        }
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | BuyME</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Manrope', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .bg-slate-925 { background-color: #0f172a; }
     </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark min-h-screen flex items-center justify-center font-display antialiased">
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-0 md:p-6">
 
-<div class="w-full max-w-[1440px] px-6 py-12 flex flex-col items-center">
-    <div class="mb-12 text-center">
-        <div class="inline-flex items-center justify-center p-4">
-            <div class="w-16 h-16 bg-luxury-black dark:bg-primary flex items-center justify-center rounded-full shadow-2xl">
-                <span class="material-icons text-white dark:text-luxury-black text-3xl">shopping_bag</span>
+    <!-- Main Container -->
+    <div class="flex flex-col md:flex-row w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden min-h-[650px]">
+
+        <!-- LEFT SIDEBAR: Brand Welcome -->
+        <div class="hidden md:flex md:w-5/12 bg-slate-925 p-12 flex-col justify-between text-white relative">
+            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-green-500 via-transparent to-transparent"></div>
+
+            <div class="relative z-10">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 mb-12">
+                    <div class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.4)]">
+                        <i class="fa-solid fa-bolt text-slate-900 text-lg"></i>
+                    </div>
+                    <span class="text-2xl font-bold tracking-tight uppercase">Merchant Slate</span>
+                </div>
+
+                <h2 class="text-4xl font-extrabold leading-tight mb-6 text-white">Welcome back to your <span class="text-green-400">Command Center.</span></h2>
+
+                <!-- Brand Image / Dashboard Preview -->
+                <div class="mt-8 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop"
+                         alt="Dashboard Analytics"
+                         class="opacity-70 hover:opacity-100 transition-opacity duration-500">
+                </div>
+            </div>
+
+            <!-- Descriptive Note -->
+            <div class="relative z-10 mt-8">
+                <div class="h-px bg-slate-800 w-full mb-6"></div>
+                <p class="text-slate-400 text-sm leading-relaxed">
+                    Check your overnight sales, manage global inventory, and respond to customer inquiries from your unified BuyMe portal.
+                </p>
             </div>
         </div>
-        <h1 class="mt-4 text-3xl font-black tracking-[0.2em] uppercase text-luxury-black dark:text-background-light">
-            BUYME<span class="text-primary">.</span>
-        </h1>
+
+        <!-- RIGHT SIDE: Login Form -->
+        <div class="w-full md:w-7/12 p-8 md:p-16 bg-white flex flex-col justify-center">
+            <div class="max-w-md mx-auto w-full">
+
+                <header class="mb-10">
+                    <h1 class="text-3xl font-bold text-slate-900">Login</h1>
+                    <p class="text-slate-500 mt-2 text-sm">Manage your storefront and track orders.</p>
+                </header>
+
+                <!-- Error Message Alert -->
+                {% if error %}
+                <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 flex items-center gap-3 animate-pulse">
+                    <i class="fa-solid fa-circle-exclamation text-red-500"></i>
+                    <p class="text-red-700 text-sm font-semibold">{{ error }}</p>
+                </div>
+                {% endif %}
+
+                <!-- Form starts here -->
+                <form method="POST" action="{% url 'login' %}" class="space-y-6">
+                    {% csrf_token %}
+
+                    <!-- Email Input (name="email" to match view) -->
+                    <div class="space-y-1">
+                        <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Registered Email</label>
+                        <input type="email" name="email" required placeholder="alex@business.com"
+                            class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 outline-none transition-all placeholder:text-slate-300">
+                    </div>
+
+                    <!-- Password Input (name="password" to match view) -->
+                    <div class="relative space-y-1">
+                        <div class="flex justify-between items-center">
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Password</label>
+                            <a href="#" class="text-[10px] font-bold text-green-600 hover:text-green-700 uppercase tracking-tighter">Forgot Password?</a>
+                        </div>
+                        <input type="password" name="password" id="p1" required placeholder="••••••••"
+                            class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 outline-none transition-all">
+
+                        <!-- Toggle Visibility Button -->
+                        <button type="button" onclick="togglePass('p1', 'icon1')" class="absolute right-3 top-[34px] text-slate-400 hover:text-slate-900 transition-colors">
+                            <i id="icon1" class="fa-regular fa-eye text-sm"></i>
+                        </button>
+                    </div>
+
+                    <!-- Options -->
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" name="remember" id="remember" class="w-4 h-4 rounded border-gray-300 text-slate-900 focus:ring-slate-900">
+                        <label for="remember" class="text-sm text-slate-500">Keep me logged in for 30 days</label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit"
+                        class="w-full bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-xl shadow-xl hover:shadow-black/20 transition-all transform active:scale-[0.98]">
+                        Sign In to Dashboard
+                    </button>
+                </form>
+
+                <footer class="mt-12 text-center text-sm text-slate-500">
+                    New to BuyME?
+                    <a href="{% url 'register' %}" class="text-slate-900 font-bold hover:underline ml-1">Create an account</a>
+                </footer>
+            </div>
+        </div>
     </div>
 
-    <div class="w-full max-w-md bg-luxury-cream dark:bg-black/20 p-8 md:p-12 border border-luxury-black/5 dark:border-primary/20 shadow-2xl rounded-xl">
-        <div class="mb-10 text-center">
-            <h2 class="text-3xl font-light text-luxury-black dark:text-background-light mb-2">Welcome Back</h2>
-            <p class="text-sm text-luxury-black/60 dark:text-background-light/60 tracking-wide">Enter your credentials to access your account</p>
-        </div>
+    <!-- Password Visibility Script -->
+    <script>
+        function togglePass(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
 
-        {% if error %}
-        <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-xs italic flex items-center">
-            <span class="material-icons text-sm mr-2">error_outline</span>
-            {{ error }}
-        </div>
-        {% endif %}
-
-        <form method="POST" action="{% url 'login' %}" class="space-y-6">
-            {% csrf_token %}
-            
-            <div>
-                <label class="block text-[10px] font-bold uppercase tracking-widest text-luxury-black/80 dark:text-background-light/80 mb-2" for="email">
-                    Email Address
-                </label>
-                <input type="email" id="email" name="email" required
-                    class="w-full bg-transparent border-b-2 border-luxury-black/10 dark:border-background-light/10 py-3 px-1 text-luxury-black dark:text-background-light placeholder:text-luxury-black/20 focus:border-primary transition-colors duration-300 rounded-none border-t-0 border-x-0 outline-none" 
-                    placeholder="name@example.com"/>
-            </div>
-            <div>
-                <label class="block text-[10px] font-bold uppercase tracking-widest text-luxury-black/80 dark:text-background-light/80 mb-2" for="password">
-                    Password
-                </label>
-                <input type="password" id="password" name="password" required
-                    class="w-full bg-transparent border-b-2 border-luxury-black/10 dark:border-background-light/10 py-3 px-1 text-luxury-black dark:text-background-light placeholder:text-luxury-black/20 focus:border-primary transition-colors duration-300 rounded-none border-t-0 border-x-0 outline-none" 
-                    placeholder="••••••••"/>
-            </div>
-
-            <div class="flex items-center justify-between pt-2">
-                <label class="flex items-center cursor-pointer group">
-                    <input type="checkbox" class="w-4 h-4 rounded border-luxury-black/20 text-luxury-black focus:ring-primary"/>
-                    <span class="ml-2 text-xs text-luxury-black/60 dark:text-background-light/60 group-hover:text-primary transition-colors">Remember me</span>
-                </label>
-                <a class="text-xs text-luxury-black/60 dark:text-background-light/60 hover:text-primary transition-colors underline underline-offset-4" href="#">
-                    Forgot Password?
-                </a>
-            </div>
-
-            <div class="pt-6">
-                <button type="submit" class="w-full bg-luxury-black dark:bg-primary text-white dark:text-luxury-black py-4 px-8 rounded-lg font-bold tracking-widest uppercase text-xs hover:shadow-primary/20 transition-all transform hover:-translate-y-0.5 active:scale-95 shadow-xl flex items-center justify-center">
-                    Login to BUYME
-                    <span class="material-icons text-sm ml-2">login</span>
-                </button>
-            </div>
-        </form>
-
-        <div class="mt-10 mb-8 flex items-center">
-            <div class="flex-grow border-t border-luxury-black/10 dark:border-background-light/10"></div>
-            <span class="mx-4 text-[10px] font-bold uppercase tracking-widest text-luxury-black/40 dark:text-background-light/40">Quick Access</span>
-            <div class="flex-grow border-t border-luxury-black/10 dark:border-background-light/10"></div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-            <button class="flex items-center justify-center py-3 border border-luxury-black/10 dark:border-background-light/10 rounded-lg hover:bg-white transition-colors">
-                <img src="https://www.svgrepo.com/show/355037/google.svg" class="w-4 h-4 mr-2" alt="Google">
-                <span class="text-[10px] font-bold uppercase">Google</span>
-            </button>
-            <button class="flex items-center justify-center py-3 border border-luxury-black/10 dark:border-background-light/10 rounded-lg hover:bg-white transition-colors">
-                <span class="material-icons text-lg mr-2">apple</span>
-                <span class="text-[10px] font-bold uppercase">Apple</span>
-            </button>
-        </div>
-
-        <div class="mt-10">
-            <a href="{% url 'register' %}" class="w-full bg-transparent border-2 border-luxury-black/20 dark:border-background-light/20 text-luxury-black dark:text-background-light py-3 px-8 rounded-lg font-bold tracking-widest uppercase text-xs hover:border-primary hover:text-primary transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center">
-                I don't have an account
-                <span class="material-icons text-sm ml-2">person_add</span>
-            </a>
-        </div>
-    </div>
-
-    <div class="mt-12 text-[9px] uppercase tracking-[0.3em] text-luxury-black/40 dark:text-background-light/40 flex space-x-8">
-        <a class="hover:text-primary transition-colors" href="#">Privacy</a>
-        <a class="hover:text-primary transition-colors" href="#">Terms</a>
-        <a class="hover:text-primary transition-colors" href="#">Contact</a>
-    </div>
-</div>
-
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        }
+    </script>
 </body>
 </html>

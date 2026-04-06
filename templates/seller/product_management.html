@@ -1,0 +1,180 @@
+{% extends 'seller/base.html' %}
+
+{% block content %}
+<div class="max-w-[1400px] mx-auto space-y-8">
+
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900">Product Management</h1>
+            <nav class="flex text-xs text-slate-400 mt-1 font-medium">
+                <a href="#" class="hover:text-slate-600">Dashboard</a>
+                <span class="mx-2">/</span>
+                <span class="text-slate-600">Products</span>
+            </nav>
+        </div>
+        
+        <div class="relative group">
+            <a href="{% url 'add_product' %}" 
+               class="flex items-center justify-center w-12 h-12 bg-slate-900 text-white rounded-xl shadow-lg shadow-slate-200 hover:bg-black hover:scale-105 transition-all transform active:scale-95">
+                <i class="fa-solid fa-plus text-lg"></i>
+            </a>
+            <div class="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                <div class="bg-slate-800 text-white text-[10px] font-bold py-1.5 px-3 rounded-lg whitespace-nowrap shadow-xl">
+                    Add Product
+                </div>
+                <div class="w-2 h-2 bg-slate-800 rotate-45 mx-auto -mt-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-5">
+            <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center text-xl">
+                <i class="fa-solid fa-box-archive"></i>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{shopname}} Stock</p>
+                <h3 class="text-2xl font-bold text-slate-800">{{active_products}}</h3>
+                <p class="text-[10px] text-slate-400 mt-0.5">Total active products </p>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-5">
+            <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center text-xl">
+                <i class="fa-solid fa-clipboard-check"></i>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">In Review</p>
+                <h3 class="text-2xl font-bold text-slate-800">{{pending_product}}</h3>
+                <a href="{% url 'pending_products_list'%}" class="text-[10px] text-amber-600 font-bold hover:underline flex items-center gap-1">Review pending items <i class="fa-solid fa-arrow-right text-[8px]"></i></a>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-5">
+            <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center text-xl">
+                <i class="fa-solid fa-circle-exclamation"></i>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Action Required</p>
+                <h3 class="text-2xl font-bold text-slate-800">{{rejected_products}}</h3>
+                <a href="#" class="text-[10px] text-rose-600 font-bold hover:underline flex items-center gap-1">Fix rejected listings <i class="fa-solid fa-arrow-right text-[8px]"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        
+        <div class="p-6 border-b border-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center p-1 bg-slate-100 rounded-xl w-fit">
+                <button class="px-5 py-2 text-[11px] font-bold rounded-lg bg-white shadow-sm text-slate-900">All</button>
+                <button class="px-5 py-2 text-[11px] font-bold text-slate-500 hover:text-slate-700">Active</button>
+                <button class="px-5 py-2 text-[11px] font-bold text-slate-500 hover:text-slate-700">Pending Approval</button>
+                <button class="px-5 py-2 text-[11px] font-bold text-slate-500 hover:text-slate-700">Rejected</button>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" placeholder="Search by SKU or Name..." 
+                           class="pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:border-slate-900 outline-none w-64 transition-all">
+                </div>
+                <button class="w-10 h-10 flex items-center justify-center bg-slate-50 border border-slate-200 rounded-xl text-slate-500 hover:bg-slate-100 transition-colors">
+                    <i class="fa-solid fa-sliders"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50/50 text-[10px] uppercase font-bold tracking-widest text-slate-400">
+                        <th class="px-6 py-4">Product</th>
+                        <th class="px-6 py-4">SKU</th>
+                        <th class="px-6 py-4">Category</th>
+                        <th class="px-6 py-4 text-center">Price</th>
+                        <th class="px-6 py-4 text-center">Stock</th>
+                        <th class="px-6 py-4">Status</th>
+                        <th class="px-6 py-4 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                    {% for product in products %}
+                    <tr class="group hover:bg-slate-50/50 transition-colors">
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-slate-100 overflow-hidden border border-slate-200/50 flex-shrink-0">
+                                    {% if product.image %}
+                                        <img src="{{ product.image.url }}" class="w-full h-full object-cover">
+                                    {% else %}
+                                        <div class="w-full h-full flex items-center justify-center text-slate-300">
+                                            <i class="fa-solid fa-image"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="text-sm font-bold text-slate-800 truncate">{{ product.name }}</p>
+                                    <p class="text-[10px] text-slate-400 font-medium mt-0.5">Updated {{ product.updated_at|timesince }} ago</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5 text-[10px] font-mono text-slate-500 font-bold">{{ product.sku_code }}</td>
+                        <td class="px-6 py-5">
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-[10px] font-bold rounded-lg uppercase tracking-wider">
+                                {{ product.sub_category.name }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-5 text-sm font-bold text-slate-900 text-center">₹{{ product.price }}</td>
+                        <td class="px-6 py-5 text-sm font-medium text-slate-600 text-center">{{ product.stock }}</td>
+                        <td class="px-6 py-5">
+                            {% if product.approval_status == 'APPROVED' %}
+                                <span class="flex items-center gap-1.5 text-emerald-600 font-bold text-[10px] uppercase tracking-wide">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
+                                </span>
+                            {% elif product.approval_status == 'PENDING' %}
+                                <span class="flex items-center gap-1.5 text-amber-600 font-bold text-[10px] uppercase tracking-wide">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Pending
+                                </span>
+                            {% else %}
+                                <span class="flex items-center gap-1.5 text-rose-600 font-bold text-[10px] uppercase tracking-wide">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Rejected
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-5 text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-white hover:text-slate-900 hover:shadow-sm border border-transparent hover:border-slate-200 transition-all">
+                                    <i class="fa-solid fa-eye text-xs"></i>
+                                </button>
+                                <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-white hover:text-blue-600 hover:shadow-sm border border-transparent hover:border-blue-100 transition-all">
+                                    <i class="fa-solid fa-pen text-xs"></i>
+                                </button>
+                                <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-white hover:text-rose-600 hover:shadow-sm border border-transparent hover:border-rose-100 transition-all">
+                                    <i class="fa-solid fa-trash text-xs"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="p-6 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Showing 1 to 4 of 1,284 products</p>
+            <div class="flex items-center gap-2">
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:bg-white transition-colors cursor-not-allowed">
+                    <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                </button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-900 text-white text-xs font-bold">1</button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-white text-xs font-bold transition-colors">2</button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-white text-xs font-bold transition-colors">3</button>
+                <span class="text-slate-400 px-1">...</span>
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-white text-xs font-bold transition-colors">32</button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-white transition-colors">
+                    <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -17,7 +17,11 @@ urlpatterns = [
     path("pending_products",views.pending_products,name="pending_products_list"),
     path("pending_approval",views.pending_approval,name="pending_approval"),
     path("edit_seller_profile", views.seller_profile_edit, name="edit_profile"),
-    path("view_seller_profile", views.view_seller_profile, name="view_profile")
+    path("view_seller_profile", views.view_seller_profile, name="view_profile"),
+    path("coupon_page",views.coupon_page,name='coupons_page'),
+    path("product_management",views.product_management,name='product_management'),
+    path("load-subcategories/", views.load_subcategories, name="load_subcategories"),
+
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

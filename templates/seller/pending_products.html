@@ -50,7 +50,7 @@
             <div class="p-10 max-w-7xl mx-auto">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-                    {% for product in pending_products %}
+                    {% for product in pending_product %}
                     <div class="bg-white rounded-3xl border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.02)] overflow-hidden group flex flex-col hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
 
                         <div class="relative aspect-square bg-[#FBFBFC] overflow-hidden rounded-t-3xl">
@@ -102,7 +102,7 @@
                                     </span>
                                 </div>
 
-                                <a href="{% url 'product_preview' product.id %}" class="bg-slate-900 text-white w-9 h-9 flex items-center justify-center rounded-xl shadow-lg shadow-slate-200 hover:bg-indigo-600 transition-all flex-shrink-0">
+                                <a href="{% url 'product_preview' product.id product.slug%}" class="bg-slate-900 text-white w-9 h-9 flex items-center justify-center rounded-xl shadow-lg shadow-slate-200 hover:bg-indigo-600 transition-all flex-shrink-0">
                                     <i class="fas fa-arrow-right text-xs"></i>
                                 </a>
                             </div>

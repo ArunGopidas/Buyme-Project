@@ -1,139 +1,189 @@
-{% extends "seller/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Profile | BuyME</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .bg-slate-925 { background-color: #0f172a; }
+        /* Custom scrollbar for the form side */
+        .form-side::-webkit-scrollbar { width: 5px; }
+        .form-side::-webkit-scrollbar-track { background: transparent; }
+        .form-side::-webkit-scrollbar-thumb { background: #22c55e; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-0 md:p-6">
 
-{% block content %}
-<div class="min-h-screen bg-slate-50 pb-12">
-    <div class="mb-8 border-b border-slate-200 pb-6">
-        <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Complete Your Seller Profile</h1>
-        <p class="text-sm text-slate-500 mt-1">Please provide your business and banking details to get verified and start selling.</p>
-    </div>
+    <div class="flex flex-col md:flex-row w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden md:h-[850px]">
 
-    <div class="max-w-4xl">
-        <form method="POST" enctype="multipart/form-data" class="space-y-6">
-            {% csrf_token %}
+        <!-- Sidebar Section (Theme Match) -->
+        <div class="hidden md:flex md:w-5/12 bg-slate-925 p-12 flex-col justify-between text-white relative">
+            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-green-500 via-transparent to-transparent"></div>
 
-            <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
-                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
-                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">A. Basic Business Information</h2>
-                </div>
-                <div class="p-6 space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="space-y-1">
-                            <label for="shopname" class="text-sm font-medium text-slate-600">Shop Name</label>
-                            <input type="text" name="shopname" id="shopname" required
-                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white text-slate-800 transition">
-                        </div>
-                        <div class="space-y-1">
-                            <label for="category" class="text-sm font-medium text-slate-600">Business Category</label>
-                            <select name="category" id="category" required
-                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white text-slate-800 transition">
-                                <option value="" disabled selected>Select Category</option>
-                                <option value="Electronics">Electronics</option>
-                                <option value="Fashion">Fashion</option>
-                                <option value="Home & Kitchen">Home & Kitchen</option>
-                                <option value="Beauty">Beauty</option>
-                                <option value="Others">Others</option>
-                            </select>
-                        </div>
+            <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-10">
+                    <div class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.4)]">
+                        <i class="fa-solid fa-store text-slate-900 text-lg"></i>
                     </div>
-                    <div class="space-y-1">
-                        <label for="business_address" class="text-sm font-medium text-slate-600">Business Address</label>
-                        <textarea name="business_address" id="business_address" rows="3" required
-                            class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white text-slate-800 transition"></textarea>
-                    </div>
+                    <span class="text-2xl font-bold tracking-tight uppercase text-white">BuyME</span>
                 </div>
-            </div>
 
-            <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
-                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">B. Legal Verification</h2>
-                </div>
-                <div class="p-6 space-y-4">
-                    <div class="flex items-center p-3 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-md">
-                        <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                        </svg>
-                        <span><strong>Important:</strong> GST and PAN numbers cannot be changed after submission. Please double-check the values.</span>
-                    </div>
+                <h2 class="text-4xl font-extrabold leading-tight mb-6">Setup your <span class="text-green-400">Business Hub</span>.</h2>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="space-y-1">
-                            <label for="gst_number" class="text-sm font-medium text-slate-600">GST Number</label>
-                            <input type="text" name="gst_number" id="gst_number" placeholder="e.g. 22AAAAA0000A1Z5" required
-                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white text-slate-800 transition">
-                        </div>
-                        <div class="space-y-1">
-                            <label for="pan_number" class="text-sm font-medium text-slate-600">PAN Number</label>
-                            <input type="text" name="pan_number" id="pan_number" placeholder="e.g. ABCDE1234F" required
-                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white text-slate-800 transition">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
-                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
-                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">C. Bank Account Details</h2>
-                </div>
-                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="space-y-1">
-                        <label for="bank_account_number" class="text-sm font-medium text-slate-600">Account Number</label>
-                        <input type="text" name="bank_account_number" id="bank_account_number" required
-                            class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white text-slate-800 transition">
-                    </div>
-                    <div class="space-y-1">
-                        <label for="ifsc_code" class="text-sm font-medium text-slate-600">IFSC Code</label>
-                        <input type="text" name="ifsc_code" id="ifsc_code" placeholder="e.g. SBIN0001234" required
-                            class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white text-slate-800 transition">
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
-                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
-                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">D. Store Branding</h2>
-                </div>
-                <div class="p-6">
-                    <div class="space-y-3">
-                        <label class="text-sm font-medium text-slate-600 block">Profile Image / Shop Logo</label>
-                        <div class="flex items-center space-x-6">
-                            <div class="flex-shrink-0 h-20 w-20 bg-slate-100 rounded-lg border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden" id="preview-container">
-                                <svg class="h-8 w-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="placeholder-icon">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <img id="image-preview" src="#" alt="Preview" class="hidden h-full w-full object-cover">
-                            </div>
-                            <div class="flex-1">
-                                <input type="file" name="profile_image" id="profile_image" accept="image/*" required
-                                    class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition cursor-pointer">
-                                <p class="mt-2 text-xs text-slate-400">JPG, PNG or WEBP. Max size 2MB.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pt-4">
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 shadow-md">
-                    Submit for Verification
-                </button>
-                <p class="text-center text-xs text-slate-400 mt-4">
-                    By submitting, you agree to our Seller Terms of Service.
+                <p class="text-slate-400 text-sm leading-relaxed mb-8">
+                    You're just one step away from reaching millions. Complete your business verification to unlock your seller dashboard and start listing products.
                 </p>
-            </div>
-        </form>
-    </div>
-</div>
 
-<script>
-    document.getElementById('profile_image').onchange = evt => {
-        const [file] = evt.target.files;
-        if (file) {
-            const preview = document.getElementById('image-preview');
-            const placeholder = document.getElementById('placeholder-icon');
-            preview.src = URL.createObjectURL(file);
-            preview.classList.remove('hidden');
-            placeholder.classList.add('hidden');
+                <div class="mt-4 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop"
+                         alt="Analytics Preview"
+                         class="opacity-70 grayscale hover:grayscale-0 transition-all duration-700">
+                </div>
+            </div>
+
+            <div class="relative z-10 space-y-4">
+                <div class="h-px bg-slate-800 w-full"></div>
+                <div class="flex items-center gap-3 text-green-400">
+                    <i class="fa-solid fa-shield-check"></i>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Verified Merchant Status Pending</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="w-full md:w-7/12 bg-white flex flex-col overflow-y-auto form-side">
+            <div class="p-8 md:p-16">
+
+                <header class="mb-10">
+                    <h1 class="text-3xl font-bold text-slate-900">Complete Profile</h1>
+                    <p class="text-slate-500 mt-2 text-sm">Fill in your business details to continue.</p>
+                </header>
+
+                {% if error %}
+                <div class="mb-8 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm font-medium rounded-r-lg shadow-sm">
+                    <i class="fa-solid fa-circle-exclamation mr-2"></i> {{ error }}
+                </div>
+                {% endif %}
+
+                <form method="POST" action="{% url 'seller_profile' %}" enctype="multipart/form-data" class="space-y-8">
+                    {% csrf_token %}
+
+                    <!-- 1. Store Basics -->
+                    <div class="space-y-4">
+                        <h3 class="text-[11px] font-bold text-green-600 uppercase tracking-widest border-b border-slate-100 pb-2">Store Basics</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Shop Name</label>
+                                <input type="text" name="shop_name" required placeholder="e.g. Velox Studio" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 outline-none transition-all">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Category</label>
+                                <select name="category" required class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 outline-none bg-white">
+                                    <option value="" disabled selected>Select Category</option>
+                                    {% for cat in categories %}
+                                        <option value="{{ cat.id }}">{{ cat.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Business Email</label>
+                                <input type="email" name="business_email" required placeholder="biz@example.com" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 outline-none">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Website (Optional)</label>
+                                <input type="url" name="website" placeholder="https://..." class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 outline-none">
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Shop Description</label>
+                            <textarea name="description" rows="2" placeholder="Tell us about your products..." class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-slate-900 outline-none resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 2. Legal Details -->
+                    <div class="space-y-4">
+                        <h3 class="text-[11px] font-bold text-green-600 uppercase tracking-widest border-b border-slate-100 pb-2">Legal Information</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">GST Number</label>
+                                <input type="text" name="gst_number" required placeholder="22AAAAA0000A1Z5" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-slate-900 outline-none">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">PAN Number</label>
+                                <input type="text" name="pan_number" required placeholder="ABCDE1234F" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-slate-900 outline-none uppercase">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Payouts & Location -->
+                    <div class="space-y-4">
+                        <h3 class="text-[11px] font-bold text-green-600 uppercase tracking-widest border-b border-slate-100 pb-2">Banking & Location</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Bank A/C Number</label>
+                                <input type="text" name="bank_account_number" required placeholder="0000123456" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-slate-900 outline-none">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">IFSC Code</label>
+                                <input type="text" name="ifsc_code" required placeholder="SBIN0001234" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-slate-900 outline-none uppercase">
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Business Address</label>
+                            <textarea name="business_address" rows="2" required placeholder="Full registered address" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-slate-900 outline-none resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 4. Logo Upload -->
+                    <div class="space-y-4">
+                        <h3 class="text-[11px] font-bold text-green-600 uppercase tracking-widest border-b border-slate-100 pb-2">Branding</h3>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Shop Logo</label>
+                            <div class="flex items-center justify-center w-full">
+                                <label class="flex flex-col items-center justify-center w-full h-28 border-2 border-slate-200 border-dashed rounded-xl cursor-pointer bg-slate-50 hover:bg-slate-100 transition-all overflow-hidden relative">
+                                    <div id="upload-hint" class="flex items-center gap-3">
+                                        <i class="fa-solid fa-cloud-arrow-up text-slate-400"></i>
+                                        <span class="text-xs text-slate-500 font-medium">Upload Store Logo</span>
+                                    </div>
+                                    <input type="file" name="logo" class="hidden" accept="image/*" onchange="previewLogo(this)"/>
+                                    <img id="logo-preview" class="hidden absolute inset-0 w-full h-full object-cover">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-xl shadow-xl hover:shadow-black/20 transition-all transform active:scale-[0.98] mt-6">
+                        Launch My Store
+                    </button>
+                </form>
+
+                <footer class="mt-10 text-center text-[10px] text-slate-400 uppercase tracking-[0.2em]">
+                    BuyME Merchant Verification System &copy; 2026
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function previewLogo(input) {
+            const preview = document.getElementById('logo-preview');
+            const hint = document.getElementById('upload-hint');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    hint.classList.add('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
         }
-    }
-</script>
-{% endblock %}
+    </script>
+</body>
+</html>

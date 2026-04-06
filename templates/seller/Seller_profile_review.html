@@ -1,86 +1,129 @@
-{% extends "seller/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Under Review | Merchant Slate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .step-line { position: absolute; left: 15px; top: 32px; bottom: -8px; width: 2px; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-6">
 
-{% block content %}
-<div class="min-h-screen bg-slate-50 pb-12">
-    <div class="mb-8 border-b border-slate-200 pb-6">
-        <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Profile Under Review</h1>
-        <p class="text-sm text-slate-500 mt-1 text-balance max-w-2xl">
-            Your application to become a verified seller is currently being processed by our compliance team.
+    <div class="w-full max-w-2xl">
+        
+        <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 overflow-hidden border border-slate-100">
+            
+            <div class="p-8 md:p-12 text-center">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-indigo-50 text-indigo-600 rounded-2xl mb-6">
+                    <i class="fa-solid fa-clock-rotate-left text-3xl"></i>
+                </div>
+                
+                <h1 class="text-3xl font-extrabold text-slate-900 mb-3">Profile Under Review</h1>
+                <p class="text-slate-500 max-w-md mx-auto leading-relaxed">
+                    We are reviewing your store details. Our curation team is currently verifying your application to ensure it meets our marketplace standards.
+                </p>
+            </div>
+
+            <div class="bg-slate-50/50 border-y border-slate-100 p-8 md:px-12">
+                <div class="space-y-6 relative">
+                    <div class="flex items-start gap-4 relative">
+                        <div class="step-line bg-emerald-500"></div>
+                        <div class="z-10 flex items-center justify-center w-8 h-8 rounded-full bg-emerald-500 text-white text-xs">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-900 text-sm">Application Submitted</p>
+                            <p class="text-xs text-slate-500">Completed on October 24, 2023</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 relative">
+                        <div class="step-line bg-slate-200"></div>
+                        <div class="z-10 flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 text-white text-xs ring-4 ring-indigo-100">
+                            <i class="fa-solid fa-circle-notch fa-spin"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-indigo-600 text-sm">Verification in Progress</p>
+                            <p class="text-xs text-slate-500">Estimated 24–48 hours</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="z-10 flex items-center justify-center w-8 h-8 rounded-full bg-slate-200 text-slate-400 text-xs">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-400 text-sm">Marketplace Activation</p>
+                            <p class="text-xs text-slate-400">Locked until approval</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-8 md:p-12">
+                <div class="bg-white border border-slate-200 rounded-2xl p-6">
+                    <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Submission Summary</h3>
+                    <div class="grid grid-cols-2 gap-y-4">
+                        <div>
+                            <p class="text-xs text-slate-500 mb-1">Store Name</p>
+                            <p class="text-sm font-semibold text-slate-900">The Obsidian Lab</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 mb-1">Category</p>
+                            <p class="text-sm font-semibold text-slate-900">Electronics & Gadgets</p>
+                        </div>
+                        <div class="col-span-2">
+                            <p class="text-xs text-slate-500 mb-1">Verification Documents</p>
+                            <div class="flex gap-4 mt-2">
+                                <span class="inline-flex items-center gap-2 text-xs font-medium text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-lg">
+                                    <i class="fa-solid fa-file-pdf"></i> business_license.pdf
+                                </span>
+                                <span class="inline-flex items-center gap-2 text-xs font-medium text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-lg">
+                                    <i class="fa-solid fa-file-zipper"></i> inventory_proof.zip
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+                    <div class="text-center md:text-left">
+                        <i class="fa-solid fa-magnifying-glass text-indigo-500 mb-3"></i>
+                        <p class="text-xs font-bold text-slate-900 mb-1">Review Window</p>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">Manual review within 2 business days.</p>
+                    </div>
+                    <div class="text-center md:text-left">
+                        <i class="fa-solid fa-envelope-open-text text-indigo-500 mb-3"></i>
+                        <p class="text-xs font-bold text-slate-900 mb-1">Email Notice</p>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">You'll receive an email the moment status changes.</p>
+                    </div>
+                    <div class="text-center md:text-left">
+                        <i class="fa-solid fa-rocket text-indigo-500 mb-3"></i>
+                        <p class="text-xs font-bold text-slate-900 mb-1">Full Access</p>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">Unlock your dashboard and list products instantly.</p>
+                    </div>
+                </div>
+
+                <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="/" class="w-full sm:w-auto px-8 py-3 bg-slate-900 hover:bg-black text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-slate-200">
+                        Back to Home
+                    </a>
+                    <a href="/logout" class="w-full sm:w-auto px-8 py-3 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-bold rounded-xl transition-all">
+                        Log Out
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-center text-slate-400 text-xs mt-8">
+            Have questions about the process? <a href="#" class="text-indigo-600 font-bold hover:underline">Contact Partner Support</a>
         </p>
     </div>
 
-    <div class="max-w-4xl space-y-6">
-        <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
-            <div class="p-6 flex items-start space-x-4">
-                <div class="flex-shrink-0">
-                    <div class="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center border border-amber-100">
-                        <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                </div>
-                <div class="flex-1">
-                    <div class="flex items-center space-x-3 mb-1">
-                        <h2 class="text-lg font-bold text-slate-800">Application Status</h2>
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-700 border border-amber-200">
-                            Pending Approval
-                        </span>
-                    </div>
-                    <p class="text-sm text-slate-600">
-                        Our administrators are reviewing your shop details and tax documents. Access to your inventory and dashboard features will be enabled once verified.
-                    </p>
-                </div>
-            </div>
-
-            <div class="px-6 py-3 bg-amber-50/50 border-t border-amber-100/50">
-                <p class="text-xs font-semibold text-amber-700 flex items-center">
-                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                    </svg>
-                    Average verification time: 24–48 hours
-                </p>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-lg border border-slate-200 shadow-sm p-6">
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Submitted Details</h3>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-                <div>
-                    <label class="block text-xs font-medium text-slate-500 mb-1">Shop Name</label>
-                    <p class="text-sm font-bold text-slate-800">{{ seller.shopname }}</p>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-medium text-slate-500 mb-1">Business Category</label>
-                    <p class="text-sm font-bold text-slate-800">{{ seller.category }}</p>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-medium text-slate-500 mb-1">GST/Tax Number</label>
-                    <p class="text-sm font-bold text-slate-800">{{ seller.gst_number|default:"Not Provided" }}</p>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-medium text-slate-500 mb-1">Registered Email</label>
-                    <p class="text-sm font-bold text-slate-800">{{ user.email }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex items-center justify-between pt-4">
-            <p class="text-xs text-slate-500">Need to update your application? Contact <span class="text-blue-600 cursor-pointer hover:underline">Support</span></p>
-
-            <form action="{% url 'logout' %}" method="POST">
-                {% csrf_token %}
-                <button type="submit" class="inline-flex items-center px-4 py-2 text-sm font-bold text-slate-600 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition shadow-sm">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
-                    Logout Session
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
-{% endblock %}
+</body>
+</html>

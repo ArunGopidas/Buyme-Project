@@ -1,163 +1,273 @@
-{% extends "seller/base.html" %}
+{% extends 'seller/base.html' %}
 
 {% block content %}
-<div class="min-h-screen bg-slate-50 pb-12">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 space-y-4 md:space-y-0 border-b border-slate-200 pb-6">
-        <div>
-            <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Dashboard</h1>
-            <p class="text-sm text-slate-500 mt-1">Store overview and recent activity.</p>
+<div class="max-w-[1400px] mx-auto space-y-8">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex justify-between items-start">
+            <div>
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total Products</p>
+                <h3 class="text-2xl font-bold mt-1 text-gray-800">{{ total_items }}</h3>
+                <p class="text-[10px] text-green-500 font-bold mt-2"><i class="fa-solid fa-arrow-up"></i> 4.5% vs last month</p>
+            </div>
+            <div class="p-2 bg-blue-50 text-blue-500 rounded-lg"><i class="fa-solid fa-box"></i></div>
         </div>
 
-        <div class="flex items-center space-x-4">
-            <a href="{% url 'add_product' %}"
-               title="Add New Product"
-               class="flex items-center justify-center w-10 h-10 text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-200 shadow-sm">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12v4m-2-2h4" />
-                </svg>
-            </a>
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex justify-between items-start">
+            <div>
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Pending Review</p>
+                <h3 class="text-2xl font-bold mt-1 text-gray-800">{{ pending_product }}</h3>
+                <span class="inline-block mt-2 px-2 py-0.5 bg-orange-100 text-orange-600 text-[10px] font-bold rounded uppercase">In Review</span>
+            </div>
+            <div class="p-2 bg-orange-50 text-orange-500 rounded-lg"><i class="fa-solid fa-clock-rotate-left"></i></div>
+        </div>
 
-            <div class="h-8 w-px bg-slate-200"></div>
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex justify-between items-start">
+            <div>
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Out of Stock</p>
+                <h3 class="text-2xl font-bold mt-1 text-gray-800">{{out_of_stock}}</h3>
+                <p class="text-[10px] text-red-500 font-bold mt-2">Action Required</p>
+            </div>
+            <div class="p-2 bg-red-50 text-red-500 rounded-lg"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        </div>
 
-            <a href="{% url 'view_profile' %}" class="flex items-center group">
-                <div class="text-right mr-3 hidden sm:block">
-                    <p class="text-sm font-semibold text-slate-800 group-hover:text-blue-600 transition">{{ user.first_name }} {{ user.last_name }}</p>
-                    <p class="text-xs text-slate-500">Seller Account</p>
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex justify-between items-start">
+            <div>
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Monthly Revenue</p>
+                <h3 class="text-2xl font-bold mt-1 text-gray-800">₹48,290</h3>
+                <p class="text-[10px] text-green-500 font-bold mt-2"><i class="fa-solid fa-arrow-up"></i> 12% growth</p>
+            </div>
+            <div class="p-2 bg-green-50 text-green-500 rounded-lg"><i class="fa-solid fa-wallet"></i></div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+
+        <div class="lg:col-span-2 space-y-6">
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h3 class="text-md font-bold text-gray-800">Sales Overview</h3>
+                        <p class="text-xs text-gray-400">Weekly performance metrics</p>
+                    </div>
+                    <div class="flex bg-gray-100 p-1 rounded-lg">
+                        <button class="px-3 py-1 text-[10px] font-bold rounded-md">Daily</button>
+                        <button class="px-3 py-1 text-[10px] font-bold rounded-md bg-white shadow-sm text-gray-800">Weekly</button>
+                        <button class="px-3 py-1 text-[10px] font-bold rounded-md">Monthly</button>
+                    </div>
                 </div>
-                <div class="relative">
-                    {% if user.profile_image %}
-                        <img class="h-10 w-10 rounded-lg object-cover border border-slate-200 group-hover:border-blue-400 transition" src="{{ user.profile_image.url }}" alt="Profile">
+
+                <div class="relative h-48 flex items-end justify-between gap-4 px-2">
+                    {% for i in "123456" %}
+                    <div class="group relative flex-1 flex flex-col items-center h-full justify-end">
+                        <div class="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-[10px] py-1 px-2 rounded whitespace-nowrap z-10">
+                            ₹{{ forloop.counter }}4,200
+                        </div>
+                        <div class="w-full {% if forloop.counter == 3 %} bg-gray-600 {% else %} bg-gray-200 {% endif %} rounded-t-md group-hover:bg-blue-400 transition-colors cursor-pointer"
+                             style="height: {% if forloop.counter == 3 %} 85% {% elif forloop.counter == 1 %} 40% {% else %} 60% {% endif %};">
+                        </div>
+                        <span class="text-[10px] text-gray-400 mt-3 font-medium uppercase tracking-tighter">Week {{ forloop.counter }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-md font-bold text-gray-800">Top Performing Products</h3>
+                    <a href="{% url 'analytics_page' %}" class="text-[11px] font-bold text-blue-600 uppercase tracking-wider">View Analytics</a>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    {% if recent_products %}
+                        {% for product in recent_products|slice:":3" %}
+                        <a href="{% url 'product_preview' product.id product.slug %}" class="group bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-md transition-all">
+                            <div class="aspect-square bg-gray-50 flex items-center justify-center p-4 overflow-hidden relative">
+                                {% with product.images.all.first as first_image %}
+                                {% if first_image and first_image.image %}
+                                    <img src="{{ first_image.image.url }}" alt="{{ product.name }}" class="w-full h-full object-contain group-hover:scale-105 transition-transform">
+                                {% elif product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-contain group-hover:scale-105 transition-transform">
+                                {% else %}
+                                    <i class="fa-solid fa-image text-gray-200 text-4xl"></i>
+                                {% endif %}
+                                {% endwith %}
+                            </div>
+                            <div class="p-4 border-t border-gray-50">
+                                <p class="text-xs font-bold text-gray-800 truncate">{{ product.name }}</p>
+                                <p class="text-xs text-gray-500 mt-1">₹{{ product.selling_price }}</p>
+                            </div>
+                        </a>
+                        {% endfor %}
                     {% else %}
-                        <div class="h-10 w-10 rounded-lg bg-slate-800 flex items-center justify-center text-white font-bold text-xs">
-                            {{ user.first_name|slice:":1" }}
+                        <div class="col-span-full py-8 text-center bg-white rounded-xl border border-dashed border-gray-200">
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">No products listed yet</p>
                         </div>
                     {% endif %}
-                    <span class="absolute -bottom-1 -right-1 block h-3 w-3 rounded-full bg-green-500 border-2 border-white"></span>
-                </div>
-            </a>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
-            <div class="flex items-center justify-between mb-2">
-                <span class="text-sm font-medium text-slate-500">Total Products</span>
-                <div class="p-2 bg-blue-50 rounded-md">
-                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                    </svg>
                 </div>
             </div>
-            <div class="text-2xl font-bold text-slate-800">{{ total_items }}</div>
-        </div>
 
-        <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
-            <div class="flex items-center justify-between mb-2">
-                <span class="text-sm font-medium text-slate-500">Pending Approval</span>
-                <div class="p-2 bg-amber-50 rounded-md">
-                    <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-5 flex items-center justify-between border-b border-gray-50">
+                    <h3 class="text-md font-bold text-gray-800">Recent Inventory</h3>
+                    <a href="{% url 'inventory_page' %}" class="text-[11px] font-bold text-gray-500 hover:text-blue-600">View Inventory →</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-400 text-[10px] uppercase font-bold tracking-widest">
+                                <th class="px-6 py-4">Product</th>
+                                <th class="px-6 py-4">SKU</th>
+                                <th class="px-6 py-4">Price</th>
+                                <th class="px-6 py-4">Stock</th>
+                                <th class="px-6 py-4">Status</th>
+                                <th class="px-6 py-4 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            {% for product in products|slice:":3" %}
+                            <tr class="text-xs hover:bg-gray-50 transition">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-8 w-8 bg-gray-100 flex items-center justify-center rounded overflow-hidden shrink-0">
+                                            {% if product.image %}
+                                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="object-cover h-full w-full">
+                                            {% elif product.images.all.first.image %}
+                                                <img src="{{ product.images.all.first.image.url }}" alt="{{ product.name }}" class="object-cover h-full w-full">
+                                            {% else %}
+                                                <i class="fa-solid fa-image text-gray-300"></i>
+                                            {% endif %}
+                                        </div>
+                                        <span class="font-bold text-gray-700 truncate max-w-[150px] block">{{ product.name }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-400 font-mono text-[10px]">{{ product.sku_code|default:"N/A" }}</td>
+                                <td class="px-6 py-4 font-bold text-gray-800">₹{{ product.price }}</td>
+                                <td class="px-6 py-4 text-gray-600">{{ product.stock|default:"0" }}</td>
+                                <td class="px-6 py-4">
+                                    {% if product.approval_status == "PENDING" %}
+                                        <span class="px-2 py-1 bg-orange-50 text-orange-600 text-[9px] font-bold rounded uppercase">Pending</span>
+                                    {% else %}
+                                        <span class="px-2 py-1 bg-green-50 text-green-600 text-[9px] font-bold rounded uppercase">Active</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <button class="text-gray-300 hover:text-gray-600"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div class="text-2xl font-bold text-slate-800">{{ pending_products }}</div>
         </div>
 
-        <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
-            <div class="flex items-center justify-between mb-2">
-                <span class="text-sm font-medium text-slate-500">Active Listings</span>
-                <div class="p-2 bg-green-50 rounded-md">
-                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+        <div class="space-y-6">
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h3 class="text-sm font-bold text-gray-800 mb-4">Quick Actions</h3>
+                <div class="space-y-3">
+                    <a href="{% url 'add_product' %}" class="flex items-center gap-3 w-full p-3 bg-gray-100 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-200 transition">
+                        <i class="fa-solid fa-plus text-gray-400 w-5 text-center"></i> Add Product
+                    </a>
+                    <a href="{% url 'inventory_page' %}" class="flex items-center gap-3 w-full p-3 bg-gray-100 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-200 transition">
+                        <i class="fa-solid fa-boxes-stacked text-gray-400 w-5 text-center"></i> Manage Inventory
+                    </a>
+                    <a href="{% url 'order_page' %}" class="flex items-center gap-3 w-full p-3 bg-gray-100 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-200 transition">
+                        <i class="fa-solid fa-list-check text-gray-400 w-5 text-center"></i> View Orders
+                    </a>
+                    <a href="{% url 'coupons_page' %}" class="flex items-center gap-3 w-full p-3 bg-gray-100 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-200 transition">
+                        <i class="fa-solid fa-ticket text-gray-400 w-5 text-center"></i> Coupons
+                    </a>
                 </div>
             </div>
-            <div class="text-2xl font-bold text-slate-800">
-                {% if total_items > 0 %}
-                    {{ total_items|add:"-pending_products" }}
-                {% else %}
-                    0
-                {% endif %}
-            </div>
-        </div>
-    </div>
-        <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-white">
-            <h2 class="text-base font-bold text-slate-800 uppercase tracking-wider">Recent Products</h2>
-            <a href="{% url 'inventory_page' %}" class="text-xs font-bold text-blue-600 hover:text-blue-800 uppercase">View All Inventory</a>
-        </div>
 
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-slate-50 border-b border-slate-200">
-                        <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">Product Details</th>
-                        <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">Category</th>
-                        <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">Pricing</th>
-                        <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">Stock</th>
-                        <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">Status</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100">
-                    {% for product in recent_products %}
-                    <tr class="hover:bg-slate-50/80 transition-colors">
-                        <td class="px-6 py-4">
-                            <div class="flex items-center">
-                            {% with product.images.all.first as first_image %}
-                            {% if first_image.is_primary == True %}
-                                <img class="h-10 w-10 rounded border border-slate-200 object-cover" src="{{ first_image.image.url }}" alt="{{ product.name }}"
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-bold text-gray-800">Review Queue</h3>
+                    <span class="h-5 w-5 flex items-center justify-center bg-orange-100 text-orange-600 text-[10px] font-bold rounded-full">!</span>
+                </div>
+                <div class="space-y-4 mb-6">
+                    {% for item in review_queue %}
+                    <div class="flex items-center gap-3">
+                        <div class="h-10 w-10 rounded bg-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" alt="{{ item.name }}" class="object-cover h-full w-full">
+                            {% elif item.images.all.first.image %}
+                                <img src="{{ item.images.all.first.image.url }}" alt="{{ item.name }}" class="object-cover h-full w-full">
                             {% else %}
-                                <div class="h-10 w-10 rounded border border-slate-200 bg-slate-100 flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                </div>
+                                <i class="fa-solid fa-image text-gray-300"></i>
                             {% endif %}
-                            {% endwith %}
-                                <span class="ml-3 text-sm font-semibold text-slate-700">{{ product.name }}</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="flex flex-col">
-                                <span class="text-xs font-medium text-slate-400">{{ product.subcategory.category.name }}</span>
-                                <span class="text-sm font-medium text-slate-700">{{ product.subcategory.name }}</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm font-bold text-slate-900">₹{{ product.selling_price }}</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm text-slate-600">{{ product.stock_quantity }} units</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            {% if product.approval_status == 'APPROVED' %}
-                                <span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-green-100 text-green-700 border border-green-200">Approved</span>
-                            {% elif product.approval_status == 'PENDING' %}
-                                <span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-amber-100 text-amber-700 border border-amber-200">Pending</span>
-                            {% else %}
-                                <span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-red-100 text-red-700 border border-red-200">Rejected</span>
-                            {% endif %}
-                        </td>
-                    </tr>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-bold text-gray-800 truncate">{{ item.name }}</p>
+                            <p class="text-[10px] text-gray-400">₹{{ item.price }} • {{ item.created_at|timesince }} ago</p>
+                        </div>
+                    </div>
                     {% empty %}
-                    <tr>
-                        <td colspan="6" class="px-6 py-20 text-center">
-                            <div class="flex flex-col items-center">
-                                <svg class="w-16 h-16 text-slate-200 mb-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                                </svg>
-                                <p class="text-slate-600 font-semibold text-lg">Your inventory is empty</p>
-                                <p class="text-sm text-slate-500 mt-1">Start selling today!</p>
-                                <a href="{% url 'add_product' %}" class="mt-6 flex items-center space-x-2 px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
-                                    <span>Add Your First Product</span>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
+                        <p class="text-[10px] text-gray-400 text-center py-2 italic">No items pending review</p>
                     {% endfor %}
-                </tbody>
-            </table>
+                </div>
+                <a href="{% url 'pending_products_list' %}" class="block w-full py-2 text-center text-xs font-bold text-gray-500 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100">Go to Queue</a>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 text-blue-50 opacity-10">
+                    <i class="fa-solid fa-shopping-bag text-8xl"></i>
+                </div>
+                <h3 class="text-sm font-bold text-gray-800 mb-1">Active Orders</h3>
+                <p class="text-xs text-gray-400 mb-4">You have 12 orders to fulfill.</p>
+                <div class="flex items-end justify-between">
+                    <span class="text-3xl font-bold text-blue-600">0</span>
+                    <a href="{% url 'order_page' %}" class="px-3 py-1.5 bg-blue-600 text-white text-[10px] font-bold rounded-md shadow-sm hover:bg-blue-700">View Orders</a>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 text-orange-50 opacity-10">
+                    <i class="fa-solid fa-layer-group text-8xl"></i>
+                </div>
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-sm font-bold text-gray-800">Low Stock Alert</h3>
+                        <i class="fa-solid fa-triangle-exclamation text-orange-400 text-xs"></i>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-4">Items requiring urgent restock.</p>
+                    <div class="flex items-end justify-between">
+                        <div class="flex flex-col">
+                            <span class="text-3xl font-bold text-orange-500">{{ low_stock|default:"0" }}</span>
+                            <span class="text-[10px] font-bold text-orange-400 uppercase tracking-tight">Items Low</span>
+                        </div>
+                        <a href="{% url 'inventory_page' %}" class="px-3 py-1.5 bg-orange-50 text-orange-600 border border-orange-100 text-[10px] font-bold rounded-md shadow-sm hover:bg-orange-100 transition-colors">
+                            View Inventory
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 text-red-50 opacity-10">
+                    <i class="fa-solid fa-circle-xmark text-8xl"></i>
+                </div>
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-sm font-bold text-gray-800">Rejected Products</h3>
+                        <span class="flex h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-4">Rejected during review process.</p>
+                    <div class="flex items-end justify-between">
+                        <div class="flex flex-col">
+                            <h4 class="text-3xl font-bold text-red-600">{{ rejected_products|default:"0" }}</h4>
+                            <p class="text-[10px] font-bold text-red-400 uppercase tracking-tight">Needs Attention</p>
+                        </div>
+                        <a href="{% url 'pending_products_list' %}" class="px-3 py-1.5 bg-red-50 text-red-600 border border-red-100 text-[10px] font-bold rounded-md shadow-sm hover:bg-red-100 transition-all">
+                            View Rejected
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

@@ -1,3 +1,4 @@
+from importlib.metadata import requires
 from random import choices
 
 from django.db import models
@@ -5,22 +6,25 @@ from core.models import User, SubCategory
 
 class SellerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="seller_profile")
-    shopname = models.CharField(max_length=255,unique=True)
+    shop_name = models.CharField(max_length=255,unique=True)
     shop_slug = models.SlugField(unique=True)
-    website = models.URLField(blank=True,null=True,unique=True)
+    website = models.URLField(blank=True,null=True)
     category = models.CharField(max_length=200)
     gst_number = models.CharField(max_length=50,unique=True)
     pan_number = models.CharField(max_length=50,unique=True)
     bank_account_number = models.CharField(max_length=50,unique=True)
-    ifsc_code = models.CharField(max_length=20,unique=True)
+    ifsc_code = models.CharField(max_length=20)
     business_address = models.TextField()
+    business_email=models.EmailField(unique=True,null=True,blank=True)
     rating = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(blank=True, null=True)
     STATUS_CHOICES=[
         ("APPROVED",'approved'),
         ("PENDING","pending"),
         ("REJECTED",'rejected')
     ]
+    logo = models.ImageField(upload_to='seller_logos/',null=True,blank=True)
     status=models.CharField(max_length=10,choices=STATUS_CHOICES,default="PENDING")
     rejection_reason=models.TextField(blank=True,null=True)
 

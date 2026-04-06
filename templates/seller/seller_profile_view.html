@@ -38,12 +38,12 @@
                                 <img src="{{ user.profile_image.url }}" class="h-full w-full object-cover" alt="Shop Logo">
                             {% else %}
                                 <div class="h-full w-full flex items-center justify-center text-slate-400 font-bold text-2xl bg-slate-50">
-                                    {{ seller.shopname|slice:":1" }}
+                                    {{ seller.shop_name|slice:":1" }}
                                 </div>
                             {% endif %}
                         </div>
                         <div class="mt-4 lg:mt-0">
-                            <h2 class="text-xl font-bold text-slate-900 leading-tight">{{ seller.shopname }}</h2>
+                            <h2 class="text-xl font-bold text-slate-900 leading-tight">{{ seller.shop_name }}</h2>
                             <p class="text-sm text-blue-600 font-medium">{{ seller.category }}</p>
                         </div>
                     </div>
