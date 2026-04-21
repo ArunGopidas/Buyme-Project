@@ -1,265 +1,313 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Product | BuyMe  Console</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .primary-card { border-color: #2563eb; background-color: #f8faff; ring: 2px; ring-color: #dbeafe; }
-    </style>
-</head>
-<body class="bg-slate-50 text-slate-900 antialiased">
+{% extends 'seller/base.html' %}
 
-    <nav class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
-                    <span class="text-white font-bold text-2xl">B</span>
-                </div>
-                <div>
-                    <span class="text-xl font-bold tracking-tight text-slate-800 block">BuyMe</span>
-                    <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-blue-600">Elite Console</span>
-                </div>
-            </div>
+{% block navbar_search %}{% endblock %}
 
-            <div class="flex items-center gap-4">
-                <a href="{% url 'inventory_page' %}" class="px-6 py-2.5 text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors">
-                    Discard
-                </a>
-                <button type="submit" form="edit-product-form" class="px-8 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-blue-600 hover:shadow-xl hover:shadow-blue-200 transition-all duration-300">
-                    Save Changes
-                </button>
+{% block content %}
+<div class="min-h-screen bg-[#F8FAFC] lg:ml-64 font-sans text-slate-900">
+    <div class="max-w-7xl mx-auto px-6 py-8">
+
+        <header class="mb-8">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] mb-1">Inventory Management</p>
+            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Edit Product</h1>
+            <p class="text-xs text-slate-400 font-medium mt-1 uppercase tracking-wider">Update product details and media</p>
+        </header>
+
+        {% if messages %}
+        <div class="mb-6 space-y-2">
+            {% for message in messages %}
+            <div class="p-4 rounded-xl border {% if message.tags == 'error' %}bg-red-50 border-red-100 text-red-600{% else %}bg-emerald-50 border-emerald-100 text-emerald-600{% endif %} text-xs font-bold uppercase tracking-wider">
+                {{ message }}
             </div>
+            {% endfor %}
         </div>
-    </nav>
+        {% endif %}
 
-    <main class="max-w-7xl mx-auto px-6 py-10">
-        <div class="mb-10">
-            <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
-                <span>Inventory</span>
-                <i class="fa-solid fa-chevron-right text-[8px]"></i>
-                <span class="text-blue-600">Edit Product</span>
-            </div>
-            <h1 class="text-3xl font-extrabold text-slate-900">Modify Listing</h1>
-            <p class="text-slate-500 mt-1">Updating: <span class="font-semibold text-slate-700">{{ product.name }}</span></p>
-        </div>
-
-        <form id="edit-product-form" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <form method="POST" enctype="multipart/form-data" id="productForm">
             {% csrf_token %}
 
-            <div class="lg:col-span-8 space-y-8">
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
-                <section class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-                    <div class="flex items-center gap-3 mb-8">
-                        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                            <i class="fa-solid fa-tag text-sm"></i>
-                        </div>
-                        <h2 class="text-lg font-bold text-slate-800">Product Identity</h2>
-                    </div>
+                <div class="xl:col-span-2 space-y-6">
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Product Name</label>
-                            <input type="text" name="name" value="{{ product.name }}" required
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all duration-200 font-medium">
-                        </div>
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-8 pb-2 border-b border-slate-50">General Information</h2>
 
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">SKU</label>
-                            <input type="text" name="sku_code" value="{{ product.sku_code }}" required
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all duration-200 font-mono text-sm">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Brand</label>
-                            <input type="text" name="brand" value="{{ product.brand }}"
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all duration-200 font-medium">
-                        </div>
-
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Description</label>
-                            <textarea name="description" rows="6"
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all duration-200 font-medium">{{ product.description }}</textarea>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-                    <div class="flex items-center gap-3 mb-8">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                            <i class="fa-solid fa-circle-dollar-to-slot text-sm"></i>
-                        </div>
-                        <h2 class="text-lg font-bold text-slate-800">Pricing & Tax</h2>
-                    </div>
-
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1">MRP ($)</label>
-                            <input type="number" step="0.01" name="price" value="{{ product.price }}"
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-blue-500 outline-none transition-all">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1">Selling Price ($)</label>
-                            <input type="number" step="0.01" name="selling_price" value="{{ product.selling_price }}"
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-blue-500 outline-none transition-all font-bold text-blue-600">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1">Cost Price ($)</label>
-                            <input type="number" step="0.01" name="cost_price" value="{{ product.cost_price }}"
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-blue-500 outline-none transition-all">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1">Tax (%)</label>
-                            <input type="number" name="tax" value="{{ product.tax_percentage }}"
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-blue-500 outline-none transition-all">
-                        </div>
-                    </div>
-                </section>
-
-                <section class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm overflow-hidden">
-                    <div class="flex items-center justify-between mb-8">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                                <i class="fa-solid fa-images text-sm"></i>
+                        <div class="space-y-7">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2.5 ml-1">Product Name</label>
+                                <input type="text" name="name" id="id_name" required value="{{ product.name }}"
+                                    class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-slate-900/10 focus:border-slate-500 outline-none transition-all">
                             </div>
-                            <h2 class="text-lg font-bold text-slate-800">Media Assets</h2>
+
+                            <div class="grid md:grid-cols-2 gap-6"> <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2.5 ml-1">SKU Code</label>
+                                    <input type="text" name="sku" id="id_sku" required value="{{ product.sku_code }}"
+                                        class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2.5 ml-1">Product Slug</label>
+                                    <input type="text" id="slug_preview" readonly value="{{ product.slug }}"
+                                        class="w-full h-11 px-4 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-500 cursor-not-allowed outline-none">
+                                    <input type="hidden" name="slug" id="id_slug" value="{{ product.slug }}">
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-6"> <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2.5 ml-1">Brand</label>
+                                    <input type="text" name="brand" value="{{ product.brand }}"
+                                        class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2.5 ml-1">Model Number</label>
+                                    <input type="text" name="model_number" value="{{ product.model_number }}"
+                                        class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm outline-none">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2.5 ml-1">Description</label>
+                                <textarea name="description"
+                                    class="w-full min-h-[180px] py-4 px-4 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-slate-900/10 focus:border-slate-500 outline-none resize-none leading-relaxed">{{ product.description }}</textarea>
+                            </div>
                         </div>
-                        <span class="text-xs font-bold text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full">Edit Mode</span>
                     </div>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mb-10">
-                        {% for img in product.images.all %}
-                        <div class="group relative aspect-square rounded-2xl border-2 transition-all duration-300 {% if img.is_primary %}primary-card ring-4 ring-blue-50{% else %}border-slate-100 hover:border-slate-300{% endif %}" id="img-container-{{ img.id }}">
-                            <img src="{{ img.image.url }}" class="w-full h-full object-cover rounded-[14px]">
-
-                            {% if img.is_primary %}
-                            <div class="absolute top-2 left-2 bg-blue-600 text-[8px] font-extrabold text-white px-2 py-0.5 rounded shadow-lg uppercase tracking-wider">
-                                Primary
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-6 pb-2 border-b border-slate-50">Classification</h2>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Category</label>
+                                <select name="category" id="category_select" required
+                                    class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm outline-none cursor-pointer appearance-none">
+                                    {% for cat in categories %}
+                                    <option value="{{ cat.id }}" {% if cat == product.subcategory.category %}selected{% endif %}>{{ cat.name }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
-                            {% endif %}
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Subcategory</label>
+                                <select name="subcategory" id="subcategory_select" required
+                                    class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm outline-none cursor-pointer">
+                                    {% for sub in subcategories %}
+                                        <option value="{{ sub.id }}" {% if sub == product.subcategory %}selected{% endif %}>{{ sub.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
-                            <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[14px] flex flex-col items-center justify-center gap-3">
-                                {% if not img.is_primary %}
-                                <label class="cursor-pointer bg-white text-slate-900 text-[10px] font-bold px-4 py-2 rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-xl">
-                                    Set Primary
-                                    <input type="radio" name="primary_image_id" value="{{ img.id }}" class="hidden" onchange="this.form.submit()">
-                                </label>
-                                {% endif %}
-                                <button type="button" onclick="deleteImage('{{ img.id }}')" class="w-10 h-10 bg-white/20 hover:bg-red-600 text-white rounded-xl backdrop-blur-md transition-all flex items-center justify-center">
-                                    <i class="fa-solid fa-trash-can text-sm"></i>
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-6 pb-2 border-b border-slate-50">Pricing & Tax</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-2 ml-1">MRP ($)</label>
+                                <input type="number" name="price" step="0.01" value="{{ product.price }}"
+                                    class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm font-bold outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-emerald-600 uppercase mb-2 ml-1">Selling Price</label>
+                                <input type="number" name="selling_price" step="0.01" value="{{ product.selling_price }}"
+                                    class="w-full h-11 px-4 bg-emerald-50/30 border border-emerald-200 rounded-xl text-sm font-bold text-slate-900 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-2 ml-1">Cost Price</label>
+                                <input type="number" name="cost_price" step="0.01" value="{{ product.cost_price }}"
+                                    class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-2 ml-1">Tax (%)</label>
+                                <input type="number" name="tax_percentage" value="{{ product.tax_percentage }}"
+                                    class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm outline-none">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <h2 class="text-xs font-bold text-slate-800 uppercase tracking-widest mb-4">Product Media</h2>
+
+                        <div class="relative w-full aspect-square bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden mb-4">
+                            <img id="main_preview" src="{% for img in product.images.all %}{% if img.is_primary %}{{ img.image.url }}{% endif %}{% endfor %}" class="w-full h-full object-cover">
+                        </div>
+
+                        <div class="grid grid-cols-4 gap-2 mb-4">
+                            {% for img in product.images.all %}
+                            <div class="relative aspect-square rounded-lg border-2 overflow-hidden group {% if img.is_primary %}border-slate-900 ring-2 ring-slate-900/10{% else %}border-slate-100{% endif %}">
+                                <img src="{{ img.image.url }}" class="w-full h-full object-cover cursor-pointer" onclick="document.getElementById('main_preview').src=this.src">
+
+                                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <a href="{% url 'primary_image' img.id %}" class="bg-white text-slate-900 text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm uppercase transform translate-y-2 group-hover:translate-y-0 transition-all">Set Primary</a>
+                                </div>
+
+                                <button type="button" onclick="openDeleteModal('{% url 'delete_product_image' img.id %}')" class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-red-600 transition-transform active:scale-90">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/></svg>
                                 </button>
                             </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
 
-                        <label class="group aspect-square rounded-2xl border-2 border-dashed border-slate-200 hover:border-blue-400 bg-slate-50 hover:bg-blue-50 transition-all cursor-pointer flex flex-col items-center justify-center gap-2">
-                            <div class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <i class="fa-solid fa-plus text-blue-600"></i>
+                        <label class="group cursor-pointer">
+                            <div class="w-full py-5 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center transition-all group-hover:bg-white group-hover:border-slate-900">
+                                <div class="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                </div>
+                                <p class="text-[10px] font-bold text-slate-900 uppercase tracking-widest">Add More Images</p>
+                                <input type="file" name="images" id="imageInput" multiple accept="image/*" class="hidden">
                             </div>
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-tight group-hover:text-blue-600">Add Media</span>
-                            <input type="file" name="new_images" multiple accept="image/*" class="hidden">
                         </label>
+                        <div id="new_thumbnail_row" class="grid grid-cols-4 gap-2 mt-4"></div>
                     </div>
 
-                    <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 flex items-start gap-3">
-                        <i class="fa-solid fa-circle-info text-blue-500 mt-1"></i>
-                        <p class="text-xs text-slate-500 leading-relaxed font-medium">
-                            <strong class="text-slate-700">Media Policy:</strong> You can upload up to 10 images. High-resolution squares (1000x1000px) are recommended for a premium customer view. The primary image is shown in search results.
-                        </p>
-                    </div>
-                </section>
-            </div>
-
-            <div class="lg:col-span-4 space-y-8">
-
-                <section class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-                    <h2 class="text-lg font-bold text-slate-800 mb-6">Inventory Status</h2>
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Available Stock</label>
-                            <input type="number" name="stock" value="{{ product.stock_quantity }}" required
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-blue-500 outline-none transition-all">
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <h2 class="text-xs font-bold text-slate-800 uppercase tracking-widest mb-4">Stock Management</h2>
+                        <div class="flex items-center bg-slate-50 border border-slate-200 rounded-xl p-1">
+                            <button type="button" onclick="this.parentNode.querySelector('input').stepDown()" class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg>
+                            </button>
+                            <input type="number" name="stock_quantity" value="{{ product.stock_quantity }}" min="0" class="flex-1 bg-transparent border-none text-center text-base font-bold text-slate-900 focus:ring-0">
+                            <button type="button" onclick="this.parentNode.querySelector('input').stepUp()" class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                            </button>
                         </div>
+                    </div>
 
-                        <div class="p-4 rounded-2xl {% if product.stock_quantity > 0 %}bg-emerald-50 border border-emerald-100{% else %}bg-red-50 border border-red-100{% endif %}">
-                            <div class="flex items-center gap-3">
-                                <div class="w-2 h-2 rounded-full animate-pulse {% if product.stock_quantity > 0 %}bg-emerald-500{% else %}bg-red-500{% endif %}"></div>
-                                <span class="text-xs font-bold uppercase tracking-wider {% if product.stock_quantity > 0 %}text-emerald-700{% else %}text-red-700{% endif %}">
-                                    {% if product.stock_quantity > 0 %}In Stock & Active{% else %}Out of Stock{% endif %}
-                                </span>
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <h2 class="text-xs font-bold text-slate-800 uppercase tracking-widest mb-5">Order Policies</h2>
+                        <div class="space-y-4">
+                            <label class="flex items-center justify-between cursor-pointer">
+                                <span class="text-xs font-bold text-slate-600 uppercase">Returnable</span>
+                                <div class="relative">
+                                    <input type="checkbox" name="is_returnable" id="return_toggle" class="sr-only peer" {% if product.is_returnable %}checked{% endif %}>
+                                    <div class="w-9 h-5 bg-slate-200 rounded-full peer-checked:bg-slate-900 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
+                                </div>
+                            </label>
+
+                            <div id="return_days_box" class="{% if not product.is_returnable %}hidden{% endif %}">
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1">Return Window (Days)</label>
+                                <input type="number" name="return_days" value="{{ product.return_days }}" class="w-full h-10 px-4 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold outline-none">
                             </div>
+
+                            <label class="flex items-center justify-between cursor-pointer">
+                                <span class="text-xs font-bold text-slate-600 uppercase">Cancellable</span>
+                                <div class="relative">
+                                    <input type="checkbox" name="is_cancellable" class="sr-only peer" {% if product.is_cancellable %}checked{% endif %}>
+                                    <div class="w-9 h-5 bg-slate-200 rounded-full peer-checked:bg-slate-900 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
+                                </div>
+                            </label>
                         </div>
                     </div>
-                </section>
 
-                <section class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-                    <h2 class="text-lg font-bold text-slate-800 mb-6">Policies</h2>
-                    <div class="space-y-4">
-                        <label class="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-2xl hover:bg-slate-100 cursor-pointer transition-colors">
-                            <span class="text-sm font-semibold text-slate-700">Returnable</span>
-                            <input type="checkbox" name="is_returnable" {% if product.is_returnable %} checked {% endif %} class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
-                        </label>
-
-                        <label class="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-2xl hover:bg-slate-100 cursor-pointer transition-colors">
-                            <span class="text-sm font-semibold text-slate-700">Cancellable</span>
-                            <input type="checkbox" name="is_cancellable" {% if product.is_cancellable %} checked {% endif %} class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
-                        </label>
-
-                        <div class="pt-4">
-                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Return Window (Days)</label>
-                            <input type="number" name="return_days" value="{{ product.return_days }}" required
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-blue-500 outline-none transition-all">
-                        </div>
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 space-y-3">
+                        <button type="submit" class="w-full h-14 bg-slate-900 text-white rounded-xl text-xs font-black uppercase tracking-[0.2em] shadow-lg hover:bg-black hover:-translate-y-0.5 transition-all">
+                            Update Product
+                        </button>
+                        <a href="{% url 'inventory_page' %}" class="flex items-center justify-center w-full h-12 border border-slate-200 bg-white text-slate-500 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 transition-all">
+                            Cancel Changes
+                        </a>
                     </div>
-                </section>
-
-                <section class="bg-slate-900 rounded-3xl p-8 text-white shadow-xl shadow-slate-200">
-                    <h2 class="text-lg font-bold mb-6">Shipping Details</h2>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-4">
-                            <span class="text-slate-400 text-sm">Provider</span>
-                            <span class="text-sm font-bold">BuyMe Express</span>
-                        </div>
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-4">
-                            <span class="text-slate-400 text-sm">Handling Time</span>
-                            <span class="text-sm font-bold">24-48 Hours</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-slate-400 text-sm">Global Shipping</span>
-                            <span class="text-[10px] font-extrabold bg-emerald-500 text-white px-2 py-0.5 rounded uppercase">Active</span>
-                        </div>
-                    </div>
-                </section>
+                </div>
             </div>
         </form>
-    </main>
+    </div>
+</div>
 
-    <script>
-        // UI Logic for Delete (Usually would trigger an AJAX or specific Form input)
-        function deleteImage(imageId) {
-            if(confirm("Permanently delete this image?")) {
-                // In a real Django setup, you'd likely call a specific URL or
-                // append a hidden input to the form to tell the backend to delete it.
-                const container = document.getElementById('img-container-' + imageId);
-                container.style.opacity = '0.3';
-                container.style.pointerEvents = 'none';
-                alert("Image marked for deletion. Save changes to confirm.");
-            }
-        }
+<div id="deleteModal" class="fixed inset-0 z- hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-3xl w-full max-w-sm p-8 shadow-2xl scale-95 transition-transform">
+        <div class="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+            <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+        </div>
+        <h3 class="text-xl font-extrabold text-slate-900 text-center mb-2">Delete Image?</h3>
+        <p class="text-sm text-slate-500 text-center mb-8">This action cannot be undone. Permanent removal from gallery.</p>
+        <div class="flex gap-3">
+            <button onclick="closeDeleteModal()" class="flex-1 h-12 bg-slate-50 text-slate-500 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-slate-100 transition-all">Cancel</button>
+            <a id="confirmDeleteBtn" href="#" class="flex-1 h-12 bg-red-500 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest flex items-center justify-center shadow-lg shadow-red-200 hover:bg-red-600 transition-all">Delete</a>
+        </div>
+    </div>
+</div>
 
-        // Logic to prevent the form from submitting on accidental Enter key
-        window.addEventListener('keydown', function(e) {
-            if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
-                if (e.target.nodeName == 'INPUT' && e.target.type == 'text') {
-                    e.preventDefault();
-                    return false;
-                }
-            }
-        }, true);
-    </script>
-</body>
-</html>
+<script>
+    // 1. Slug Generation
+    const nameInp = document.getElementById('id_name');
+    const skuInp = document.getElementById('id_sku');
+    const slugPre = document.getElementById('slug_preview');
+    const slugHid = document.getElementById('id_slug');
+
+    function generateSlug() {
+        const slug = `${nameInp.value.trim()}-${skuInp.value.trim()}`.toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-');
+        slugPre.value = slug; slugHid.value = slug;
+    }
+    nameInp.oninput = generateSlug; skuInp.oninput = generateSlug;
+
+    // 2. Return Days Toggle
+    document.getElementById('return_toggle').onchange = function() {
+        document.getElementById('return_days_box').classList.toggle('hidden', !this.checked);
+    };
+
+    // 3. New Image Previews
+    const imgInput = document.getElementById('imageInput');
+    const newThumbRow = document.getElementById('new_thumbnail_row');
+    const mainPre = document.getElementById('main_preview');
+    let selectedFiles = [];
+
+    imgInput.onchange = function() {
+        Array.from(this.files).forEach(file => selectedFiles.push(file));
+        renderNewPreviews();
+    };
+
+    function renderNewPreviews() {
+        newThumbRow.innerHTML = "";
+        selectedFiles.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = e => {
+                const box = document.createElement("div");
+                box.className = "relative aspect-square rounded-lg border border-slate-200 overflow-hidden cursor-pointer group";
+                box.innerHTML = `
+                    <img src="${e.target.result}" class="w-full h-full object-cover">
+                    <button type="button" onclick="removeNewImage(${index})" class="absolute top-0 right-0 p-1 bg-white/80 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
+                `;
+                box.onclick = () => mainPre.src = e.target.result;
+                newThumbRow.appendChild(box);
+            };
+            reader.readAsDataURL(file);
+        });
+        syncInputFiles();
+    }
+
+    function removeNewImage(index) {
+        selectedFiles.splice(index, 1);
+        renderNewPreviews();
+    }
+
+    function syncInputFiles() {
+        const dt = new DataTransfer();
+        selectedFiles.forEach(f => dt.items.add(f));
+        imgInput.files = dt.files;
+    }
+
+    // 4. Delete Modal
+    function openDeleteModal(url) {
+        document.getElementById('confirmDeleteBtn').href = url;
+        const modal = document.getElementById('deleteModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeDeleteModal() {
+        const modal = document.getElementById('deleteModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    // 5. AJAX Subcategories
+    document.getElementById('category_select').onchange = function() {
+        const subSelect = document.getElementById('subcategory_select');
+        fetch(`/load_subcategories/${this.value}/`)
+            .then(res => res.json())
+            .then(data => {
+                subSelect.innerHTML = data.map(i => `<option value="${i.id}">${i.name}</option>`).join('');
+            });
+    };
+</script>
+{% endblock %}

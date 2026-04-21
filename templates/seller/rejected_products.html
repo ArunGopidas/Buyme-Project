@@ -1,0 +1,152 @@
+{% extends 'seller/base.html' %}
+
+{% block content %}
+<div class="max-w-[1400px] mx-auto space-y-8" x-data="{ sortOpen: false }">
+
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div>
+            <h1 class="text-2xl font-black text-slate-900 tracking-tight">Rejected Products</h1>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">Review and edit items that failed the quality check</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+            <form method="GET" class="relative group">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs transition-colors group-focus-within:text-slate-900"></i>
+                <input type="text" name="q" value="{{ request.GET.q|default:'' }}" placeholder="Search SKU or Name..." 
+                       class="pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 outline-none w-64 transition-all shadow-sm">
+            </form>
+
+            <div class="relative">
+                <button @click="sortOpen = !sortOpen" @click.away="sortOpen = false" 
+                        class="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:border-slate-900 transition-all shadow-sm">
+                    <i class="fa-solid fa-arrow-down-wide-short"></i>
+                    <span>Sort</span>
+                </button>
+                <div x-show="sortOpen" x-cloak class="absolute right-0 mt-2 w-40 bg-white border border-slate-100 rounded-xl shadow-xl z-50 py-2 overflow-hidden">
+                    <a href="?sort=newest{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="block px-4 py-2 text-[11px] font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900">Newest First</a>
+                    <a href="?sort=oldest{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="block px-4 py-2 text-[11px] font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900">Oldest First</a>
+                </div>
+            </div>
+
+            <a href="{% url 'rejected_products' %}" class="p-2.5 bg-white border border-slate-200 rounded-xl text-slate-400 hover:text-slate-900 transition-all shadow-sm">
+                <i class="fa-solid fa-rotate-right text-xs"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4 w-fit px-8">
+        <div class="w-10 h-10 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center">
+            <i class="fa-solid fa-circle-exclamation text-lg"></i>
+        </div>
+        <div>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Rejected</p>
+            <h3 class="text-xl font-black text-slate-900">{{ rejected_count }} <span class="text-xs font-bold text-slate-400 ml-1">Products</span></h3>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {% for product in products %}
+        <div class="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col">
+            
+            <div class="relative aspect-square overflow-hidden bg-slate-50">
+                {% if product.first_image %}
+                    <img src="{{ product.first_image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                {% else %}
+                    <div class="w-full h-full flex items-center justify-center text-slate-200">
+                        <i class="fa-solid fa-image text-5xl"></i>
+                    </div>
+                {% endif %}
+                
+                <div class="absolute top-4 left-4">
+                    <span class="px-3 py-1.5 bg-rose-500 text-white text-[10px] font-black uppercase tracking-tighter rounded-lg shadow-lg">
+                        Rejected
+                    </span>
+                </div>
+            </div>
+
+            <div class="p-5 space-y-3 flex-grow">
+                <div class="flex justify-between items-start gap-2">
+                    <div class="min-w-0">
+                        <h3 class="text-sm font-black text-slate-900 truncate group-hover:text-slate-700 cursor-pointer" 
+                            onclick="window.location='{% url 'rejected_product_preview' product.id product.slug %}'">{{ product.name }}</h3>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight">{{ product.subcategory.name }} • SKU: {{ product.sku_code|default:"N/A" }}</p>
+                    </div>
+                    <span class="text-sm font-black text-slate-900 whitespace-nowrap">₹{{ product.selling_price }}</span>
+                </div>
+
+                <div class="p-3 bg-rose-50/50 rounded-xl border border-rose-100/50">
+                    <p class="text-[10px] font-bold text-rose-600 uppercase tracking-widest flex items-center gap-1.5 mb-1">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Reason
+                    </p>
+                    <p class="text-[11px] text-rose-800 font-medium leading-relaxed italic">
+                        "{{ product.product_rejection_reason|default:'Incomplete specifications or quality check failure.' }}"
+                    </p>
+                </div>
+            </div>
+
+            <div class="px-5 pb-5 grid grid-cols-2 gap-2">
+                <div class="relative group/tooltip">
+                    <a href="{% url 'rejected_product_preview' product.id product.slug %}"
+                       class="flex items-center justify-center gap-2 w-full py-2.5 bg-slate-50 text-slate-600 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-slate-100 transition-all">
+                        <i class="fa-solid fa-eye"></i> Preview
+                    </a>
+                </div>
+                <div class="relative group/tooltip">
+                    <a href="{% url 'edit_product' product.id %}" 
+                       class="flex items-center justify-center gap-2 w-full py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-black transition-all shadow-lg shadow-slate-200">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full py-24 flex flex-col items-center text-center">
+            <div class="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-3xl flex items-center justify-center mb-6">
+                <i class="fa-solid fa-check-double text-3xl"></i>
+            </div>
+            <h2 class="text-xl font-black text-slate-900">No rejected products</h2>
+            <p class="text-slate-400 text-sm mt-2 max-w-xs mx-auto">Your listings are looking good! Any items that fail quality checks will appear here.</p>
+            <a href="{% url 'product_management' %}" class="mt-8 px-6 py-3 bg-slate-900 text-white text-[11px] font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-slate-200 hover:scale-105 transition-all">Back to Inventory</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if products.has_other_pages %}
+    <div class="flex items-center justify-between pt-10 border-t border-slate-100">
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+            Showing {{ products.start_index }} - {{ products.end_index }} of {{ products.paginator.count }}
+        </p>
+        
+        <div class="flex items-center gap-2">
+            {% if products.has_previous %}
+            <a href="?page={{ products.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" 
+               class="w-10 h-10 flex items-center justify-center bg-white border border-slate-200 rounded-xl text-slate-400 hover:text-slate-900 transition-all">
+                <i class="fa-solid fa-chevron-left text-[10px]"></i>
+            </a>
+            {% endif %}
+
+            {% for num in products.paginator.page_range %}
+                {% if products.number == num %}
+                    <span class="w-10 h-10 flex items-center justify-center bg-slate-900 text-white text-[11px] font-black rounded-xl">{{ num }}</span>
+                {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                    <a href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" 
+                       class="w-10 h-10 flex items-center justify-center bg-white border border-slate-200 rounded-xl text-slate-400 hover:text-slate-900 text-[11px] font-bold transition-all">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if products.has_next %}
+            <a href="?page={{ products.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" 
+               class="w-10 h-10 flex items-center justify-center bg-white border border-slate-200 rounded-xl text-slate-400 hover:text-slate-900 transition-all">
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<style>
+    [x-cloak] { display: none !important; }
+</style>
+{% endblock %}

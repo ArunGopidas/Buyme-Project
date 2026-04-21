@@ -20,8 +20,17 @@ urlpatterns = [
     path("view_seller_profile", views.view_seller_profile, name="view_profile"),
     path("coupon_page",views.coupon_page,name='coupons_page'),
     path("product_management",views.product_management,name='product_management'),
-    path("load-subcategories/", views.load_subcategories, name="load_subcategories"),
+    path("load_subcategories/", views.load_subcategories, name="load_subcategories"),
+    path("change_password/", views.change_password, name="change_password"),
+    path("request_edit/", views.request_edit_field, name="request_edit_field"),
+    path("update_stock/<int:id>/", views.update_stock, name="update_stock"),
+    path("toggle_product_visibility/<int:id>/", views.toggle_product_visibility, name="toggle_product_visibility"),
+    path('load_subcategories/<int:id>/', views.load_subcategories, name='load_subcategories'),
+    path('primary_image/<int:id>/', views.primary_image, name='primary_image'),
+    path('rejected_products', views.rejected_products, name='rejected_products'),
+    path('rejected_product_preview/<int:id>/<slug:slug>/', views.product_rejection_view, name='rejected_product_preview'),
 
+    path('delete_product_image/<int:id>/', views.delete_product_image, name='delete_product_image'),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

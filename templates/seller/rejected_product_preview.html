@@ -1,0 +1,124 @@
+{% extends 'seller/base.html' %}
+
+{% block content %}
+<div class="max-w-[1200px] mx-auto space-y-8">
+    
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+            <a href="{% url 'rejected_products' %}" class="w-10 h-10 flex items-center justify-center bg-white border border-slate-200 rounded-xl text-slate-400 hover:text-slate-900 transition-all shadow-sm">
+                <i class="fa-solid fa-arrow-left text-xs"></i>
+            </a>
+            <div>
+                <h1 class="text-xl font-black text-slate-900 tracking-tight">Rejected Product Review</h1>
+                <nav class="flex text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+                    <span>ID: #{{ product.id }}</span>
+                    <span class="mx-2">/</span>
+                    <span class="text-rose-500">Rejected Listing</span>
+                </nav>
+            </div>
+        </div>
+        <div class="flex items-center gap-3 px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Review Date:</p>
+            <p class="text-xs font-bold text-slate-900">{{ product.reviewd_at|date:"M d, Y" }}</p>
+        </div>
+    </div>
+
+    <div class="bg-rose-50/50 border border-rose-100 rounded-3xl p-6 flex items-center gap-6 shadow-sm">
+        <div class="w-12 h-12 bg-rose-500 text-white rounded-2xl flex items-center justify-center text-xl shadow-lg shadow-rose-200">
+            <i class="fa-solid fa-circle-exclamation"></i>
+        </div>
+        <div>
+            <h2 class="text-lg font-black text-rose-900">Listing Declined</h2>
+            <p class="text-sm text-rose-700/70 font-medium">This product failed quality checks. Review the specific reasons below and update the listing to resubmit.</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <div class="lg:col-span-4 space-y-6">
+            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+                <div class="aspect-square bg-slate-50 relative group">
+                    {% if first_image %}
+                        <img src="{{ first_image.url }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                    {% else %}
+                        <div class="w-full h-full flex items-center justify-center text-slate-200">
+                            <i class="fa-solid fa-image text-5xl"></i>
+                        </div>
+                    {% endif %}
+                    <div class="absolute bottom-4 left-4">
+                        <span class="px-3 py-1.5 bg-rose-500 text-white text-[10px] font-black uppercase tracking-tighter rounded-lg shadow-lg">Pending Revision</span>
+                    </div>
+                </div>
+                
+                <div class="p-6 space-y-4">
+                    <div class="pb-4 border-b border-slate-50">
+                        <h3 class="text-lg font-black text-slate-900 leading-tight">{{ product.name }}</h3>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">{{ product.subcategory.name }}</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">SKU Code</p>
+                            <p class="text-xs font-bold text-slate-800 font-mono">{{ product.sku_code|default:"NOT SET" }}</p>
+                        </div>
+                        <div class="space-y-1 text-right">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Selling Price</p>
+                            <p class="text-sm font-black text-slate-900">₹{{ product.selling_price }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-8 space-y-6">
+            
+            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-8 space-y-6">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-50">
+                    <i class="fa-solid fa-clipboard-list text-slate-900 text-sm"></i>
+                    <h4 class="text-xs font-black text-slate-900 uppercase tracking-widest">Rejection Details</h4>
+                </div>
+
+                <div class="space-y-4">
+                    {% for reason in rejection_reasons %}
+                    <div class="flex gap-5 p-5 bg-slate-50 rounded-2xl border border-slate-100 transition-all hover:bg-white hover:shadow-md hover:border-rose-100 group">
+                        <div class="w-10 h-10 bg-white text-rose-500 rounded-xl flex items-center justify-center flex-shrink-0 border border-slate-100 shadow-sm group-hover:bg-rose-500 group-hover:text-white transition-all">
+                            <i class="fa-solid fa-xmark text-sm"></i>
+                        </div>
+                        <div>
+                            <h5 class="text-sm font-black text-slate-900">{{ reason.title }}</h5>
+                            <p class="text-sm text-slate-500 leading-relaxed mt-1 italic">"{{ product.product_rejection_reason }}"</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                    <div class="w-8 h-8 bg-blue-50 text-blue-500 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fa-solid fa-camera text-xs"></i>
+                    </div>
+                    <h5 class="text-xs font-black text-slate-900 uppercase tracking-tighter">Image Optimization</h5>
+                    <p class="text-[11px] text-slate-400 leading-relaxed mt-2">Elite products require 3000px+ resolution and neutral background tones.</p>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                    <div class="w-8 h-8 bg-amber-50 text-amber-500 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fa-solid fa-tags text-xs"></i>
+                    </div>
+                    <h5 class="text-xs font-black text-slate-900 uppercase tracking-tighter">Metadata Check</h5>
+                    <p class="text-[11px] text-slate-400 leading-relaxed mt-2">Ensure your SKU follows the format: <strong>SHOP-SKU-ID</strong>.</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                <a href="{% url 'edit_product' product.id %}" class="flex-1 py-4 bg-slate-900 text-white text-xs font-black uppercase tracking-widest rounded-2xl hover:bg-black transition-all shadow-xl shadow-slate-200 text-center">
+                    <i class="fa-solid fa-pen-to-square mr-2"></i> Fix & Resubmit
+                </a>
+                <a href="{% url 'rejected_products' %}" class="flex-1 py-4 bg-white border border-slate-200 text-slate-600 text-xs font-black uppercase tracking-widest rounded-2xl hover:bg-slate-50 transition-all text-center">
+                    Review Later
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

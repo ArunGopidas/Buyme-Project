@@ -1,193 +1,183 @@
-{% extends "seller/base.html" %}
+{% extends 'seller/base.html' %}
 
 {% block content %}
-<div class="min-h-screen bg-slate-50 pb-12">
-    <form method="POST" enctype="multipart/form-data" class="max-w-6xl mx-auto">
-        {% csrf_token %}
+<div class="min-h-screen bg-[#F8F9FA] pb-12 lg:ml-64">
+    <div class="p-6 lg:p-10 max-w-5xl mx-auto">
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Edit Profile</h1>
+            <p class="text-sm text-slate-500 mt-1">Manage your personal and business information</p>
+        </div>
 
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 space-y-4 md:space-y-0 border-b border-slate-200 pb-6">
-            <div>
-                <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Edit Profile</h1>
-                <p class="text-sm text-slate-500 mt-1">Update your account settings and public store identity.</p>
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-slate-50">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Profile Photo</h3>
+                </div>
+                <div class="p-8 flex flex-col items-center text-center">
+                    <div class="relative group">
+                        <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-slate-50 shadow-inner bg-slate-100 flex items-center justify-center">
+                            <img
+                                id="profilePreview"
+                                src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}/static/images/default-avatar.png{% endif %}"
+                                class="w-28 h-28 rounded-full object-cover border border-gray-200 shadow-sm"
+                            >
+                        </div>
+                        <label for="profileInput" class="absolute bottom-1 right-1 bg-white border border-slate-200 p-2 rounded-full shadow-md cursor-pointer hover:bg-slate-50 transition-colors">
+                            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <input type="file" id="profileInput" name="profile_image" class="hidden" accept="image/*">
+                        </label>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-xs text-slate-400 font-medium tracking-wide uppercase">Recommended square image, max 2MB</p>
+                    </div>
+                </div>
             </div>
-            <div class="flex items-center space-x-3">
-                <a href="{% url 'seller_profile' %}" class="px-4 py-2 text-sm font-semibold text-slate-600 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition shadow-sm">
-                    Cancel
-                </a>
-                <button type="submit" class="px-6 py-2 text-sm font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition shadow-md focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm">
+                <div class="p-6 border-b border-slate-50">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Personal Profile</h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">First Name</label>
+                            <input type="text" name="first_name" value="{{ user.first_name }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none transition-all text-sm text-slate-700 bg-slate-50/30">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Last Name</label>
+                            <input type="text" name="last_name" value="{{ user.last_name }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none transition-all text-sm text-slate-700 bg-slate-50/30">
+                        </div>
+                        <div class="md:col-span-2 space-y-1">
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Phone Number</label>
+                            <input type="text" name="phone_number" value="{{ user.phone_number }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none transition-all text-sm text-slate-700 bg-slate-50/30">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm">
+                <div class="p-6 border-b border-slate-50">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Business Profile</h3>
+                </div>
+                <div class="p-6 space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Shop Name</label>
+                            <input type="text" name="shop_name" value="{{ seller.shop_name }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none text-sm text-slate-700 bg-slate-50/30">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Category</label>
+                            <select name="category" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none text-sm text-slate-700 bg-slate-50/30">
+                                <option value="{{ seller.category }}" selected>{{ seller.category }}</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Website</label>
+                            <input type="url" name="website" value="{{ seller.website }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none text-sm text-slate-700 bg-slate-50/30">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Business Email</label>
+                            <input type="email" name="business_email" value="{{ seller.business_email }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none text-sm text-slate-700 bg-slate-50/30">
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Business Address</label>
+                        <textarea name="business_address" rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none text-sm text-slate-700 bg-slate-50/30 resize-none">{{ seller.business_address }}</textarea>
+                    </div>
+
+                    <div class="space-y-3 pt-4 border-t border-slate-50">
+                        <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Store Logo</label>
+                        <div class="flex items-center gap-6">
+                            <div class="w-28 h-28 rounded-xl bg-slate-50 border border-slate-200 overflow-hidden flex items-center justify-center p-2">
+                                <img
+                                    id="logoPreview"
+                                    src="{% if seller.logo %}{{ seller.logo.url }}{% else %}/static/images/default-logo.png{% endif %}"
+                                    class="w-24 h-24 rounded-xl object-cover border border-gray-200 shadow-sm"
+                                >
+                            </div>
+                            <div class="flex-1">
+                                <input type="file" id="logoInput" name="logo" class="hidden" accept="image/*">
+                                <label for="logoInput" class="inline-block px-5 py-2.5 bg-slate-900 text-white text-xs font-bold uppercase tracking-widest rounded-lg cursor-pointer hover:bg-slate-800 transition-all">
+                                    Upload New Logo
+                                </label>
+                                <p class="text-[10px] text-slate-400 mt-2">Transparent PNG or JPG (min 500x500px)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
+                <div class="p-6 border-b border-slate-200 bg-white">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Protected Details</h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+                        <div class="flex justify-between py-2 border-b border-slate-200/60">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">GST Number</span>
+                            <span class="text-sm font-mono font-bold text-slate-600 tracking-wider">{{ seller.gst_number }}</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-slate-200/60">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">PAN Number</span>
+                            <span class="text-sm font-mono font-bold text-slate-600 tracking-wider">{{ seller.pan_number }}</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-slate-200/60">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Account No</span>
+                            <span class="text-sm font-mono font-bold text-slate-600 tracking-wider">•••• •••• {{ seller.bank_account_number|slice:"-4:" }}</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-slate-200/60">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">IFSC Code</span>
+                            <span class="text-sm font-mono font-bold text-slate-600 tracking-wider">{{ seller.ifsc_code }}</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-3 bg-indigo-50 rounded-xl border border-indigo-100">
+                        <p class="text-[10px] text-indigo-600 font-bold leading-relaxed">
+                            These details require approval-based change requests. Update them from the profile dashboard.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-4 pt-4">
+                <a href="{% url 'view_profile' %}" class="px-8 py-3 text-slate-500 font-bold text-xs uppercase tracking-widest hover:text-slate-800 transition-colors">Cancel</a>
+                <button type="submit" class="px-10 py-4 bg-slate-900 text-white font-black text-xs uppercase tracking-[0.2em] rounded-2xl shadow-xl hover:bg-black transition-all">
                     Save Changes
                 </button>
             </div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-            <div class="lg:col-span-4 space-y-6">
-
-                <div class="bg-white rounded-md border border-slate-200 shadow-sm p-6 text-center">
-                    <div class="relative group inline-block">
-                        <div id="image-container" class="h-32 w-32 rounded-md border-2 border-slate-100 overflow-hidden bg-slate-50 flex items-center justify-center shadow-inner">
-                            {% if user.profile_image %}
-                                <img id="preview-img" class="h-full w-full object-cover"  src="{{ user.profile_image.url }}" alt="Profile">
-                            {% else %}
-                                <div id="placeholder-box" class="flex flex-col items-center">
-                                    <svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                </div>
-                            {% endif %}
-                        </div>
-                        <label for="id_profile_image" class="absolute -bottom-2 -right-2 bg-blue-600 p-2 rounded-md text-white shadow-lg cursor-pointer hover:bg-blue-700 transition border-2 border-white">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        </label>
-                        <input type="file" name="profile_image" id="id_profile_image" accept="image/*" class="hidden">
-                    </div>
-                    <p class="text-[11px] text-slate-400 mt-4">Click the icon to upload a new shop logo.</p>
-                </div>
-
-                <div class="bg-blue-50/50 p-1 rounded-md border border-blue-100 flex shadow-inner">
-                    <button type="button" id="tab-personal" onclick="switchSection('personal')" class="flex-1 py-2.5 text-sm font-bold rounded-md transition-all duration-200 bg-white text-blue-600 shadow-sm border border-blue-100">
-                        Personal
-                    </button>
-                    <button type="button" id="tab-business" onclick="switchSection('business')" class="flex-1 py-2.5 text-sm font-bold rounded-md transition-all duration-200 text-slate-500 hover:text-blue-600">
-                        Business
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-md border border-slate-200 p-5 space-y-4">
-                    <div class="flex items-center space-x-2 mb-2 text-slate-400">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" /></svg>
-                        <span class="text-[10px] font-bold uppercase tracking-widest">Verified Details</span>
-                    </div>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase">GST Number</label>
-                            <p class="text-xs font-mono font-bold text-slate-500 mt-1">{{ seller.gst_number }}</p>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase">PAN Number</label>
-                            <p class="text-xs font-mono font-bold text-slate-500 mt-1">{{ seller.pan_number }}</p>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase">Bank Account</label>
-                            <p class="text-xs font-mono font-bold text-slate-500 mt-1">****{{ seller.bank_account_number|slice:"-4:" }}</p>
-                        </div>
-                    </div>
-                    <p class="text-[10px] text-slate-400 italic pt-3 border-t border-slate-100">Contact verification team to update tax info.</p>
-                </div>
-
-            </div>
-
-            <div class="lg:col-span-8">
-                <div class="bg-white rounded-md border border-slate-200 shadow-sm min-h-[500px]">
-
-                    <div id="section-personal" class="p-8 space-y-6">
-                        <h3 class="text-lg font-bold text-slate-800 border-b border-slate-100 pb-4">Personal Contact</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="space-y-1">
-                                <label class="text-xs font-bold text-slate-500 uppercase">First Name</label>
-                                <input type="text" name="first_name" value="{{ user.first_name }}" class="w-full px-4 py-2 border border-slate-300 rounded-md focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-sm transition">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-xs font-bold text-slate-500 uppercase">Last Name</label>
-                                <input type="text" name="last_name" value="{{ user.last_name }}" class="w-full px-4 py-2 border border-slate-300 rounded-md focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-sm transition">
-                            </div>
-                            <div class="space-y-1 md:col-span-2">
-                                <label class="text-xs font-bold text-slate-500 uppercase">Phone Number</label>
-                                <input type="text" name="phone_number" value="{{ user.phone_number }}" class="w-full px-4 py-2 border border-slate-300 rounded-md focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-sm transition">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="section-business" class="hidden p-8 space-y-6">
-                        <h3 class="text-lg font-bold text-slate-800 border-b border-slate-100 pb-4">Business Identity</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                            <div class="space-y-1 md:col-span-2">
-                                <label class="text-xs font-bold text-slate-500 uppercase">Shop Name</label>
-                                <input type="text" name="shopname" value="{{ seller.shopname }}" class="w-full px-4 py-2 border border-slate-300 rounded-md focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-sm transition">
-                            </div>
-
-                            <div class="space-y-1 md:col-span-2 p-4 bg-blue-50/50 border border-blue-100 rounded-md">
-                                <label class="text-xs font-bold text-blue-700 uppercase flex items-center mb-2">
-                                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
-                                    Shop Slug (URL Handle)
-                                </label>
-                                <div class="flex items-center">
-                                    <span class="bg-slate-100 px-3 py-2 border border-r-0 border-slate-300 rounded-l-md text-slate-400 text-sm">/store/</span>
-                                    <input type="text" name="shop_slug" value="{{ seller.shop_slug }}" class="flex-1 px-3 py-2 border border-slate-300 rounded-r-md focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-sm font-bold text-blue-700 transition">
-                                </div>
-                                <p class="text-[11px] text-blue-600/70 mt-2 italic">This slug defines your store's web address.</p>
-                            </div>
-
-                            <div class="space-y-1">
-                                <label class="text-xs font-bold text-slate-500 uppercase">Category</label>
-                                <select name="category" class="w-full px-4 py-2 border border-slate-300 rounded-md focus:border-blue-600 focus:ring-1 focus:ring-blue-600 bg-white text-sm outline-none transition">
-                                    <option value="{{ seller.category }}" selected>{{ seller.category }}</option>
-                                    <option value="Electronics">Electronics</option>
-                                    <option value="Fashion">Fashion</option>
-                                    <option value="Home Decor">Home Decor</option>
-                                </select>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-xs font-bold text-slate-500 uppercase">Website</label>
-                                <input type="url" name="website" value="{{ seller.website }}" placeholder="https://example.com" class="w-full px-4 py-2 border border-slate-300 rounded-md focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-sm transition">
-                            </div>
-                            <div class="space-y-1 md:col-span-2">
-                                <label class="text-xs font-bold text-slate-500 uppercase">Business Address</label>
-                                <textarea name="business_address" rows="3" class="w-full px-4 py-2 border border-slate-300 rounded-md focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-sm transition">{{ seller.business_address }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 
 <script>
-    /**
-     * Switch between Personal and Business form sections
-     */
-    function switchSection(section) {
-        const pTab = document.getElementById('tab-personal');
-        const bTab = document.getElementById('tab-business');
-        const pSec = document.getElementById('section-personal');
-        const bSec = document.getElementById('section-business');
+function setupImagePreview(inputId, previewId) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
 
-        const activeClass = "flex-1 py-2.5 text-sm font-bold rounded-md transition-all duration-200 bg-white text-blue-600 shadow-sm border border-blue-100";
-        const inactiveClass = "flex-1 py-2.5 text-sm font-bold rounded-md transition-all duration-200 text-slate-500 hover:text-blue-600";
+    if (input && preview) {
+        input.addEventListener("change", function () {
+            const file = this.files;
 
-        if (section === 'personal') {
-            pSec.classList.remove('hidden');
-            bSec.classList.add('hidden');
-            pTab.className = activeClass;
-            bTab.className = inactiveClass;
-        } else {
-            bSec.classList.remove('hidden');
-            pSec.classList.add('hidden');
-            bTab.className = activeClass;
-            pTab.className = inactiveClass;
-        }
-    }
+            if (file) {
+                const reader = new FileReader();
 
-    /**
-     * Handle Image Preview when a file is selected
-     */
-    document.getElementById('id_profile_image').onchange = function (evt) {
-        const [file] = this.files;
-        if (file) {
-            let preview = document.getElementById('preview-img');
-            const container = document.getElementById('image-container');
+                reader.addEventListener("load", function () {
+                    // Set the result (base64 string) as the image source
+                    preview.setAttribute("src", this.result);
+                });
 
-            // If no image existed previously, replace the placeholder box
-            if (!preview) {
-                container.innerHTML = `<img id="preview-img" class="h-full w-full object-cover">`;
-                preview = document.getElementById('preview-img');
+                reader.readAsDataURL(file);
             }
-            preview.src = URL.createObjectURL(file);
-        }
-    };
+        });
+    }
+}
+
+// Initialize for both fields
+document.addEventListener("DOMContentLoaded", function() {
+    setupImagePreview("profileInput", "profilePreview");
+    setupImagePreview("logoInput", "logoPreview");
+});
 </script>
 {% endblock %}

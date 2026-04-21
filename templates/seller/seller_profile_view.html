@@ -1,149 +1,444 @@
-{% extends "seller/base.html" %}
+{% extends 'seller/base.html' %}
 
 {% block content %}
-<div class="min-h-screen bg-slate-50 pb-12">
-    <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-8 pb-6 border-b border-slate-200">
-        <div>
-            <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Seller Profile</h1>
-            <p class="text-sm text-slate-500 mt-1">Detailed overview of your business identity and verification status.</p>
-        </div>
-        <div class="mt-4 md:mt-0">
-            <a href="{% url 'edit_profile' %}" class="inline-flex items-center px-5 py-2.5 text-sm font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition shadow-md">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                </svg>
-                Edit Profile
-            </a>
-        </div>
-    </div>
+<div class="min-h-screen bg-slate-50/50 pb-12 lg:ml-64">
+    <div class="p-5 lg:p-8 max-w-7xl mx-auto space-y-6">
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="relative bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-800 rounded-[2.5rem] p-10 shadow-2xl shadow-indigo-200/50 text-white overflow-hidden">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-indigo-400/10 rounded-full -ml-20 -mb-20 blur-2xl"></div>
 
-        <div class="lg:col-span-4 space-y-6">
-            <div class="bg-white border border-slate-200 rounded-md shadow-sm overflow-hidden">
-                <div class="px-6 py-3 border-b border-slate-100 flex items-center justify-between {% if seller.status == 'APPROVED' %}bg-green-50/50{% elif seller.status == 'PENDING' %}bg-amber-50/50{% else %}bg-red-50/50{% endif %}">
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Account Status</span>
-                    <span class="px-2 py-0.5 text-[10px] font-bold uppercase border rounded
-                        {% if seller.status == 'APPROVED' %}border-green-200 text-green-700 bg-white
-                        {% elif seller.status == 'PENDING' %}border-amber-200 text-amber-700 bg-white
-                        {% else %}border-red-200 text-red-700 bg-white{% endif %}">
-                        {{ seller.status }}
-                    </span>
+            <div class="relative flex flex-col lg:flex-row items-center justify-between gap-10">
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="relative group">
+                        {% if seller.logo %}
+                            <div class="w-32 h-32 bg-white rounded-[2rem] p-3 shadow-2xl flex items-center justify-center border border-white/20 transition-transform duration-500">
+                                <img src="{{ seller.logo.url }}" class="w-full h-full object-contain">
+                            </div>
+                        {% else %}
+                            <div class="w-32 h-32 bg-indigo-500 rounded-[2rem] shadow-2xl border-4 border-white/20 flex items-center justify-center text-white text-5xl font-black uppercase">
+                                {{ seller.shop_name|slice:":1" }}
+                            </div>
+                        {% endif %}
+                        <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-emerald-500 border-4 border-indigo-700 rounded-full shadow-lg"></div>
+                    </div>
+
+                    <div class="text-center md:text-left space-y-2">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                            <h1 class="text-4xl md:text-5xl font-black tracking-tighter leading-none">{{ seller.shop_name }}</h1>
+                            <span class="px-4 py-1.5 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-[11px] font-black text-emerald-100 uppercase tracking-[0.2em]">
+                                ● {{ seller.status|default:"APPROVED" }}
+                            </span>
+                        </div>
+                        <p class="text-indigo-100/80 font-semibold text-lg">
+                            Official {{ seller.category }} Store <span class="mx-2 opacity-30">|</span>
+                            <span class="text-white font-bold">ID: #{{ seller.id|add:1000 }}</span>
+                        </p>
+                    </div>
                 </div>
 
-                <div class="p-6 text-center lg:text-left">
-                    <div class="flex flex-col lg:flex-row items-center lg:space-x-4 mb-6">
-                        <div class="h-20 w-20 bg-slate-100 rounded-md border border-slate-200 overflow-hidden flex-shrink-0 shadow-inner">
-                            {% if user.profile_image %}
-                                <img src="{{ user.profile_image.url }}" class="h-full w-full object-cover" alt="Shop Logo">
-                            {% else %}
-                                <div class="h-full w-full flex items-center justify-center text-slate-400 font-bold text-2xl bg-slate-50">
-                                    {{ seller.shop_name|slice:":1" }}
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="/" class="px-8 py-4 bg-white text-indigo-600 hover:bg-indigo-50 text-sm font-black uppercase tracking-widest rounded-2xl shadow-lg transition-all flex items-center justify-center gap-3">
+                        Visit Storefront
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 pt-10 border-t border-white/10">
+                <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/5">
+                    <p class="text-indigo-200 text-[10px] font-black uppercase tracking-widest">Total Products</p>
+                    <p class="text-2xl font-black mt-1">{{ total_items|default:"0" }}</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/5">
+                    <p class="text-indigo-200 text-[10px] font-black uppercase tracking-widest">Pending Approval</p>
+                    <p class="text-2xl font-black mt-1">{{ pending_product|default:"0" }}</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/5">
+                    <p class="text-indigo-200 text-[10px] font-black uppercase tracking-widest">Low Stock</p>
+                    <p class="text-2xl font-black mt-1 text-amber-400">{{ low_stock|default:"0" }}</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/5">
+                    <p class="text-indigo-200 text-[10px] font-black uppercase tracking-widest">Monthly Revenue</p>
+                    <p class="text-2xl font-black mt-1">${{ monthly_sales|default:"0"|floatformat:2 }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div class="lg:col-span-8 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col h-full">
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Store Identity</h4>
+                        <div class="space-y-4">
+                            <div><p class="text-[10px] text-slate-400 font-bold uppercase mb-1">Shop Name</p><p class="font-bold text-slate-800">{{ seller.shop_name }}</p></div>
+                            <div><p class="text-[10px] text-slate-400 font-bold uppercase mb-1">Category</p><p class="font-bold text-indigo-600">{{ seller.category }}</p></div>
+                            <div><p class="text-[10px] text-slate-400 font-bold uppercase mb-1">Business Email</p><p class="font-bold text-slate-800 text-xs truncate">{{ seller.business_email|default:"None" }}</p></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col h-full">
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Compliance</h4>
+                        <div class="space-y-3">
+                            <div class="group">
+                                <div class="flex justify-between items-center mb-1">
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase">GST Number</p>
+                                    {% if 'gst_number' in pending_requests %}
+                                        <span class="text-[9px] font-black text-amber-500 uppercase">Pending Approval</span>
+                                    {% elif cooldown_fields.gst_number and not rejected_requests.gst_number %}
+                                        <span class="text-[9px] font-black text-slate-400 uppercase">Editable in {{ cooldown_fields.gst_number }} day(s)</span>
+                                    {% else %}
+                                        <button onclick="toggleRequestPane('gst')" class="text-[9px] font-black text-indigo-500 uppercase">Request Change</button>
+                                    {% endif %}
                                 </div>
+                                <p class="font-mono font-bold text-slate-800 uppercase">{{ seller.gst_number }}</p>
+
+                                {% if rejected_requests.gst_number %}
+                                    <p class="text-[10px] font-bold text-rose-500">Rejected: {{ rejected_requests.gst_number }}</p>
+                                {% endif %}
+                                {% if rejected_requests.gst_number and cooldown_fields.gst_number %}
+                                    <p class="text-[10px] font-bold text-slate-400">Retry available in {{ cooldown_fields.gst_number }} day(s)</p>
+                                {% endif %}
+
+                                <div id="pane-gst" class="hidden request-pane mt-3 pt-3 border-t border-slate-50 space-y-3">
+                                    {% for message in messages %}
+                                        {% if 'gst_number' in message.tags %}
+                                            <p class="text-[10px] font-bold {% if 'error' in message.tags %}text-rose-500{% else %}text-emerald-500{% endif %}">{{ message }}</p>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if 'gst_number' not in pending_requests and not cooldown_fields.gst_number %}
+                                    <form action="{% url 'request_edit_field' %}" method="POST" class="space-y-2">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="field_name" value="gst_number">
+                                        <input type="text" name="new_value" placeholder="New GST" required class="w-full px-4 py-2 text-xs border border-slate-200 rounded-xl outline-none bg-slate-50/50">
+                                        <textarea name="reason" placeholder="Reason" required class="w-full px-4 py-2 text-xs border border-slate-200 rounded-xl outline-none bg-slate-50/50 h-16"></textarea>
+                                        <button type="submit" class="w-full py-2 bg-slate-900 text-white text-[10px] font-black uppercase rounded-xl">Submit</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="group">
+                                <div class="flex justify-between items-center mb-1">
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase">PAN Card</p>
+                                    {% if 'pan_number' in pending_requests %}
+                                        <span class="text-[9px] font-black text-amber-500 uppercase">Pending Approval</span>
+                                    {% elif cooldown_fields.pan_number and not rejected_requests.pan_number %}
+                                        <span class="text-[9px] font-black text-slate-400 uppercase">Editable in {{ cooldown_fields.pan_number }} day(s)</span>
+                                    {% else %}
+                                        <button onclick="toggleRequestPane('pan')" class="text-[9px] font-black text-indigo-500 uppercase">Request Change</button>
+                                    {% endif %}
+                                </div>
+                                <p class="font-mono font-bold text-slate-800 uppercase">{{ seller.pan_number }}</p>
+
+                                {% if rejected_requests.pan_number %}
+                                    <p class="text-[10px] font-bold text-rose-500">Rejected: {{ rejected_requests.pan_number }}</p>
+                                {% endif %}
+                                {% if rejected_requests.pan_number and cooldown_fields.pan_number %}
+                                    <p class="text-[10px] font-bold text-slate-400">Retry available in {{ cooldown_fields.pan_number }} day(s)</p>
+                                {% endif %}
+
+                                <div id="pane-pan" class="hidden request-pane mt-3 pt-3 border-t border-slate-50 space-y-3">
+                                    {% for message in messages %}
+                                        {% if 'pan_number' in message.tags %}
+                                            <p class="text-[10px] font-bold {% if 'error' in message.tags %}text-rose-500{% else %}text-emerald-500{% endif %}">{{ message }}</p>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if 'pan_number' not in pending_requests and not cooldown_fields.pan_number %}
+                                    <form action="{% url 'request_edit_field' %}" method="POST" class="space-y-2">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="field_name" value="pan_number">
+                                        <input type="text" name="new_value" placeholder="New PAN" required class="w-full px-4 py-2 text-xs border border-slate-200 rounded-xl outline-none bg-slate-50/50">
+                                        <textarea name="reason" placeholder="Reason" required class="w-full px-4 py-2 text-xs border border-slate-200 rounded-xl outline-none bg-slate-50/50 h-16"></textarea>
+                                        <button type="submit" class="w-full py-2 bg-slate-900 text-white text-[10px] font-black uppercase rounded-xl">Submit</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div><p class="text-[10px] text-slate-400 font-bold uppercase">Address</p><p class="font-bold text-slate-800 text-[11px]">{{ seller.business_address|default:"Not Provided" }}</p></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl text-white flex flex-col h-full relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full -mr-12 -mt-12 blur-2xl"></div>
+                        <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Settlement</h4>
+                        <div class="space-y-4 relative z-10">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <p class="text-[10px] text-slate-500 font-bold uppercase">Account Number</p>
+                                    {% if 'bank_account_number' in pending_requests %}
+                                        <span class="text-[9px] font-black text-amber-500 uppercase">Pending Approval</span>
+                                    {% elif cooldown_fields.bank_account_number and not rejected_requests.bank_account_number %}
+                                        <span class="text-[9px] font-black text-slate-400 uppercase">Editable in {{ cooldown_fields.bank_account_number }} day(s)</span>
+                                    {% else %}
+                                        <button onclick="toggleRequestPane('acc_no')" class="text-[9px] font-black text-indigo-400 uppercase">Request Change</button>
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <p id="acc-no" class="font-mono font-bold tracking-widest text-sm">•••• •••• {{ seller.bank_account_number|slice:"-4:" }}</p>
+                                    <button onclick="toggleBank()" class="text-slate-500 hover:text-white transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    </button>
+                                </div>
+
+                                {% if rejected_requests.bank_account_number %}
+                                    <p class="text-[10px] font-bold text-rose-500">Rejected: {{ rejected_requests.bank_account_number }}</p>
+                                {% endif %}
+                                {% if rejected_requests.bank_account_number and cooldown_fields.bank_account_number %}
+                                    <p class="text-[10px] font-bold text-slate-400">Retry available in {{ cooldown_fields.bank_account_number }} day(s)</p>
+                                {% endif %}
+
+                                <div id="pane-acc_no" class="hidden request-pane mt-3 pt-3 border-t border-slate-800 space-y-3">
+                                    {% for message in messages %}
+                                        {% if 'bank_account_number' in message.tags %}
+                                            <p class="text-[10px] font-bold {% if 'error' in message.tags %}text-rose-500{% else %}text-emerald-500{% endif %}">{{ message }}</p>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if 'bank_account_number' not in pending_requests and not cooldown_fields.bank_account_number %}
+                                    <form action="{% url 'request_edit_field' %}" method="POST" class="space-y-2">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="field_name" value="bank_account_number">
+                                        <input type="text" name="new_value" placeholder="New Acc No" required class="w-full px-4 py-2 text-xs border border-slate-700 rounded-xl outline-none bg-slate-800 text-white">
+                                        <textarea name="reason" placeholder="Reason" required class="w-full px-4 py-2 text-xs border border-slate-700 rounded-xl outline-none bg-slate-800 text-white h-16"></textarea>
+                                        <button type="submit" class="w-full py-2 bg-emerald-600 text-white text-[10px] font-black uppercase rounded-xl">Submit</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <p class="text-[10px] text-slate-500 font-bold uppercase">IFSC</p>
+                                    {% if 'ifsc_code' in pending_requests %}
+                                        <span class="text-[9px] font-black text-amber-500 uppercase">Pending Approval</span>
+                                    {% elif cooldown_fields.ifsc_code and not rejected_requests.ifsc_code %}
+                                        <span class="text-[9px] font-black text-slate-400 uppercase">Editable in {{ cooldown_fields.ifsc_code }} day(s)</span>
+                                    {% else %}
+                                        <button onclick="toggleRequestPane('ifsc')" class="text-[9px] font-black text-indigo-400 uppercase">Request Change</button>
+                                    {% endif %}
+                                </div>
+                                <p class="font-mono font-bold text-emerald-400">{{ seller.ifsc_code }}</p>
+
+                                {% if rejected_requests.ifsc_code %}
+                                    <p class="text-[10px] font-bold text-rose-500">Rejected: {{ rejected_requests.ifsc_code }}</p>
+                                {% endif %}
+                                {% if rejected_requests.ifsc_code and cooldown_fields.ifsc_code %}
+                                    <p class="text-[10px] font-bold text-slate-400">Retry available in {{ cooldown_fields.ifsc_code }} day(s)</p>
+                                {% endif %}
+
+                                <div id="pane-ifsc" class="hidden request-pane mt-3 pt-3 border-t border-slate-800 space-y-3">
+                                    {% for message in messages %}
+                                        {% if 'ifsc_code' in message.tags %}
+                                            <p class="text-[10px] font-bold {% if 'error' in message.tags %}text-rose-500{% else %}text-emerald-500{% endif %}">{{ message }}</p>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if 'ifsc_code' not in pending_requests and not cooldown_fields.ifsc_code %}
+                                    <form action="{% url 'request_edit_field' %}" method="POST" class="space-y-2">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="field_name" value="ifsc_code">
+                                        <input type="text" name="new_value" placeholder="New IFSC" required class="w-full px-4 py-2 text-xs border border-slate-700 rounded-xl outline-none bg-slate-800 text-white">
+                                        <textarea name="reason" placeholder="Reason" required class="w-full px-4 py-2 text-xs border border-slate-700 rounded-xl outline-none bg-slate-800 text-white h-16"></textarea>
+                                        <button type="submit" class="w-full py-2 bg-emerald-600 text-white text-[10px] font-black uppercase rounded-xl">Submit</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-slate-50 flex items-center justify-between">
+                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">Recent Products</h3>
+                        <a href="{% url 'inventory_page' %}" class="text-xs font-bold text-indigo-600">Inventory →</a>
+                    </div>
+                    <div class="flex overflow-x-auto p-6 gap-6 scrollbar-hide">
+                        {% for product in recent_products|slice:":6" %}
+                        <div class="min-w-[180px] group">
+                            <div class="aspect-square bg-slate-100 rounded-2xl mb-3 overflow-hidden relative">
+                                {% if product.images.first %}
+                                    <img src="{{ product.images.first.image.url }}" class="w-full h-full object-cover">
+                                {% endif %}
+                            </div>
+                            <h5 class="font-bold text-slate-800 text-xs truncate">{{ product.name }}</h5>
+                            <p class="text-indigo-600 font-black mt-1 text-sm">${{ product.selling_price }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-4 space-y-6">
+                <div class="bg-indigo-900 p-6 rounded-3xl shadow-xl shadow-indigo-200 text-white">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-indigo-300 mb-6">Operational Status</h3>
+                    <div class="space-y-4">
+                        <a href="{% url 'inventory_page' %}?filter=low_stock" class="flex justify-between items-center bg-white/5 p-3 rounded-2xl border border-white/5 hover:bg-white/10 transition-all group">
+                            <span class="text-xs font-bold text-indigo-100 group-hover:text-white transition-colors">Low Stock</span>
+                            <span class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full text-xs font-black group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                {{ low_stock|default:"0" }}
+                            </span>
+                        </a>
+                        <a href="{% url 'inventory_page' %}?filter=pending" class="flex justify-between items-center bg-white/5 p-3 rounded-2xl border border-white/5 hover:bg-white/10 transition-all group">
+                            <span class="text-xs font-bold text-indigo-100 group-hover:text-white transition-colors">Needs Review</span>
+                            <span class="bg-indigo-400/20 text-indigo-200 px-3 py-1 rounded-full text-xs font-black group-hover:bg-indigo-500 group-hover:text-white transition-colors">
+                                {{ pending_product|default:"0" }}
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center gap-4 mb-6">
+                        {% if user.profile_image %}
+                            <img src="{{ user.profile_image.url }}" class="w-16 h-16 rounded-full object-cover shadow-sm">
+                        {% else %}
+                            <div class="w-16 h-16 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-black">
+                                {{ user.first_name|slice:":1" }}
+                            </div>
+                        {% endif %}
+                        <div class="space-y-1">
+                            <h3 class="font-black text-slate-800 leading-none">{{ user.get_full_name }}</h3>
+                            <span class="text-[9px] font-black text-emerald-600 uppercase tracking-widest">Verified Seller</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <a href="{% url 'edit_profile' %}" class="w-full py-2.5 bg-indigo-600 text-white text-[10px] font-black uppercase rounded-xl text-center shadow-lg">Edit  Profile</a>
+                        <button onclick="togglePasswordSection()" class="w-full py-2.5 bg-white border border-slate-200 text-slate-500 text-[10px] font-black uppercase rounded-xl">Change Password</button>
+
+                        <div id="password-section" class="hidden mt-2 border-t border-slate-50 pt-4">
+                            {% if messages %}
+                            <div id="password-messages" class="mb-4 space-y-1">
+                                {% for message in messages %}
+                                    {% if "password" in message.extra_tags %}
+                                        <p class="text-[10px] font-black uppercase {% if 'success' in message.tags %}text-emerald-500{% else %}text-rose-500{% endif %}">
+                                            ● {{ message }}
+                                        </p>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                             {% endif %}
-                        </div>
-                        <div class="mt-4 lg:mt-0">
-                            <h2 class="text-xl font-bold text-slate-900 leading-tight">{{ seller.shop_name }}</h2>
-                            <p class="text-sm text-blue-600 font-medium">{{ seller.category }}</p>
-                        </div>
-                    </div>
-
-                    <div class="p-4 bg-blue-50 border border-blue-100 rounded-md">
-                        <label class="block text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Public Store URL</label>
-                        <div class="flex items-center text-sm font-bold text-blue-800 break-all">
-                            <svg class="w-4 h-4 mr-2 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                            </svg>
-                            mystore.com/shop/<span class="underline decoration-blue-300">{{ seller.shop_slug|default:"not-set" }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white border border-slate-200 rounded-md shadow-sm p-6">
-                <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center">
-                    <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
-                    Contact Information
-                </h3>
-                <div class="space-y-4">
-                    <div class="flex flex-col">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase">Registered Owner</span>
-                        <span class="text-sm font-semibold text-slate-800">{{ user.first_name }} {{ user.last_name }}</span>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase">Direct Email</span>
-                        <span class="text-sm font-semibold text-slate-800">{{ user.email }}</span>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase">Contact Number</span>
-                        <span class="text-sm font-semibold text-slate-800">{{ user.phone_number|default:"No Phone Provided" }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="lg:col-span-8 space-y-6">
-
-            <div class="bg-white border border-slate-200 rounded-md shadow-sm overflow-hidden">
-                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
-                    <h3 class="text-sm font-bold text-slate-800">Shop Registration Details</h3>
-                </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-                        <div class="md:col-span-1">
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Official Website</label>
-                            <p class="text-sm font-bold text-blue-600">
-                                {% if seller.website %}{{ seller.website }}{% else %}No external website{% endif %}
-                            </p>
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Business Address</label>
-                            <p class="text-sm font-semibold text-slate-800 leading-relaxed max-w-xl">
-                                {{ seller.business_address }}
-                            </p>
+                            <form action="{% url 'change_password' %}" method="POST" id="password-form" class="space-y-3">
+                                {% csrf_token %}
+                                <input type="password" name="current_password" placeholder="Current Password" required class="w-full px-4 py-2 text-xs border border-slate-200 rounded-xl outline-none bg-slate-50/50">
+                                <div class="space-y-1">
+                                    <input type="password" id="new_password" name="new_password" placeholder="New Password" required class="w-full px-4 py-2 text-xs border border-slate-200 rounded-xl outline-none bg-slate-50/50">
+                                    <div class="flex justify-between items-center px-1">
+                                        <span id="strength-text" class="text-[9px] font-black uppercase text-slate-400">Strength: ---</span>
+                                        <div class="flex gap-0.5 h-1 w-20 bg-slate-100 rounded-full overflow-hidden">
+                                            <div id="strength-bar" class="h-full w-0 transition-all duration-500"></div>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-x-2 gap-y-1 pt-1 px-1">
+                                        <p id="rule-length" class="text-[8px] font-bold text-slate-400 uppercase">● 8+ Characters</p>
+                                        <p id="rule-upper" class="text-[8px] font-bold text-slate-400 uppercase">● Uppercase</p>
+                                        <p id="rule-lower" class="text-[8px] font-bold text-slate-400 uppercase">● Lowercase</p>
+                                        <p id="rule-num" class="text-[8px] font-bold text-slate-400 uppercase">● Number</p>
+                                        <p id="rule-sym" class="text-[8px] font-bold text-slate-400 uppercase">● Symbol</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-1">
+                                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required class="w-full px-4 py-2 text-xs border border-slate-200 rounded-xl outline-none bg-slate-50/50">
+                                    <p id="match-text" class="text-[8px] font-black uppercase px-1 hidden"></p>
+                                </div>
+                                <button type="submit" id="submit-btn" disabled class="w-full py-2.5 bg-slate-900 disabled:opacity-50 text-white text-[10px] font-black uppercase rounded-xl">Update</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="bg-white border border-slate-200 rounded-md shadow-sm overflow-hidden">
-                <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                    <h3 class="text-sm font-bold text-slate-800">Tax & Banking Credentials</h3>
-                    <div class="flex space-x-1">
-                        <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
-                        <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
-                        <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">GST / Tax Identification</label>
-                            <p class="text-sm font-mono font-bold text-slate-700 p-2 bg-slate-50 border border-slate-200 rounded inline-block">{{ seller.gst_number }}</p>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">PAN Number</label>
-                            <p class="text-sm font-mono font-bold text-slate-700 p-2 bg-slate-50 border border-slate-200 rounded inline-block">{{ seller.pan_number }}</p>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Bank Account</label>
-                            <p class="text-sm font-mono font-bold text-slate-700 tracking-widest">
-                                <span class="text-slate-300">****</span>{{ seller.bank_account_number|slice:"-4:" }}
-                            </p>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">IFSC Code</label>
-                            <p class="text-sm font-mono font-bold text-slate-700 uppercase tracking-wider">{{ seller.ifsc_code }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="px-6 py-3 bg-slate-50 border-t border-slate-100 flex items-center">
-                    <svg class="w-3.5 h-3.5 text-slate-400 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                    <p class="text-[10px] text-slate-400 font-medium">To modify tax or banking documents, a verification request is required.</p>
-                </div>
-            </div>
-
         </div>
     </div>
 </div>
+
+<script>
+    // --- UI Logic ---
+    function toggleRequestPane(fieldId) {
+        const panes = document.querySelectorAll('.request-pane');
+        const targetPane = document.getElementById('pane-' + fieldId);
+        panes.forEach(pane => { if (pane !== targetPane) pane.classList.add('hidden'); });
+        if (targetPane) targetPane.classList.toggle('hidden');
+    }
+
+    function togglePasswordSection() {
+        document.getElementById('password-section').classList.toggle('hidden');
+    }
+
+    // --- Bank Masking ---
+    let isMasked = true;
+    const fullAccountNumber = "{{ seller.bank_account_number|escapejs }}";
+    const maskedNumber = "•••• •••• " + fullAccountNumber.slice(-4);
+    function toggleBank() {
+        const p = document.getElementById('acc-no');
+        isMasked = !isMasked;
+        p.innerText = isMasked ? maskedNumber : fullAccountNumber;
+    }
+
+    // --- Password Validation ---
+    const newPass = document.getElementById('new_password');
+    const confPass = document.getElementById('confirm_password');
+    const submitBtn = document.getElementById('submit-btn');
+    const strengthBar = document.getElementById('strength-bar');
+    const strengthText = document.getElementById('strength-text');
+    const matchText = document.getElementById('match-text');
+
+    const rules = {
+        length: { el: document.getElementById('rule-length'), reg: /.{8,}/ },
+        upper:  { el: document.getElementById('rule-upper'),  reg: /[A-Z]/ },
+        lower:  { el: document.getElementById('rule-lower'),  reg: /[a-z]/ },
+        num:    { el: document.getElementById('rule-num'),    reg: /[0-9]/ },
+        sym:    { el: document.getElementById('rule-sym'),    reg: /[!@#*]/ }
+    };
+
+    function validate() {
+        if (!newPass) return;
+        const val = newPass.value;
+        let score = 0;
+        let allRulesMet = true;
+
+        Object.values(rules).forEach(rule => {
+            if (!rule.el) return;
+            const met = rule.reg.test(val);
+            if (met) {
+                score++;
+                rule.el.classList.replace('text-slate-400', 'text-emerald-500');
+            } else {
+                allRulesMet = false;
+                rule.el.classList.replace('text-emerald-500', 'text-slate-400');
+            }
+        });
+
+        const percent = (score / 5) * 100;
+        strengthBar.style.width = percent + '%';
+        strengthBar.className = 'h-full transition-all duration-500 ' + (score <= 2 ? 'bg-rose-500' : score <= 4 ? 'bg-amber-500' : 'bg-emerald-500');
+        strengthText.innerText = score <= 2 ? 'Strength: Weak' : score <= 4 ? 'Strength: Medium' : 'Strength: Strong';
+        strengthText.className = 'text-[9px] font-black uppercase ' + (score <= 2 ? 'text-rose-500' : score <= 4 ? 'text-amber-500' : 'text-emerald-500');
+
+        const passwordsMatch = val === confPass.value && val !== '';
+        if (confPass.value !== '') {
+            matchText.classList.remove('hidden');
+            matchText.innerText = passwordsMatch ? 'Passwords Match' : 'Passwords do not match';
+            matchText.className = 'text-[8px] font-black uppercase px-1 ' + (passwordsMatch ? 'text-emerald-500' : 'text-rose-500');
+        } else {
+            matchText.classList.add('hidden');
+        }
+
+        submitBtn.disabled = !(allRulesMet && passwordsMatch);
+    }
+
+    if (newPass) {
+        newPass.addEventListener('input', validate);
+        confPass.addEventListener('input', validate);
+    }
+</script>
+
+<style>
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    .request-pane, #password-section { animation: slideDown 0.2s ease-out; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+</style>
 {% endblock %}

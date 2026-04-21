@@ -1,217 +1,371 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Product | BuyMe Admin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-    </style>
-</head>
-<body class="bg-slate-50 text-slate-900 antialiased">
+{% extends 'seller/base.html' %}
 
-    <nav class="sticky top-0 z-50 w-full bg-white border-b border-slate-200 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
-                    <span class="text-white font-bold text-xl">B</span>
-                </div>
-                <span class="text-xl font-bold tracking-tight text-slate-800">BuyMe</span>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <div class="hidden sm:block text-right">
-                    <p class="text-sm font-semibold text-slate-700 leading-none">Global Seller</p>
-                    <p class="text-xs text-slate-400 mt-1">Admin Panel</p>
-                </div>
-                <button class="px-3 py-1.5 text-sm font-medium text-red-600 border border-red-100 rounded-md hover:bg-red-50 transition">
-                    Logout
-                </button>
-            </div>
-        </div>
-    </nav>
+{% block navbar_search %}
+{% endblock %}
 
-    <main class="max-w-7xl mx-auto px-4 py-8">
-        
-        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-            <div>
-                <h1 class="text-2xl font-bold text-slate-900">Add New Product</h1>
-                <p class="text-sm text-slate-500">List a new product to your BuyMe store.</p>
-            </div>
-            <div class="flex items-center gap-3">
-                <a href="{% url 'inventory_page' %}" class="px-5 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition text-center">
-                    Cancel
-                </a>
-                <button type="submit" form="product-form" class="px-5 py-2 text-sm font-bold text-white bg-blue-600 border border-blue-700 rounded-md hover:bg-blue-700 shadow-sm transition">
-                    Publish Product
-                </button>
-            </div>
-        </div>
+{% block content %}
 
-        <form id="product-form" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="min-h-screen bg-[#F8FAFC] lg:ml-64">
+    <div class="max-w-7xl mx-auto px-6 py-8">
+
+        <header class="mb-8">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] mb-1">Inventory Management</p>
+            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Add New Product</h1>
+        </header>
+
+        <form method="POST" enctype="multipart/form-data" id="productForm">
             {% csrf_token %}
 
-            <div class="lg:col-span-2 space-y-6">
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
-                <section class="bg-white border border-slate-200 rounded-md p-6 shadow-sm">
-                    <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6 border-b pb-2">General Information</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="xl:col-span-2 space-y-6">
 
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Product Name *</label>
-                            <input type="text" name="name" id="p-name" required placeholder="e.g. Wireless Headphones"
-                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
-                        </div>
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-6 pb-2 border-b border-slate-50">General Information</h2>
 
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Slug (Auto-generated)</label>
-                            <input type="text" name="slug" id="p-slug" readonly placeholder="product-slug-sku"
-                                class="w-full px-3 py-2 border border-slate-200 bg-slate-50 rounded-md text-slate-500 text-sm outline-none cursor-not-allowed">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Brand *</label>
-                            <input type="text" name="brand" required placeholder="Brand Name"
-                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">SKU *</label>
-                            <input type="text" name="sku" id="p-sku" required placeholder="BM-1001"
-                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm font-mono transition">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Model Number *</label>
-                            <input type="text" name="model_number" required placeholder="MD-202X"
-                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Subcategory *</label>
-                            <select name="subcategory" required class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none bg-white text-sm transition">
-                                <option value="">Select Subcategory</option>
-                                {% for sub in subcategories %}
-                                    <option value="{{ sub.id }}">{{ sub.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Description *</label>
-                            <textarea name="description" required rows="5" placeholder="Detailed product description..."
-                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition"></textarea>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="bg-white border border-slate-200 rounded-md p-6 shadow-sm">
-                    <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6 border-b pb-2">Pricing & Inventory</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">MRP *</label>
-                            <input type="number" name="price" step="0.01" required placeholder="0.00"
-                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Selling Price *</label>
-                            <input type="number" name="selling_price" step="0.01" required placeholder="0.00"
-                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm font-bold text-blue-600 transition">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Cost Price *</label>
-                            <input type="number" name="cost_price" step="0.01" required placeholder="0.00"
-                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Stock Qty *</label>
-                            <input type="number" name="stock_quantity" required placeholder="0"
-                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tax (%) *</label>
-                            <input type="number" name="tax" required placeholder="18"
-                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="space-y-6">
-
-                <section class="bg-white border border-slate-200 rounded-md p-6 shadow-sm">
-                    <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Product Images</h2>
-                    <div class="space-y-4">
-                        <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-300 rounded-md cursor-pointer bg-slate-50 hover:bg-slate-100 transition group">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg class="w-8 h-8 mb-2 text-slate-400 group-hover:text-blue-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                <p class="text-xs font-semibold text-slate-500">Upload Multiple Images</p>
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Product Name</label>
+                                <input type="text" name="name" id="id_name" required placeholder="e.g., iPhone 15 Pro Max"
+                                    class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900/10 focus:border-slate-500 transition-all outline-none">
                             </div>
-                            <input type="file" name="images" id="image-upload" multiple accept="image/*" class="hidden" />
-                        </label>
-                        <div id="image-preview" class="grid grid-cols-3 gap-2"></div>
-                        <div class="p-3 bg-blue-50 rounded border border-blue-100">
-                            <p class="text-[11px] text-blue-700 leading-tight italic">
-                                <strong>Note:</strong> Primary image can be selected while editing the product.
-                            </p>
-                        </div>
-                    </div>
-                </section>
 
-                <section class="bg-white border border-slate-200 rounded-md p-6 shadow-sm">
-                    <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6">Policies</h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-md">
-                            <input type="checkbox" name="is_returnable" id="returnable" class="w-4 h-4 text-blue-600 rounded border-slate-300">
-                            <label for="returnable" class="text-sm font-medium text-slate-700">Returnable Product</label>
-                        </div>
-                        <div class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-md">
-                            <input type="checkbox" name="is_cancellable" id="cancellable" class="w-4 h-4 text-blue-600 rounded border-slate-300">
-                            <label for="cancellable" class="text-sm font-medium text-slate-700">Cancellable Order</label>
-                        </div>
-                        <div class="pt-2">
-                            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Return Days (Required)</label>
-                            <input type="number" name="return_days" required placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm transition">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">SKU Code</label>
+                                    <input type="text" name="sku" id="id_sku" required placeholder="APP-15-PRO"
+                                        class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-slate-900/10 focus:border-slate-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Product Slug</label>
+                                    <input type="text" id="slug_preview" readonly placeholder="auto-generated-slug"
+                                        class="w-full h-11 px-4 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-500 cursor-not-allowed outline-none">
+                                    <input type="hidden" name="slug" id="id_slug">
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Brand</label>
+                                    <input type="text" name="brand" placeholder="e.g., Apple"
+                                        class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-slate-900/10 focus:border-slate-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Model Number</label>
+                                    <input type="text" name="model_number" placeholder="e.g., A3106"
+                                        class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-slate-900/10 focus:border-slate-500 outline-none">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Description</label>
+                                <textarea name="description" placeholder="Provide a detailed product overview..."
+                                    class="w-full min-h-[140px] py-3 px-4 bg-white border border-slate-300 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-slate-900/10 focus:border-slate-500 outline-none resize-none leading-relaxed"></textarea>
+                            </div>
                         </div>
                     </div>
-                </section>
+
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-6 pb-2 border-b border-slate-50">Classification</h2>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Category</label>
+                                <select name="category" id="category_select" required
+                                    class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-slate-900/10 focus:border-slate-500 outline-none appearance-none cursor-pointer">
+                                    <option value="">Select Category</option>
+                                    {% for cat in categories %}
+                                    <option value="{{ cat.id }}">{{ cat.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Subcategory</label>
+                                <select name="subcategory" id="subcategory_select" required disabled
+                                    class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-slate-900/10 focus:border-slate-500 outline-none disabled:bg-slate-50 disabled:text-slate-400 cursor-pointer">
+                                    <option value="">Choose category first</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-6 pb-2 border-b border-slate-50">Pricing & Tax</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-2">MRP ($)</label>
+                                <input type="number" name="price" step="0.01" placeholder="0.00"
+                                    class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-800 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-emerald-600 uppercase mb-2">Selling Price</label>
+                                <input type="number" name="selling_price" step="0.01" placeholder="0.00"
+                                    class="w-full h-11 px-4 bg-emerald-50/30 border border-emerald-200 rounded-xl text-sm font-bold text-slate-900 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-2">Cost Price</label>
+                                <input type="number" name="cost_price" step="0.01" placeholder="0.00"
+                                    class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm text-slate-800 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-2">Tax (%)</label>
+                                <input type="number" name="tax_percentage" value="18"
+                                    class="w-full h-11 px-4 bg-white border border-slate-300 rounded-xl text-sm text-slate-800 outline-none">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <h2 class="text-xs font-bold text-slate-800 uppercase tracking-widest mb-4">Product Media</h2>
+                        <label class="group cursor-pointer">
+                            <div class="relative w-full aspect-square bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center transition-all group-hover:bg-white group-hover:border-slate-900 overflow-hidden">
+                                <div id="upload_ui" class="text-center p-4">
+                                    <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mx-auto mb-3 text-slate-400 group-hover:scale-110 transition-transform">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                    </div>
+                                    <p class="text-xs font-bold text-slate-900 uppercase">Upload Images</p>
+                                    <p class="text-[10px] text-slate-400 mt-1 font-medium">Click to browse gallery</p>
+                                </div>
+                                <img id="primary_preview" class="absolute inset-0 w-full h-full object-cover hidden">
+                            </div>
+                            <input type="file" name="images" id="imageInput" multiple accept="image/*" class="hidden">
+                        </label>
+                        <div id="thumbnail_row" class="grid grid-cols-4 gap-2 mt-4"></div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <h2 class="text-xs font-bold text-slate-800 uppercase tracking-widest mb-4">Stock Management</h2>
+                        <div class="flex items-center bg-slate-50 border border-slate-200 rounded-xl p-1">
+                            <button type="button" onclick="this.parentNode.querySelector('input').stepDown()" class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg>
+                            </button>
+                            <input type="number" name="stock_quantity" value="0" min="0" class="flex-1 bg-transparent border-none text-center text-base font-bold text-slate-900 focus:ring-0">
+                            <button type="button" onclick="this.parentNode.querySelector('input').stepUp()" class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <h2 class="text-xs font-bold text-slate-800 uppercase tracking-widest mb-5">Order Policies</h2>
+                        <div class="space-y-4">
+                            <label class="flex items-center justify-between cursor-pointer">
+                                <span class="text-xs font-bold text-slate-600">Returnable</span>
+                                <div class="relative">
+                                    <input type="checkbox" name="is_returnable" id="return_toggle" class="sr-only peer">
+                                    <div class="w-9 h-5 bg-slate-200 rounded-full peer-checked:bg-slate-900 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
+                                </div>
+                            </label>
+
+                            <div id="return_days_box" class="hidden">
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Return Window (Days)</label>
+                                <input type="number" name="return_days" placeholder="7" class="w-full h-10 px-4 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none">
+                            </div>
+
+                            <label class="flex items-center justify-between cursor-pointer">
+                                <span class="text-xs font-bold text-slate-600">Cancellable</span>
+                                <div class="relative">
+                                    <input type="checkbox" name="is_cancellable" checked class="sr-only peer">
+                                    <div class="w-9 h-5 bg-slate-200 rounded-full peer-checked:bg-slate-900 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <button type="submit" class="w-full h-14 bg-slate-900 text-white rounded-xl text-xs font-black uppercase tracking-[0.2em] shadow-lg shadow-slate-200 hover:bg-black hover:-translate-y-0.5 transition-all active:translate-y-0">
+                            Add Product
+                        </button>
+                        <p class="text-[9px] text-slate-400 text-center font-bold uppercase tracking-widest mt-4">
+                            Listed items undergo manual review
+                        </p>
+                    </div>
+                </div>
             </div>
         </form>
-    </main>
+    </div>
+</div>
 
-    <script>
-        // SLUG GENERATION
-        const nameInput = document.getElementById('p-name');
-        const skuInput = document.getElementById('p-sku');
-        const slugInput = document.getElementById('p-slug');
+<script>
+    // 1. Dynamic Slug Logic (SKU + ShopName)
+    const nameInp = document.getElementById('id_name');
+const skuInp = document.getElementById('id_sku');
+const slugPre = document.getElementById('slug_preview');
+const slugHid = document.getElementById('id_slug');
 
-        function generateSlug() {
-            const nameVal = nameInput.value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-            const skuVal = skuInput.value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-');
-            slugInput.value = nameVal ? (skuVal ? `${nameVal}-${skuVal}` : nameVal) : '';
+function generateSlug() {
+    const productName = nameInp.value.trim();
+    const sku = skuInp.value.trim();
+
+    const text = `${productName}-${sku}`;
+
+    const slug = text
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_-]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+
+    if (productName || sku) {
+        slugPre.value = slug;
+        slugHid.value = slug;
+    } else {
+        slugPre.value = "";
+        slugHid.value = "";
+    }
+}
+
+nameInp.addEventListener('input', generateSlug);
+skuInp.addEventListener('input', generateSlug);
+
+    // 2. Policy Visibility
+    const returnToggle = document.getElementById('return_toggle');
+    const returnDaysBox = document.getElementById('return_days_box');
+    returnToggle.addEventListener('change', function() {
+        returnDaysBox.classList.toggle('hidden', !this.checked);
+    });
+
+    // 3. Media Preview Management
+   const imgInp = document.getElementById('imageInput');
+const mainPre = document.getElementById('primary_preview');
+const uploadUi = document.getElementById('upload_ui');
+const thumbRow = document.getElementById('thumbnail_row');
+
+let selectedFiles = [];
+
+// Open preview when files selected
+imgInp.addEventListener('change', function (e) {
+    const newFiles = Array.from(e.target.files);
+
+    newFiles.forEach(file => {
+        if (file.type.startsWith("image/")) {
+            selectedFiles.push(file);
         }
-        nameInput.addEventListener('input', generateSlug);
-        skuInput.addEventListener('input', generateSlug);
+    });
 
-        // IMAGE PREVIEW
-        const imageInput = document.getElementById('image-upload');
-        const previewGrid = document.getElementById('image-preview');
+    renderImages();
+});
 
-        imageInput.addEventListener('change', function() {
-            previewGrid.innerHTML = '';
-            Array.from(this.files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const div = document.createElement('div');
-                    div.className = "aspect-square rounded-md border border-slate-200 overflow-hidden bg-white shadow-sm";
-                    div.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
-                    previewGrid.appendChild(div);
+// Render all images
+function renderImages() {
+    thumbRow.innerHTML = "";
+
+    if (selectedFiles.length === 0) {
+        mainPre.classList.add("hidden");
+        uploadUi.classList.remove("hidden");
+        imgInp.value = "";
+        return;
+    }
+
+    // Show first image as main preview
+    const firstReader = new FileReader();
+    firstReader.onload = function (e) {
+        mainPre.src = e.target.result;
+        mainPre.classList.remove("hidden");
+        uploadUi.classList.add("hidden");
+    };
+    firstReader.readAsDataURL(selectedFiles[0]);
+
+    // Thumbnails
+    selectedFiles.forEach((file, index) => {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const box = document.createElement("div");
+            box.className =
+                "relative aspect-square rounded-lg border border-slate-200 overflow-hidden group cursor-pointer";
+
+            box.innerHTML = `
+                <img src="${e.target.result}" class="w-full h-full object-cover">
+                <button type="button"
+                    class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full hidden group-hover:flex items-center justify-center"
+                    onclick="removeImage(${index})">✕</button>
+            `;
+
+            // Click thumbnail = main preview
+            box.addEventListener("click", function (ev) {
+                if (ev.target.tagName !== "BUTTON") {
+                    mainPre.src = box.querySelector("img").src;
                 }
-                reader.readAsDataURL(file);
             });
+
+            thumbRow.appendChild(box);
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+    syncInputFiles();
+}
+
+// Remove image
+function removeImage(index) {
+    selectedFiles.splice(index, 1);
+    renderImages();
+}
+
+// Keep Django file input synced
+function syncInputFiles() {
+    const dt = new DataTransfer();
+
+    selectedFiles.forEach(file => dt.items.add(file));
+
+    imgInp.files = dt.files;
+}
+
+  const catSelect = document.getElementById('category_select');
+const subSelect = document.getElementById('subcategory_select');
+
+catSelect.addEventListener('change', function () {
+    const id = this.value;
+
+    subSelect.innerHTML = '<option value="">Loading...</option>';
+    subSelect.disabled = true;
+
+    if (!id) {
+        subSelect.innerHTML = '<option value="">Select Subcategory</option>';
+        return;
+    }
+
+    fetch(`/load_subcategories/${id}/`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to load");
+            }
+            return response.json();
+        })
+        .then(data => {
+            subSelect.innerHTML = '';
+
+            const firstOption = document.createElement('option');
+            firstOption.value = '';
+            firstOption.textContent = 'Select Subcategory';
+            subSelect.appendChild(firstOption);
+
+            if (data.length > 0) {
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.name;
+                    subSelect.appendChild(option);
+                });
+
+                subSelect.disabled = false;
+                subSelect.removeAttribute("disabled");
+
+            } else {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'No Subcategories Found';
+                subSelect.appendChild(option);
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            subSelect.innerHTML = '<option value="">Error loading subcategories</option>';
         });
-    </script>
-</body>
-</html>
+});
+</script>
+{% endblock %}
